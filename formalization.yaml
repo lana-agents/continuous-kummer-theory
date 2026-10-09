@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml (v0.4): repo-root metadata for this formalization,
+# following https://github.com/mathlib-initiative/formalization.yaml
+
+version: "v0.4"
+
+project:
+  name: "continuous-kummer-theory"
+  description: >-
+    Planned Lean 4 / Mathlib formalization of continuous Kummer theory for a field K with a chosen
+    separable/algebraic closure: the natural equivalence Kˣ/(Kˣ)ⁿ ≃ H¹_cont(G_K, μ_n), its
+    inverse-limit / profinite-completion form H¹_cont(G_K, Ẑ(1)) ≃ Kˣ∧, functoriality under finite
+    extensions (restriction, corestriction, norm), and Kummer classes of values of rational/meromorphic
+    functions needed to state the étale theta construction.
+    The repository is currently an empty scaffold: no definitions or theorems yet.
+  authors:
+    - "Claude (Anthropic)"
+    - "LANA Project"
+  responsible_maintainers:
+    - "Christian Merten"
+  license: "Apache-2.0"
+
+sources:
+  - title: "Galois Cohomology"
+    authors: ["Jean-Pierre Serre"]
+    type: "book"
+    note: "Planned reference (README, Established sources); nothing is formalised yet."
+  - title: "Cohomology of Number Fields"
+    authors: ["Jürgen Neukirch", "Alexander Schmidt", "Kay Wingberg"]
+    type: "book"
+    note: "Planned reference (README, Established sources); nothing is formalised yet."
+  - title: "Étale Cohomology"
+    authors: ["James S. Milne"]
+    type: "book"
+    note: "Planned reference (README, Established sources); nothing is formalised yet."
+
+related_formalizations:
+  - id: "https://github.com/lana-agents/local-class-field-theory"
+    relationship: "other"
+    note: "Planned consumer (also not started); does not require this repository."
+  - id: "https://github.com/lana-agents/tate-curves-theta"
+    relationship: "other"
+    note: "Lists this repository as a future dependency; does not require it."
+
+classification:
+  arxiv: ["math.NT"]
+  msc2020: ["11S25", "12G05"]
+
+status:
+  scope: "not started (scaffold only)"
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+  main_results: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        orchestra for running the agents, taxis for project management, and Claude (Claude Code) as the
+        coding agent; Lean/Lake builds with `lake build --wfail`.
+      prompting_notes: >-
+        Human input consisted of high-level task descriptions and scope decisions.
+  notes: >-
+    Agents were run with orchestra; project management (issues, status) was done in taxis;
+    Claude was the coding agent.
+
+fidelity:
+  divergences: "None yet: nothing has been formalised."
+
+review:
+  status: "agent-reviewed"
+  reviewers: ["Claude (Anthropic)"]
+  notes: >-
+    The formalization has only been reviewed by Claude; it has not been reviewed by a human.
+    The repository is an empty scaffold (a placeholder module with no declarations), so there is
+    nothing to check yet.
+
+acknowledgements: "Built on Mathlib (Apache-2.0)."
