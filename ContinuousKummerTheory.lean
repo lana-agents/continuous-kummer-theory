@@ -1,12 +1,17 @@
 import ContinuousKummerTheory.ContH1.Basic
+import ContinuousKummerTheory.ContH1.Comparison
 import ContinuousKummerTheory.ContH1.Corestriction
+import ContinuousKummerTheory.ContH1.CorestrictionIndep
 import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.CorRes
 import ContinuousKummerTheory.Kummer.Corestriction
 import ContinuousKummerTheory.Kummer.Equiv
 import ContinuousKummerTheory.Kummer.Limit
+import ContinuousKummerTheory.Kummer.PAdic
 import ContinuousKummerTheory.Kummer.ProfiniteCompletion
 import ContinuousKummerTheory.Kummer.Restriction
+import ContinuousKummerTheory.Kummer.Specialization
+import ContinuousKummerTheory.Kummer.Topology
 import ContinuousKummerTheory.Kummer.Values
 import ContinuousKummerTheory.Kummer.ZHat
