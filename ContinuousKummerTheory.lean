@@ -6,6 +6,7 @@ import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.CorRes
 import ContinuousKummerTheory.Kummer.Corestriction
+import ContinuousKummerTheory.Kummer.Decomposition
 import ContinuousKummerTheory.Kummer.Equiv
 import ContinuousKummerTheory.Kummer.Limit
 import ContinuousKummerTheory.Kummer.PAdic

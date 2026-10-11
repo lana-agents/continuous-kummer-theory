@@ -6,14 +6,17 @@ Continuous Kummer theory for local fields.
 
 **Core targets formalised, no `sorry`/`axiom`** (axioms used: `propext`, `Classical.choice`,
 `Quot.sound` only). Everything below is proved in Lean 4 / Mathlib v4.32.0 and builds with
-`lake build --wfail`. Not formalised: see *Not done* at the end of this section.
+`lake build --wfail`. All five follow-up targets of work package P7 (finiteness for `p`-adic
+fields, comparison with Mathlib's `continuousCohomology`, independence of corestriction from
+choices, topologies, Kummer classes of functions vs. values) are done; see *Scope notes* at the
+end of this section for the precise form of each statement.
 
 **Model of `H¹_cont`.** `ContH1 G M` (`ContH1/Basic.lean`) is the group of *continuous* crossed
 homomorphisms `G → M` (Mathlib's `IsMulCocycle₁`, multiplicative notation) modulo principal ones
 (`IsMulCoboundary₁`), for a topological group `G` acting on a commutative topological group `M`
-(Serre, *Galois Cohomology*, Chapter I). This is the classical low-degree description; Mathlib's
-`ContinuousCohomology` (homogeneous cochains) currently only computes `H⁰`, so no comparison with it
-is proved. Coefficients `μ_n(Ω)` are the type `KummerTheory.Mu n Ω` (the roots of unity with the
+(Serre, *Galois Cohomology*, Chapter I). This is the classical low-degree description; it is
+identified with Mathlib's homogeneous-cochain `continuousCohomology 1` in
+`ContH1/Comparison.lean` (see below). Coefficients `μ_n(Ω)` are the type `KummerTheory.Mu n Ω` (the roots of unity with the
 discrete topology and the Galois action); Galois groups `Gal(Ω/K)` carry the Krull topology.
 
 Proved results (namespace `KummerTheory` unless stated):
@@ -33,7 +36,10 @@ Proved results (namespace `KummerTheory` unless stated):
   `restriction_kummer : res (κ_K a) = κ_L a`.
 * **Corestriction and norm** (`ContH1/Corestriction.lean`, `Kummer/Corestriction.lean`): the
   degree-one corestriction `ContH1.cor` along an injective homomorphism with image of finite index
-  (cochain formula with chosen coset representatives); for a finite subextension `L` of a Galois
+  (cochain formula with chosen coset representatives; by `ContH1/CorestrictionIndep.lean`,
+  `ContH1.cor_mk_eq_mk_corFunWith`, any other section `r` of `G → G ⧸ φ(H)` gives the same class,
+  the two cocycles differing by the coboundary of `∏ₓ r(x) • c(hₓ)`
+  (`ContH1.corFunWith_eq_mul`)); for a finite subextension `L` of a Galois
   `Ω/K`, `corestriction L n` and `corestriction_kummer : cor (κ_L a) = κ_K (N_{L/K} a)`, using
   `prod_corRep_eq_norm` (`N_{L/K}(a)` is the product of the conjugates over coset
   representatives). Consequence: `corestriction_restriction : cor ∘ res = (·)^[L:K]`
@@ -49,21 +55,60 @@ Proved results (namespace `KummerTheory` unless stated):
   `IsSepClosed`). The `Ẑ(1)`-valued Kummer map `kummerZHat` has components `kummer i.n`
   (`h1Proj_kummerZHat`).
 * **Profinite completion** (`Kummer/ProfiniteCompletion.lean`): if `char K = 0` and every
-  `Kˣ/(Kˣ)ⁿ` is finite (`FiniteKummerQuotients K`, e.g. `p`-adic fields — this hypothesis is not
-  proved for `p`-adic fields here), `kummerCompletionEquivProfiniteCompletion` identifies `(Kˣ)^∧`
-  with Mathlib's `ProfiniteGrp.ProfiniteCompletion.completion (GrpCat.of Kˣ)`, hence
-  `kummerZHatEquivProfiniteCompletion : H¹_cont(G_K, Ẑ(1)) ≃* profinite completion of Kˣ`.
+  `Kˣ/(Kˣ)ⁿ` is finite (`FiniteKummerQuotients K`), `kummerCompletionEquivProfiniteCompletion`
+  identifies `(Kˣ)^∧` with Mathlib's `ProfiniteGrp.ProfiniteCompletion.completion (GrpCat.of Kˣ)`,
+  hence `kummerZHatEquivProfiniteCompletion : H¹_cont(G_K, Ẑ(1)) ≃* profinite completion of Kˣ`.
+* **Finiteness of `Kˣ/(Kˣ)ⁿ` for `p`-adic fields** (`Kummer/PAdic.lean`):
+  `finiteKummerQuotients_of_isDiscreteValuationRing` — `FiniteKummerQuotients K` for the fraction
+  field `K` (characteristic zero) of a complete DVR (`IsAdicComplete (maximalIdeal R) R`) with
+  finite residue field; instances for every `IsNonarchimedeanLocalField K` of characteristic zero
+  (Mathlib's notion of non-archimedean local field, i.e. finite extensions of `ℚ_p`) and for
+  `ℚ_[p]`, so `kummerZHatEquivProfiniteCompletion` applies unconditionally to them
+  (`padicKummerZHatEquiv` for `ℚ_p`). The proof is self-contained: an `I`-adic Banach fixed-point
+  theorem (`exists_fixedPoint_of_adicContraction`) gives the Hensel-type statement
+  `1 + n²ϖ𝒪 ⊆ (𝒪ˣ)ⁿ` (`exists_pow_eq_one_add`, valid also when `p ∣ n`), and
+  `Kˣ = ϖ^ℤ · 𝒪ˣ` with `𝒪/(n²ϖ)` finite bounds `Kˣ/(Kˣ)ⁿ`.
+* **Comparison with Mathlib's continuous cohomology** (`ContH1/Comparison.lean`): for a
+  topological representation `A : TopRep k G`,
+  `ContH1.continuousCohomologyOneEquiv A : continuousCohomology 1 A ≃+ Additive (ContH1 G
+  (Multiplicative A))`, sending the class of a homogeneous cocycle `σ` to the class of
+  `g ↦ σ(1, g)` (`continuousCohomologyOneEquiv_π`); the `k`-linear, topological part is the
+  isomorphism `continuousCohomologyOneIso` in `TopModuleCat k` onto `Z¹/B¹` with its quotient
+  topology. (Only `≃+`: `ContH1` is a bare multiplicative group, without `k`-module structure.)
+* **Topologies** (`Kummer/Topology.lean`): `H¹_cont(G, μ_n)` and `Kˣ/(Kˣ)ⁿ` are discrete (the
+  latter as a scoped instance in `KummerTheory`, since a topological `K` already induces a
+  quotient topology), `lim` objects carry the inverse-limit topology, and `H¹_cont(G_K, Ẑ(1))`
+  carries the initial topology of the projections to the `H¹_cont(G_K, μ_n)`. It is a Hausdorff,
+  totally disconnected topological group, compact if all `Kˣ/(Kˣ)ⁿ` are finite, and
+  `h1ZHatOneContinuousEquiv`, `kummerLimitContinuousEquiv`, `kummerZHatContinuousEquiv` and
+  `kummerZHatContinuousEquivProfiniteCompletion : H¹_cont(G_K, Ẑ(1)) ≃ₜ* (Kˣ)^∧` (profinite
+  completion, for `char K = 0` with finite `Kˣ/(Kˣ)ⁿ`, e.g. `p`-adic fields) are topological group
+  isomorphisms; the Kummer map has dense image (`denseRange_kummerZHat`).
 * **Kummer classes of values of functions** (`Kummer/Values.lean`): for a `K`-algebra `R`, a point
   `x : R →ₐ[K] L` and `f ∈ Rˣ`, `kummerValue n L Ω x f = κ_L(f(x))`, with naturality in `R`,
   constants, vanishing on `n`-th powers, `restriction_kummerValue` (a `K`-point viewed over `L`)
   and `corestriction_kummerValue` (norm of the value for a point over a finite `L/K`).
+* **Kummer class of a function vs. its value** (`Kummer/Specialization.lean`,
+  `Kummer/Decomposition.lean`): for continuous `ι : D → Gal(Ω/F)`, `π : D → Gal(Ω_K/K)`, a
+  subring `B ⊆ Ω` closed under `n`-th roots and `D`-stable, and a `D`-equivariant `ψ : B → Ω_K`,
+  `map_kummer_eq_map_kummer : ι^* κ_F(f) = π^* κ_K(ψ f)` (coefficients specialised by
+  `specMu`), and for a continuous section `s` of `π` (the section attached to a rational point)
+  `map_section_kummer : s^* ι^* κ_F(f) = κ_K(f(x))`; in terms of points `x : R →ₐ[K] K`,
+  `map_kummer_eq_map_kummerValue` and `map_section_kummer_eq_kummerValue`.
+  Instantiated with an actual decomposition group (`Kummer/Decomposition.lean`): for a valuation
+  subring `A ⊆ Ω` containing the constants `k`, Mathlib's `A.decompositionSubgroup F` maps by the
+  continuous `Decomposition.decompositionMap` (kernel = `inertiaSubgroup`) to
+  `Gal(ResidueField A / k)`, and `Decomposition.decomposition_kummer` /
+  `decomposition_kummerValue` state: the restriction of `κ_F(f)` to the decomposition group is
+  the inflation of `κ_k(f(x))`.
 
-**Not done.** The comparison of `κ(f(x))` with the Kummer class of `f` in the cohomology of the
-function field / étale fundamental group via the section attached to a rational point (needed to
-*identify* the étale theta classes) is not formalised; nor is the identification of `ContH1` with
-Mathlib's homogeneous-cochain `ContinuousCohomology` in degree 1, independence of `ContH1.cor`
-from the choice of coset representatives, topologies on the cohomology groups, or the finiteness
-of `Kˣ/(Kˣ)ⁿ` for `p`-adic fields.
+**Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
+`IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet
+equip a bare `[FiniteDimensional ℚ_[p] L]` with that structure, so the instance applies once that
+structure is provided. (2) The function-vs-value comparison is formulated with decomposition
+groups (equivalently with a section of `π`), not with the étale fundamental group of a scheme,
+which Mathlib does not have in a usable form for curves over non-closed fields. (3) The comparison
+with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`).
 
 No lana-agents repository depends on this one yet: `iut` and its pinned lana-agents
 dependencies do not `require` it.

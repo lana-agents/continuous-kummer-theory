@@ -30,7 +30,8 @@ of natural numbers `n` invertible in `K`, ordered by divisibility (a directed se
 
 These hold for every field `K`: no finiteness of `Kˣ/(Kˣ)ⁿ` is needed. When all `Kˣ/(Kˣ)ⁿ` are
 finite and `char K = 0` (e.g. `K` a `p`-adic field), `(Kˣ)^∧` is the profinite completion of `Kˣ`;
-that comparison is not formalised here.
+that comparison is in `ContinuousKummerTheory.Kummer.ProfiniteCompletion` (with the finiteness for
+`p`-adic fields in `ContinuousKummerTheory.Kummer.PAdic`).
 -/
 
 open CategoryTheory groupCohomology

@@ -22,7 +22,8 @@ Fields*, Chapter I.
 
 Continuity of `cor c` for continuous `c` depends on the topologies at hand; the map on `ContH1`
 (`ContH1.cor`) takes it as a hypothesis, and `ContH1.corFun_mul_right` is the tool to verify it
-for profinite groups.
+for profinite groups. The class does not depend on the choice of representatives
+(`ContinuousKummerTheory.ContH1.CorestrictionIndep`).
 -/
 
 open groupCohomology

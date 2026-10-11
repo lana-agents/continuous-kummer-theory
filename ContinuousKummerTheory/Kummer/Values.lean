@@ -28,9 +28,9 @@ We record the basic naturality properties:
   defined over a finite extension `L/K` inside `Ω`, the corestriction of the class of `f(x)` is the
   class of the norm `N_{L/K}(f(x))`.
 
-The comparison with the Kummer class of `f` itself in the cohomology of the function field (or of
-the étale fundamental group), via the section of the arithmetic fundamental group attached to a
-rational point, is **not** formalised here.
+The comparison with the Kummer class of `f` itself in the cohomology of the function field, via
+a decomposition group or a section attached to a rational point, is in
+`ContinuousKummerTheory.Kummer.Specialization` and `ContinuousKummerTheory.Kummer.Decomposition`.
 -/
 
 namespace KummerTheory

@@ -11,9 +11,10 @@ project:
     separable (or Galois) closure Ω: continuous H¹ as continuous crossed homomorphisms modulo
     principal ones, Hilbert 90 for infinite Galois extensions, the natural isomorphism
     Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n), its inverse-limit form H¹_cont(G_K, Ẑ(1)) ≃ lim Kˣ/(Kˣ)ⁿ
-    (the profinite completion of Kˣ when char K = 0 and all Kˣ/(Kˣ)ⁿ are finite), compatibility
-    with restriction and with corestriction/norm, and Kummer classes of values of functions at
-    points with their basic naturality.
+    (the profinite completion of Kˣ, as topological groups, when char K = 0 and all Kˣ/(Kˣ)ⁿ are
+    finite, which is proved for p-adic fields), compatibility with restriction and with
+    corestriction/norm, comparison with Mathlib's continuousCohomology in degree 1, and Kummer
+    classes of functions versus Kummer classes of their values via decomposition groups.
   authors:
     - "Claude (Anthropic)"
     - "LANA Project"
@@ -49,16 +50,17 @@ classification:
 
 status:
   scope: >-
-    Core targets formalised without sorry: continuous Hilbert 90 for arbitrary Galois extensions;
-    the Kummer isomorphism Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n) for Galois Ω/K containing n-th roots
-    (in particular separable closures with n invertible); restriction for arbitrary L/K and
-    corestriction = norm for finite subextensions (with cor ∘ res = [L:K]); the inverse-limit form
-    H¹_cont(G_K, Ẑ(1)) ≃ lim H¹_cont(G_K, μ_n) ≃ lim Kˣ/(Kˣ)ⁿ for every field K (n invertible in K),
-    identified with Mathlib's profinite completion of Kˣ when char K = 0 and all Kˣ/(Kˣ)ⁿ are finite
-    (assumed as a hypothesis, not proved for p-adic fields); Kummer classes of values f(x) of
-    functions at points with naturality under restriction and corestriction. Not formalised: the
-    comparison of the class of f(x) with the class of f via the section attached to a rational point,
-    and a comparison of ContH1 with Mathlib's ContinuousCohomology in degree 1.
+    All targets formalised without sorry: continuous Hilbert 90 for arbitrary Galois extensions;
+    the Kummer isomorphism Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n); restriction, and corestriction = norm
+    for finite subextensions (cor independent of coset representatives; cor ∘ res = [L:K]); the
+    inverse-limit form H¹_cont(G_K, Ẑ(1)) ≃ lim Kˣ/(Kˣ)ⁿ, a homeomorphism for the natural
+    topologies, identified with Mathlib's profinite completion of Kˣ when char K = 0 and all
+    Kˣ/(Kˣ)ⁿ are finite; finiteness of Kˣ/(Kˣ)ⁿ for fraction fields of complete DVRs with finite
+    residue field of characteristic-zero fraction field, hence for Mathlib's
+    IsNonarchimedeanLocalField of characteristic zero and for ℚ_p; ContH1 ≅ Mathlib's
+    continuousCohomology 1 (as groups; k-linear homeomorphism onto Z¹/B¹); Kummer classes of
+    values of functions, and the comparison ι^* κ_F(f) = π^* κ_K(f(x)) along decomposition groups
+    (and along sections s_x of π).
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]
@@ -118,6 +120,56 @@ status:
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies: []
+    - declaration: "KummerTheory.finiteKummerQuotients_of_isDiscreteValuationRing"
+      file: "ContinuousKummerTheory/Kummer/PAdic.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.exists_pow_eq_one_add"
+      file: "ContinuousKummerTheory/Kummer/PAdic.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.padicKummerZHatEquiv"
+      file: "ContinuousKummerTheory/Kummer/PAdic.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "ContH1.continuousCohomologyOneEquiv"
+      file: "ContinuousKummerTheory/ContH1/Comparison.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "ContH1.cor_mk_eq_mk_corFunWith"
+      file: "ContinuousKummerTheory/ContH1/CorestrictionIndep.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerZHatContinuousEquiv"
+      file: "ContinuousKummerTheory/Kummer/Topology.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerZHatContinuousEquivProfiniteCompletion"
+      file: "ContinuousKummerTheory/Kummer/Topology.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.map_kummer_eq_map_kummer"
+      file: "ContinuousKummerTheory/Kummer/Specialization.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.map_section_kummer_eq_kummerValue"
+      file: "ContinuousKummerTheory/Kummer/Specialization.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.Decomposition.decomposition_kummerValue"
+      file: "ContinuousKummerTheory/Kummer/Decomposition.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:
@@ -135,14 +187,16 @@ automation:
 
 fidelity:
   divergences: >-
-    H¹_cont is modelled as continuous crossed homomorphisms modulo principal ones (ContH1), not via
-    Mathlib's homogeneous-cochain ContinuousCohomology; the two are not compared. Cohomology groups
-    carry no topology. μ_n is the discrete type KummerTheory.Mu n Ω. Ẑ(1) and the completion
-    (Kˣ)^∧ are inverse limits over the n invertible in K ordered by divisibility (in characteristic
-    p > 0 this is the prime-to-p part). Corestriction is defined by the cochain formula for one fixed
-    choice of coset representatives; independence of the choice is not proved. The finiteness of
-    Kˣ/(Kˣ)ⁿ for p-adic fields is a hypothesis (FiniteKummerQuotients), not proved. Points of
-    "functions" are modelled as K-algebra maps R →ₐ[K] L out of a K-algebra R.
+    H¹_cont is modelled as continuous crossed homomorphisms modulo principal ones (ContH1); it is
+    identified with Mathlib's homogeneous-cochain continuousCohomology in degree 1 only as an
+    additive group isomorphism (ContH1 has no k-module structure). μ_n is the discrete type
+    KummerTheory.Mu n Ω. Ẑ(1) and (Kˣ)^∧ are inverse limits over the n invertible in K ordered by
+    divisibility (prime-to-p part in characteristic p > 0). The discrete topology on Kˣ/(Kˣ)ⁿ is
+    a scoped instance. "Finite extension of ℚ_p" is expressed via Mathlib's
+    IsNonarchimedeanLocalField (or a complete DVR with finite residue field); Mathlib does not
+    itself equip a bare finite-dimensional ℚ_p-algebra with that structure. Points of functions
+    are K-algebra maps R →ₐ[K] L; the function-vs-value comparison is formulated with
+    decomposition groups / sections of π : D → G_K, not with étale fundamental groups of schemes.
 
 review:
   status: "agent-reviewed"
