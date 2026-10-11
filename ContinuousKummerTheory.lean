@@ -1,4 +1,7 @@
 import ContinuousKummerTheory.ContH1.Basic
+import ContinuousKummerTheory.ContH1.Corestriction
 import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
+import ContinuousKummerTheory.Kummer.Corestriction
 import ContinuousKummerTheory.Kummer.Equiv
+import ContinuousKummerTheory.Kummer.Restriction
