@@ -5,5 +5,7 @@ import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.Corestriction
 import ContinuousKummerTheory.Kummer.Equiv
 import ContinuousKummerTheory.Kummer.Limit
+import ContinuousKummerTheory.Kummer.ProfiniteCompletion
 import ContinuousKummerTheory.Kummer.Restriction
+import ContinuousKummerTheory.Kummer.Values
 import ContinuousKummerTheory.Kummer.ZHat

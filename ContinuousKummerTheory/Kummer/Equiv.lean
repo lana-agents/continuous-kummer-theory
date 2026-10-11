@@ -108,4 +108,13 @@ noncomputable def kummerEquivSepClosure (n : ℕ) (K Ω : Type*) [Field K] [Fiel
   haveI : IsSepClosed Ω := IsSepClosure.sep_closed K
   kummerEquiv n K Ω
 
+/-- **Kummer theory** for a perfect field and its algebraic closure: if `K` is perfect and `n` is
+invertible in `K`, then `Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(K̄/K), μ_n(K̄))`, where `Gal(K̄/K)` is the absolute
+Galois group `Field.absoluteGaloisGroup K` (definitionally `Gal(AlgebraicClosure K/K)`). -/
+noncomputable def kummerEquivAlgClosure (n : ℕ) (K : Type*) [Field K] [PerfectField K]
+    [NeZero (n : K)] :
+    Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range ≃*
+      ContH1 Gal(AlgebraicClosure K/K) (Mu n (AlgebraicClosure K)) :=
+  kummerEquiv n K (AlgebraicClosure K)
+
 end KummerTheory
