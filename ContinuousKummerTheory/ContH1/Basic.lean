@@ -19,7 +19,7 @@ subgroup of those which are principal (`groupCohomology.IsMulCoboundary₁`).
 
 This is the classical low-degree description of `H¹_cont(G, M)` (Serre, *Galois Cohomology*,
 Chapter I). When `M` is discrete and `G` is profinite it agrees with the colimit of the
-first cohomology groups of the finite quotients of `G`.
+first cohomology groups of the finite quotients of `G` (a classical fact, not formalised here).
 
 ## Main definitions
 
