@@ -18,7 +18,7 @@ representative `r x` of each left coset `x ∈ G ⧸ φ(H)`, the **corestriction
 This sends 1-cocycles to 1-cocycles, and the coboundary of `m` to the coboundary of the
 "norm" `∏ₓ r(x) • m` (`ContH1.corFun_coboundary`). This is the standard cochain formula for the
 corestriction (transfer) in degree one, cf. Neukirch–Schmidt–Wingberg, *Cohomology of Number
-Fields*, I.5.
+Fields*, Chapter I.
 
 Continuity of `cor c` for continuous `c` depends on the topologies at hand; the map on `ContH1`
 (`ContH1.cor`) takes it as a hypothesis, and `ContH1.corFun_mul_right` is the tool to verify it

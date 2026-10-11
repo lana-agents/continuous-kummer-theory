@@ -7,12 +7,13 @@ version: "v0.4"
 project:
   name: "continuous-kummer-theory"
   description: >-
-    Planned Lean 4 / Mathlib formalization of continuous Kummer theory for a field K with a chosen
-    separable/algebraic closure: the natural equivalence Kˣ/(Kˣ)ⁿ ≃ H¹_cont(G_K, μ_n), its
-    inverse-limit / profinite-completion form H¹_cont(G_K, Ẑ(1)) ≃ Kˣ∧, functoriality under finite
-    extensions (restriction, corestriction, norm), and Kummer classes of values of rational/meromorphic
-    functions needed to state the étale theta construction.
-    The repository is currently an empty scaffold: no definitions or theorems yet.
+    Lean 4 / Mathlib formalization of continuous Kummer theory for a field K with a chosen
+    separable (or Galois) closure Ω: continuous H¹ as continuous crossed homomorphisms modulo
+    principal ones, Hilbert 90 for infinite Galois extensions, the natural isomorphism
+    Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n), its inverse-limit form H¹_cont(G_K, Ẑ(1)) ≃ lim Kˣ/(Kˣ)ⁿ
+    (the profinite completion of Kˣ when char K = 0 and all Kˣ/(Kˣ)ⁿ are finite), compatibility
+    with restriction and with corestriction/norm, and Kummer classes of values of functions at
+    points with their basic naturality.
   authors:
     - "Claude (Anthropic)"
     - "LANA Project"
@@ -24,20 +25,20 @@ sources:
   - title: "Galois Cohomology"
     authors: ["Jean-Pierre Serre"]
     type: "book"
-    note: "Planned reference (README, Established sources); nothing is formalised yet."
+    note: "H¹ of profinite groups via continuous cocycles (Chapter I); Kummer theory."
   - title: "Cohomology of Number Fields"
     authors: ["Jürgen Neukirch", "Alexander Schmidt", "Kay Wingberg"]
     type: "book"
-    note: "Planned reference (README, Established sources); nothing is formalised yet."
+    note: "Restriction and corestriction (Chapter I); Kummer theory and Ẑ(1)."
   - title: "Étale Cohomology"
     authors: ["James S. Milne"]
     type: "book"
-    note: "Planned reference (README, Established sources); nothing is formalised yet."
+    note: "General reference for Kummer theory; not followed in detail."
 
 related_formalizations:
   - id: "https://github.com/lana-agents/local-class-field-theory"
     relationship: "other"
-    note: "Planned consumer (also not started); does not require this repository."
+    note: "Planned consumer; does not require this repository."
   - id: "https://github.com/lana-agents/tate-curves-theta"
     relationship: "other"
     note: "Lists this repository as a future dependency; does not require it."
@@ -47,11 +48,76 @@ classification:
   msc2020: ["11S25", "12G05"]
 
 status:
-  scope: "not started (scaffold only)"
+  scope: >-
+    Core targets formalised without sorry: continuous Hilbert 90 for arbitrary Galois extensions;
+    the Kummer isomorphism Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n) for Galois Ω/K containing n-th roots
+    (in particular separable closures with n invertible); restriction for arbitrary L/K and
+    corestriction = norm for finite subextensions (with cor ∘ res = [L:K]); the inverse-limit form
+    H¹_cont(G_K, Ẑ(1)) ≃ lim H¹_cont(G_K, μ_n) ≃ lim Kˣ/(Kˣ)ⁿ for every field K (n invertible in K),
+    identified with Mathlib's profinite completion of Kˣ when char K = 0 and all Kˣ/(Kˣ)ⁿ are finite
+    (assumed as a hypothesis, not proved for p-adic fields); Kummer classes of values f(x) of
+    functions at points with naturality under restriction and corestriction. Not formalised: the
+    comparison of the class of f(x) with the class of f via the section attached to a rational point,
+    and a comparison of ContH1 with Mathlib's ContinuousCohomology in degree 1.
   sorry_count: 0
   sorry_in_definitions: 0
-  axioms: []
-  main_results: []
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+  main_results:
+    - declaration: "KummerTheory.isMulCoboundary₁_of_eventually_eq_one"
+      file: "ContinuousKummerTheory/Hilbert90.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerEquiv"
+      file: "ContinuousKummerTheory/Kummer/Equiv.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerEquivSepClosure"
+      file: "ContinuousKummerTheory/Kummer/Equiv.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.restriction_kummer"
+      file: "ContinuousKummerTheory/Kummer/Restriction.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.corestriction_kummer"
+      file: "ContinuousKummerTheory/Kummer/Corestriction.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.corestriction_restriction"
+      file: "ContinuousKummerTheory/Kummer/CorRes.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.h1ZHatOneEquiv"
+      file: "ContinuousKummerTheory/Kummer/ZHat.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerZHatEquiv"
+      file: "ContinuousKummerTheory/Kummer/ZHat.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerZHatEquivProfiniteCompletion"
+      file: "ContinuousKummerTheory/Kummer/ProfiniteCompletion.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.restriction_kummerValue"
+      file: "ContinuousKummerTheory/Kummer/Values.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.corestriction_kummerValue"
+      file: "ContinuousKummerTheory/Kummer/Values.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:
@@ -68,14 +134,21 @@ automation:
     Claude was the coding agent.
 
 fidelity:
-  divergences: "None yet: nothing has been formalised."
+  divergences: >-
+    H¹_cont is modelled as continuous crossed homomorphisms modulo principal ones (ContH1), not via
+    Mathlib's homogeneous-cochain ContinuousCohomology; the two are not compared. Cohomology groups
+    carry no topology. μ_n is the discrete type KummerTheory.Mu n Ω. Ẑ(1) and the completion
+    (Kˣ)^∧ are inverse limits over the n invertible in K ordered by divisibility (in characteristic
+    p > 0 this is the prime-to-p part). Corestriction is defined by the cochain formula for one fixed
+    choice of coset representatives; independence of the choice is not proved. The finiteness of
+    Kˣ/(Kˣ)ⁿ for p-adic fields is a hypothesis (FiniteKummerQuotients), not proved. Points of
+    "functions" are modelled as K-algebra maps R →ₐ[K] L out of a K-algebra R.
 
 review:
   status: "agent-reviewed"
   reviewers: ["Claude (Anthropic)"]
   notes: >-
     The formalization has only been reviewed by Claude; it has not been reviewed by a human.
-    The repository is an empty scaffold (a placeholder module with no declarations), so there is
-    nothing to check yet.
+    Statements were checked against Serre and Neukirch–Schmidt–Wingberg by the agent only.
 
 acknowledgements: "Built on Mathlib (Apache-2.0)."

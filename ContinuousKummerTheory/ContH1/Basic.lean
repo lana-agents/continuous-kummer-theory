@@ -18,7 +18,7 @@ of `groupCohomology.IsMulCocycle₁`, i.e. `f (g * h) = g • f h * f g`) and `B
 subgroup of those which are principal (`groupCohomology.IsMulCoboundary₁`).
 
 This is the classical low-degree description of `H¹_cont(G, M)` (Serre, *Galois Cohomology*,
-I.2.2 and I.5.1). When `M` is discrete and `G` is profinite it agrees with the colimit of the
+Chapter I). When `M` is discrete and `G` is profinite it agrees with the colimit of the
 first cohomology groups of the finite quotients of `G`.
 
 ## Main definitions
