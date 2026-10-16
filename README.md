@@ -145,6 +145,13 @@ Proved results (namespace `KummerTheory` unless stated):
     restriction gives `Curve.piToGk : Π_U →* G_k = Gal(k̄/k)`, surjective when `k` is
     algebraically closed in `F` (`piToGk_surjective`); `kummerMap_const`: `κ_U(c)` is the
     pull-back of `κ_k(c)`, and `kummerMap_const_eq_one_iff`: `kˣ/(kˣ)ⁿ ↪ H¹(Π_U, μ_n)`.
+  * `Curve/ConstantsZHat.lean`: `Curve.constMapZHat : (kˣ)^∧ → H¹(Π_U, Ẑ(1))` (inverse Kummer
+    isomorphism for `k̄/k`, then pull-back along `Π_U ↠ G_k`), injective when `k` is
+    algebraically closed in `F` (`constMapZHat_injective`), and equal to `κ_U` on `kˣ`
+    (`constMapZHat_toKummerCompletion`).
+  * `Curve/Etale.lean`: transport to `pi1`'s étale fundamental group `etalePi1 R A Ω` along
+    `GaloisData.equivPi1`: actions on `μ_n`, `Ẑ(1)`, `kummerMapEtale`, `kummerMapEtaleZHat`, and
+    `kummerMapEtaleZHat_injective` (Prop. 1.6(i) for `π₁ᵉᵗ`).
 
 **Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
 `IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet

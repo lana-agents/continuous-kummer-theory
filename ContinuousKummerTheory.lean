@@ -4,7 +4,9 @@ import ContinuousKummerTheory.ContH1.Corestriction
 import ContinuousKummerTheory.ContH1.CorestrictionIndep
 import ContinuousKummerTheory.ContH1.Inflation
 import ContinuousKummerTheory.Curve.Constants
+import ContinuousKummerTheory.Curve.ConstantsZHat
 import ContinuousKummerTheory.Curve.Decomposition
+import ContinuousKummerTheory.Curve.Etale
 import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Residue
