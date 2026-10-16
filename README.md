@@ -134,6 +134,12 @@ Proved results (namespace `KummerTheory` unless stated):
     `D_A → Gal(Ω/F) ≅ H → Π_U` (coefficients reduced mod `𝔪_A`) is the inflation of `κ_k(a)`
     along `D_A ↠ Gal(κ(A)/k)`; `decomposition_kummerMap_of_isCentered` for places centered on
     `U`. Uses `Curve.galFEquiv : H ≃ₜ* Gal(Ω/F)`.
+  * Inertia at cusps (`Curve/Residue.lean`; the restriction to `I_x` in [AbsTopIII]
+    Prop. 1.6(iii)): inertia groups of all places `W ⊇ k` fix roots of unity, so classes can be
+    evaluated there (`ContH1.evalTriv`), and `evalTriv_kummerMap(ZHat)`: for `σ ∈ I_W ∩ H`,
+    `κ_U(u)(σ) = κ_F(π)(σ)^m` whenever `u π^{-m}` is a unit at `W` (`m = ord_W(u)` for a
+    uniformiser `π`); units at `W` have trivial Kummer characters on `I_W`
+    (`evalTriv_res_kummer_of_unit`).
 
 **Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
 `IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet

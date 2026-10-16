@@ -6,6 +6,7 @@ import ContinuousKummerTheory.ContH1.Inflation
 import ContinuousKummerTheory.Curve.Decomposition
 import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
+import ContinuousKummerTheory.Curve.Residue
 import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.CorRes

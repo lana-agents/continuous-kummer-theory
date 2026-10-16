@@ -213,6 +213,11 @@ status:
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies: []
+    - declaration: "KummerTheory.Curve.evalTriv_kummerMapZHat"
+      file: "ContinuousKummerTheory/Curve/Residue.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:
