@@ -149,6 +149,12 @@ Proved results (namespace `KummerTheory` unless stated):
     isomorphism for `k̄/k`, then pull-back along `Π_U ↠ G_k`), injective when `k` is
     algebraically closed in `F` (`constMapZHat_injective`), and equal to `κ_U` on `kˣ`
     (`constMapZHat_toKummerCompletion`).
+  * Tame characters (`Curve/TameChar.lean`; [AbsTopIII] Prop. 1.4(i), `I_x ≅ Ẑ(1)`, at each
+    level `n`): `exists_inertia_tameChar`, `evalTriv_kummer_surjective` — for every place
+    `W ⊇ k` of `Ω` (cusps included, via the `t⁻¹`-line) and a uniformiser `π` of `W ∩ F`, the
+    Kummer character `σ ↦ σ(π^{1/n})/π^{1/n}` maps `I_W ∩ H` onto `μ_n`. Proof by counting
+    inertia in a Galois closure (`pi1`'s `ramificationIdx_mul_card`, surjectivity of inertia) and
+    `le_ramificationIdx_of_eq_pow` (`e ≥ n` for `π = αⁿ`).
   * `Curve/Etale.lean`: transport to `pi1`'s étale fundamental group `etalePi1 R A Ω` along
     `GaloisData.equivPi1`: actions on `μ_n`, `Ẑ(1)`, `kummerMapEtale`, `kummerMapEtaleZHat`, and
     `kummerMapEtaleZHat_injective` (Prop. 1.6(i) for `π₁ᵉᵗ`).
@@ -161,13 +167,17 @@ groups (equivalently with a section of `π`), not with the étale fundamental gr
 which Mathlib does not have in a usable form for curves over non-closed fields. (3) The comparison
 with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`). (4) MR5 (Kummer
 theory for curves) is done for affine curves (and orbicurves `[Spec R / A]`) in `pi1`'s Galois model
-of `π₁`; the coefficients are the arithmetic `Ẑ(1) = lim μ_n(Ω)`, not Mochizuki's group-theoretic
-cyclotome `M_X = Hom(H²(Δ_X, Ẑ), Ẑ)` (the synchronisation `I_x ≅ M_X` of [AbsTopIII] Prop. 1.4(ii)
-is not formalised). Not done: Prop. 1.6(ii) (principal divisors via sections of `Π_{J^d}`; needs the
-Jacobian), exactness of Prop. 1.6(iii) in the middle and the image characterisation (needs `H⁰(G_k,
-Δ_X^ab) = 0`, i.e. Jacobian torsion), the identification of cusp inertia with `Ẑ(1)` (the tame
-character as a generator), Prop. 1.8 itself (NF-functions and NF-constants; only its ingredient
-`κ_U(f)|_x = κ(f(x))` is done), and Kummer theory on tempered coverings.
+of `π₁`, transported to `etalePi1` along `equivPi1`; the coefficients are the arithmetic `Ẑ(1) = lim
+μ_n(Ω)`. Cusp inertia is identified with `μ_n` at every level via the tame character
+(`Curve/TameChar.lean`). Not done: Mochizuki's group-theoretic cyclotome `M_X = Hom(H²(Δ_X, Ẑ), Ẑ)`
+and the synchronisation `I_x ≅ M_X` of [AbsTopIII] Prop. 1.4(ii): this needs the geometric
+fundamental group `Δ_X` of the *proper* curve (the Galois model here and in `pi1` is affine-only),
+continuous `H²` of profinite groups with the transgression of the cuspidally central extension, and
+`H²(Δ_X, Ẑ) ≅ Ẑ` (the surface-group/Poincaré-duality input that `pi1` lists as open for general `(g,
+r)` and `r = 0`). Also not done: Prop. 1.6(ii) (principal divisors via sections of `Π_{J^d}`; needs
+the Jacobian), exactness of Prop. 1.6(iii) in the middle and the image characterisation (needs
+`H⁰(G_k, Δ_X^ab) = 0`, i.e. Jacobian torsion), Prop. 1.8 itself (NF-functions and NF-constants; only
+its ingredient `κ_U(f)|_x = κ(f(x))` is done), and Kummer theory on tempered coverings.
 
 No lana-agents repository depends on this one yet: `iut` and its pinned lana-agents
 dependencies do not `require` it.

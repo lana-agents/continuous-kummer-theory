@@ -233,6 +233,11 @@ status:
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies: []
+    - declaration: "KummerTheory.Curve.exists_inertia_tameChar"
+      file: "ContinuousKummerTheory/Curve/TameChar.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
     - declaration: "KummerTheory.Curve.kummerMapEtaleZHat_injective"
       file: "ContinuousKummerTheory/Curve/Etale.lean"
       sorry_count: 0

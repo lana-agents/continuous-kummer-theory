@@ -10,6 +10,7 @@ import ContinuousKummerTheory.Curve.Etale
 import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Residue
+import ContinuousKummerTheory.Curve.TameChar
 import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.CorRes
