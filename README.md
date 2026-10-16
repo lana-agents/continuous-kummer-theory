@@ -140,6 +140,11 @@ Proved results (namespace `KummerTheory` unless stated):
     `κ_U(u)(σ) = κ_F(π)(σ)^m` whenever `u π^{-m}` is a unit at `W` (`m = ord_W(u)` for a
     uniformiser `π`); units at `W` have trivial Kummer characters on `I_W`
     (`evalTriv_res_kummer_of_unit`).
+  * Constants (`Curve/Constants.lean`; the first map of [AbsTopIII] Prop. 1.6(iii)): inertia of
+    places `W ⊇ k` fixes the algebraic closure `k̄` of `k` in `Ω` (`inertia_fix_algebraic`), so
+    restriction gives `Curve.piToGk : Π_U →* G_k = Gal(k̄/k)`, surjective when `k` is
+    algebraically closed in `F` (`piToGk_surjective`); `kummerMap_const`: `κ_U(c)` is the
+    pull-back of `κ_k(c)`, and `kummerMap_const_eq_one_iff`: `kˣ/(kˣ)ⁿ ↪ H¹(Π_U, μ_n)`.
 
 **Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
 `IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet
@@ -147,13 +152,15 @@ equip a bare `[FiniteDimensional ℚ_[p] L]` with that structure, so the instanc
 structure is provided. (2) The function-vs-value comparison is formulated with decomposition
 groups (equivalently with a section of `π`), not with the étale fundamental group of a scheme,
 which Mathlib does not have in a usable form for curves over non-closed fields. (3) The comparison
-with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`). (4) MR5 (Kummer theory for curves) is done for affine curves (and orbicurves `[Spec R / A]`)
-in `pi1`'s Galois model of `π₁`; the coefficients are the arithmetic `Ẑ(1) = lim μ_n(Ω)`, not
-Mochizuki's group-theoretic cyclotome `M_X = Hom(H²(Δ_X, Ẑ), Ẑ)` (the synchronisation
-`I_x ≅ M_X` of [AbsTopIII] Prop. 1.4(ii) is not formalised). Not done: the exact sequence and
-the characterisation of principal divisors of [AbsTopIII] Prop. 1.6(ii), (iii) (they need the
-Jacobian, `Π_{J^d}` and `H⁰(G_k, Δ_X^ab) = 0`), Prop. 1.8 (NF-functions and NF-constants), and
-Kummer theory on tempered coverings.
+with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`). (4) MR5 (Kummer
+theory for curves) is done for affine curves (and orbicurves `[Spec R / A]`) in `pi1`'s Galois model
+of `π₁`; the coefficients are the arithmetic `Ẑ(1) = lim μ_n(Ω)`, not Mochizuki's group-theoretic
+cyclotome `M_X = Hom(H²(Δ_X, Ẑ), Ẑ)` (the synchronisation `I_x ≅ M_X` of [AbsTopIII] Prop. 1.4(ii)
+is not formalised). Not done: Prop. 1.6(ii) (principal divisors via sections of `Π_{J^d}`; needs the
+Jacobian), exactness of Prop. 1.6(iii) in the middle and the image characterisation (needs `H⁰(G_k,
+Δ_X^ab) = 0`, i.e. Jacobian torsion), the identification of cusp inertia with `Ẑ(1)` (the tame
+character as a generator), Prop. 1.8 itself (NF-functions and NF-constants; only its ingredient
+`κ_U(f)|_x = κ(f(x))` is done), and Kummer theory on tempered coverings.
 
 No lana-agents repository depends on this one yet: `iut` and its pinned lana-agents
 dependencies do not `require` it.
