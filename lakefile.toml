@@ -14,5 +14,10 @@ name = "mathlib"
 scope = "leanprover-community"
 rev = "v4.32.0"
 
+[[require]]
+name = "pi1"
+git = "https://github.com/lana-agents/pi1"
+rev = "8e0239afa0206c22a210d0fa9a982c574826f879"
+
 [[lean_lib]]
 name = "ContinuousKummerTheory"

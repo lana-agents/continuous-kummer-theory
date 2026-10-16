@@ -102,13 +102,46 @@ Proved results (namespace `KummerTheory` unless stated):
   `decomposition_kummerValue` state: the restriction of `κ_F(f)` to the decomposition group is
   the inflation of `κ_k(f(x))`.
 
+* **Inflation** (`ContH1/Inflation.lean`): for `N ⊴ G` and `G` acting through `G ⧸ N`,
+  `ContH1.inflation : H¹_cont(G ⧸ N, M) → H¹_cont(G, M)` is injective (`inflation_injective`),
+  and cocycles trivial on `N` descend (`descend`, `descendClass`, `descendHom`).
+* **Kummer theory for curves** (`Curve/FunctionField.lean`, `Curve/Kummer.lean`; roadmap item
+  MR5 of `iut`, [AbsTopIII] = Mochizuki, *Topics in Absolute Anabelian Geometry III*, §1).
+  `IsKummerFaithfulGm K` is [AbsTopIII] Def. 1.5(a) for `A = 𝔾_m`: `⋂_N (Kˣ)^N = {1}`;
+  `kummerZHat_injective_iff` is (a) ⇔ (b) for `𝔾_m` in characteristic `0`.
+  * `isKummerFaithfulGm_of_trdeg_eq_one`, `isKummerFaithfulGm_of_finiteDimensional`
+    ([AbsTopIII] Rem. 1.5.4(ii) for `𝔾_m`, transcendence degree one): a function field of one
+    variable over a field `k` of characteristic `0` that is Kummer-faithful for `𝔾_m` and
+    algebraically closed in it is Kummer-faithful for `𝔾_m`. Proof: a transcendental `f` is a
+    transcendence basis, the integral closure of `k[f]` is Dedekind and `f` is a non-unit in it,
+    and Krull's intersection theorem rules out `f = gₙⁿ` for all `n`.
+  * The curve: `pi1`'s Galois model (`Pi1.Orbifold.GaloisData`, SGA 1 V.8.2): `Π_U = H ⧸ ⟨⟨S⟩⟩`
+    (`Curve.Pi D`, the group of `GaloisPi1.pi1 D.H D.S`), which `pi1` identifies with the étale
+    fundamental group `etalePi1 R A Ω` of `[Spec R / A]` (`GaloisData.equivPi1`; `Spec R` itself
+    when `A` is trivial); `F = Ω^H` (`Curve.F D`) and `Γ(U, 𝒪^×)` = `Curve.units D` (units of
+    `F` integral over `k[t]` with inverse integral over `k[t]`). The inertia groups at places
+    centered on `U` fix all roots of `U`-units (`Curve.eq_of_mem_S`: residue characteristic `0`),
+    so `⟨⟨S⟩⟩` acts trivially on `μ_n` and `Ẑ(1)` and Kummer classes of `U`-units descend.
+  * `Curve.kummerMap D n : Γ(U, 𝒪^×) →* H¹_cont(Π_U, μ_n)` and
+    `Curve.kummerMapZHat D : Γ(U, 𝒪^×) →* H¹_cont(Π_U, Ẑ(1))`, characterised by their inflations
+    (`inflation_kummerMap(ZHat)`: restriction of the Kummer class in `F` along
+    `H ≅ Gal(Ω/F)`, `Curve.toGalF`), with `map_proj_kummerMapZHat` (μ_n-components).
+  * `Curve.kummerMapZHat_injective`: **[AbsTopIII] Prop. 1.6(i)** — `κ_U` is injective if `k` is
+    Kummer-faithful for `𝔾_m` and algebraically closed in `F`.
+
 **Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
 `IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet
 equip a bare `[FiniteDimensional ℚ_[p] L]` with that structure, so the instance applies once that
 structure is provided. (2) The function-vs-value comparison is formulated with decomposition
 groups (equivalently with a section of `π`), not with the étale fundamental group of a scheme,
 which Mathlib does not have in a usable form for curves over non-closed fields. (3) The comparison
-with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`).
+with `continuousCohomology` is in degree 1 only (degree 0 is Mathlib's `zeroIso`). (4) MR5 (Kummer theory for curves) is done for affine curves (and orbicurves `[Spec R / A]`)
+in `pi1`'s Galois model of `π₁`; the coefficients are the arithmetic `Ẑ(1) = lim μ_n(Ω)`, not
+Mochizuki's group-theoretic cyclotome `M_X = Hom(H²(Δ_X, Ẑ), Ẑ)` (the synchronisation
+`I_x ≅ M_X` of [AbsTopIII] Prop. 1.4(ii) is not formalised). Not done: the exact sequence and
+the characterisation of principal divisors of [AbsTopIII] Prop. 1.6(ii), (iii) (they need the
+Jacobian, `Π_{J^d}` and `H⁰(G_k, Δ_X^ab) = 0`), Prop. 1.8 (NF-functions and NF-constants), and
+Kummer theory on tempered coverings.
 
 No lana-agents repository depends on this one yet: `iut` and its pinned lana-agents
 dependencies do not `require` it.
@@ -148,7 +181,10 @@ it. The link between the theta function and its Kummer class is not done in
 ## Layout
 
 Lean 4 project pinned to `leanprover/lean4:v4.32.0` with Mathlib at `v4.32.0`
-(commit `81a5d25`), its only direct dependency.
+(commit `81a5d25`) and [lana-agents/pi1](https://github.com/lana-agents/pi1) (pinned commit
+`8e0239a`, same Mathlib) as direct dependencies. `pi1` provides the étale fundamental group and
+its Galois model, used by `Curve/`; it depends only on Mathlib, so the curve part lives here (the
+home of Kummer theory) rather than in `pi1`, a fork meant for upstreaming to Mathlib.
 Library sources live under `ContinuousKummerTheory/`, and every file must be imported from
 the root module `ContinuousKummerTheory.lean`.
 

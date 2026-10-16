@@ -13,8 +13,10 @@ project:
     Kˣ/(Kˣ)ⁿ ≃ H¹_cont(Gal(Ω/K), μ_n), its inverse-limit form H¹_cont(G_K, Ẑ(1)) ≃ lim Kˣ/(Kˣ)ⁿ
     (the profinite completion of Kˣ, as topological groups, when char K = 0 and all Kˣ/(Kˣ)ⁿ are
     finite, which is proved for p-adic fields), compatibility with restriction and with
-    corestriction/norm, comparison with Mathlib's continuousCohomology in degree 1, and Kummer
-    classes of functions versus Kummer classes of their values via decomposition groups.
+    corestriction/norm, comparison with Mathlib's continuousCohomology in degree 1, Kummer
+    classes of functions versus Kummer classes of their values via decomposition groups, and
+    Kummer theory for affine curves (Mochizuki, AbsTopIII Prop. 1.6(i)): the Kummer map
+    Γ(U, O^×) → H¹(Π_U, Ẑ(1)) is injective over fields that are Kummer-faithful for G_m.
   authors:
     - "Claude (Anthropic)"
     - "LANA Project"
@@ -36,7 +38,15 @@ sources:
     type: "book"
     note: "General reference for Kummer theory; not followed in detail."
 
+  - title: "Topics in Absolute Anabelian Geometry III: Global Reconstruction Algorithms"
+    authors: ["Shinichi Mochizuki"]
+    type: "article"
+    note: "§1: Definition 1.5 (Kummer-faithful), Remark 1.5.4(ii), Proposition 1.6(i)."
+
 related_formalizations:
+  - id: "https://github.com/lana-agents/pi1"
+    relationship: "builds-on"
+    note: "Lake dependency (pinned 8e0239a): Galois model of the étale fundamental group of affine (orbi)curves, inertia groups, coordinate rings."
   - id: "https://github.com/lana-agents/local-class-field-theory"
     relationship: "other"
     note: "Planned consumer; does not require this repository."
@@ -60,7 +70,10 @@ status:
     IsNonarchimedeanLocalField of characteristic zero and for ℚ_p; ContH1 ≅ Mathlib's
     continuousCohomology 1 (as groups; k-linear homeomorphism onto Z¹/B¹); Kummer classes of
     values of functions, and the comparison ι^* κ_F(f) = π^* κ_K(f(x)) along decomposition groups
-    (and along sections s_x of π).
+    (and along sections s_x of π); inflation in degree one; Kummer-faithfulness for G_m of
+    function fields of curves (AbsTopIII Rem. 1.5.4(ii) for G_m) and injectivity of the Kummer
+    map of an affine curve U over a G_m-Kummer-faithful field, in pi1's Galois model of π₁(U)
+    (AbsTopIII Prop. 1.6(i)).
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]
@@ -170,6 +183,31 @@ status:
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies: []
+    - declaration: "ContH1.inflation_injective"
+      file: "ContinuousKummerTheory/ContH1/Inflation.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.isKummerFaithfulGm_of_trdeg_eq_one"
+      file: "ContinuousKummerTheory/Curve/FunctionField.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.isKummerFaithfulGm_of_finiteDimensional"
+      file: "ContinuousKummerTheory/Curve/FunctionField.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.kummerZHat_injective_iff"
+      file: "ContinuousKummerTheory/Curve/Kummer.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
+    - declaration: "KummerTheory.Curve.kummerMapZHat_injective"
+      file: "ContinuousKummerTheory/Curve/Kummer.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:
@@ -197,6 +235,10 @@ fidelity:
     itself equip a bare finite-dimensional ℚ_p-algebra with that structure. Points of functions
     are K-algebra maps R →ₐ[K] L; the function-vs-value comparison is formulated with
     decomposition groups / sections of π : D → G_K, not with étale fundamental groups of schemes.
+    Kummer theory for curves: Π_U is pi1's Galois model H ⧸ ⟨⟨inertia⟩⟩ (identified by pi1 with
+    the étale π₁ of [Spec R / A]); coefficients are the arithmetic Ẑ(1) = lim μ_n(Ω), not the
+    group-theoretic cyclotome M_X of AbsTopIII Prop. 1.4(ii); Kummer-faithfulness is only the
+    G_m-part over k itself (Def. 1.5(a) for A = G_m, k_H = k).
 
 review:
   status: "agent-reviewed"
