@@ -208,6 +208,11 @@ status:
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       literature_dependencies: []
+    - declaration: "KummerTheory.Curve.decomposition_kummerMap"
+      file: "ContinuousKummerTheory/Curve/Decomposition.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      literature_dependencies: []
 
 automation:
   methods:

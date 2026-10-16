@@ -128,6 +128,12 @@ Proved results (namespace `KummerTheory` unless stated):
     `H ≅ Gal(Ω/F)`, `Curve.toGalF`), with `map_proj_kummerMapZHat` (μ_n-components).
   * `Curve.kummerMapZHat_injective`: **[AbsTopIII] Prop. 1.6(i)** — `κ_U` is injective if `k` is
     Kummer-faithful for `𝔾_m` and algebraically closed in `F`.
+  * `Curve.decomposition_kummerMap` (`Curve/Decomposition.lean`; the identity `κ_U(f)|_x =
+    κ(f(x))` used in [AbsTopIII] Prop. 1.8): for a place `A ⊆ Ω` containing `k` and a unit `u`
+    of `U` at `A` with residue `a ∈ kˣ`, the pull-back of `κ_U(u)` along
+    `D_A → Gal(Ω/F) ≅ H → Π_U` (coefficients reduced mod `𝔪_A`) is the inflation of `κ_k(a)`
+    along `D_A ↠ Gal(κ(A)/k)`; `decomposition_kummerMap_of_isCentered` for places centered on
+    `U`. Uses `Curve.galFEquiv : H ≃ₜ* Gal(Ω/F)`.
 
 **Scope notes.** (1) "Finite extension of `ℚ_p`" is expressed through Mathlib's
 `IsNonarchimedeanLocalField` (or a complete DVR with finite residue field); Mathlib does not yet

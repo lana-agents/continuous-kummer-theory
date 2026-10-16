@@ -3,6 +3,7 @@ import ContinuousKummerTheory.ContH1.Comparison
 import ContinuousKummerTheory.ContH1.Corestriction
 import ContinuousKummerTheory.ContH1.CorestrictionIndep
 import ContinuousKummerTheory.ContH1.Inflation
+import ContinuousKummerTheory.Curve.Decomposition
 import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Hilbert90
