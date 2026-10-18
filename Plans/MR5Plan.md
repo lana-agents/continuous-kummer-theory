@@ -100,7 +100,7 @@ continuous-kummer-theory`). Hence:
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`, via Kummer theory over `F k̄` (Galois model over `k̄`), `G_k`-invariance and level compatibility of the Kummer divisor classes, J1, descent along `Π_U ↠ G_k` | cj `Kummer/ConstantExtension.lean`, `Kummer/MiddleExact.lean` | 1.5–3k | **done** |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj `Kummer/Image.lean` | 400–800 | **done** |
 | J4 | Prop 1.6(ii): `t_D` and principal divisors (needs `J^d` and `π₁(J^d)`, or the [Cusp] Prop 2.2 route through `Π^{c-ab}`) | cj | 3–6k | blocked (no `J^d` scheme) |
-| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | partial: `P_U` (J3), value surjectivity (`Kummer/Values.lean`); open: Ẑ-level `η|_x`, NF bookkeeping |
+| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | mostly done (fifth session, §5): Ẑ-level `η|_x`, 1.8(i)/(ii) at rational points, 1.8(i) "only if" over finite `k_x` (also NF), Def 1.7; open: 1.8(i) "if" and 1.8(ii) at non-rational NF-points |
 | S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + iut | — | blocked |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
@@ -273,3 +273,47 @@ Next steps, in order of value:
   is injective on `H¹`). The inertia-subgroup lemmas of `Curve/InertiaZHat.lean` moved to the
   namespace `KummerTheory.PlaceInertia` (cj `Cusp/LineCuspInertia.lean` defines
   `GaloisPi1.inertiaSubgroup` etc.; the old names would clash at the next cj pin bump).
+* 2026-10-18 (fifth session), cj main c2961a2: `Kummer/PointRestriction.lean` (`restrictPt`: Ẑ-level
+  `η|_x` along `ratSectionMap`, `κ_U(u)|_x = κ(u(x))`, `c|_x = c`), `Kummer/RationalCharacterization.lean`
+  (Prop 1.8(i) "if" at rational points `exists_eq_kummerMapZHat_of_restrictPt`, "only if" given the
+  point `restrictPt_kummerMapZHat_eq_one_iff`, Prop 1.8(ii) at a rational point
+  `eq_toKummerCompletion_of_restrictPt_eq`).
+* 2026-10-18 (fifth session), cj main 69380d0 (CKT pin dabc152 → 11be7fe):
+  `Kummer/ClosedPoints.lean`: `exists_place_isPrimitiveRoot(_notMem)` (zeros of `Φ_n(f)`),
+  `exists_place_natCast_notMem` (values `2, 3, …`), infinitely many such places, so some avoid the
+  cusps; `isAlgebraic_residue_of_trdeg_le_one` (residue fields of places of `Ω` are algebraic over
+  any `k`), `placeResidueMap`, `finiteDimensional_pointField` (`[k_x : k] < ∞` via weil-curves'
+  `κ(P)`), `exists_point_of_place`, **`exists_restrict_kummerMap_of_transcendental`** (Prop 1.8(i)
+  "only if" over finite `k_x`, `k` torally KF: `N ≥ 1`, `x₁` with `f(x₁)` a primitive `N`-th root of
+  unity, `x₂` with `f(x₂) = m + 2`).
+  `Kummer/NF.lean` (Def 1.7): `NFModel D` (subfield `F_NF ⊆ F k̄` with `k̄_NF ⊆ F_NF`,
+  `F_NF ∩ k̄ = k̄_NF`, `F_NF · k̄ = F k̄`, cusps (`t ∉ W`) NF), `IsNFPoint` (restriction to `F_NF`
+  nontrivial), `IsNFFunction`, `IsNFConstant`; `exists_pow_eq_one_valuation_sub_lt_one` (lifting
+  roots of unity), **`NFModel.exists_restrict_kummerMap_of_isNF`** (Prop 1.8(i) "only if" for
+  NF-curves, the points being NF-points).
+
+## 7. Hand-off (2026-10-18, end of the fifth MR5 session)
+
+Merged: CKT 14e9196 (R3 `inertiaZHatEquiv`), 11be7fe (closed points over finite `k_x`);
+cj c2961a2, 69380d0. No WIP branches left (`mr5d`, `mr5d-r3` merged). No `sorry`/axioms; named
+theorem hypotheses unchanged (`IsKummerFaithfulJac D` in J2/J3; NF-ness as the `NFModel`
+definition of Def 1.7).
+
+Conventions: `η|_x = 0` at a closed point is stated as "all level-`n` restrictions along
+`decompToPi : D_A → Π_U` vanish" (equivalent to `s_x^*η = 0` in `H¹(G_{k_x}, Ẑ(1))`: `D_A → Π_U`
+factors through `D_A ↠ Gal(κ(A)/k_x)`, inflation is injective, `H¹(-, Ẑ(1)) = lim H¹(-, μ_n)`);
+for rational points the Ẑ-level `restrictPt` exists.
+
+Next steps:
+1. Prop 1.8(i) "if" over finite `k_x` (cj): from `mem_PU_iff`, `η = κ_U(v)·c`; `η^N|x₁ = 0` gives
+   `v(x₁)^N · c^N = 1` in `(k_xˣ)^∧`; need `c^N ∈ kˣ` (norm/corestriction from `k_x` to `k`, or
+   Galois invariance + KF of `k_x`), then `w = v^N · const`. NF version additionally needs: a function
+   whose divisor is supported on NF points is NF up to a constant (descent along `k̄ / k̄_NF`).
+2. Prop 1.8(ii) at closed NF-points (same norm issue for `c`); NF-ness of `f(x)` is immediate from
+   `IsNFPoint` + `IsNFFunction` (`f(x) ∈ k̄_NF`).
+3. Ẑ-level restriction to `D_A` (generic `h1ToLimit_injective` for any profinite group; the proof in
+   `Kummer/ZHat.lean` never uses that the group is Galois).
+4. J4 (Prop 1.6(ii)) and S1 (Prop 1.4(ii)) stay blocked; J1 (`IsKummerFaithfulJac`) becomes a
+   theorem once cj has `J = Pic⁰` as a scheme (Jacobian agent).
+5. cj `Cusp/LineCuspInertia.lean` duplicates the inertia-subgroup lemmas now in CKT
+   `KummerTheory.PlaceInertia` (CKT `Curve/InertiaZHat.lean`); can be deduplicated.
