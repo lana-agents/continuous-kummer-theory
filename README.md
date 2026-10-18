@@ -155,6 +155,16 @@ Proved results (namespace `KummerTheory` unless stated):
     Kummer character `σ ↦ σ(π^{1/n})/π^{1/n}` maps `I_W ∩ H` onto `μ_n`. Proof by counting
     inertia in a Galois closure (`pi1`'s `ramificationIdx_mul_card`, surjectivity of inertia) and
     `le_ramificationIdx_of_eq_pow` (`e ≥ n` for `π = αⁿ`).
+  * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
+    equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
+    `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful
+    for `𝔾_m` (`isKummerFaithfulGm_of_isDiscreteValuationRing`; Rem. 1.5.3(i) argument with
+    `x = h^(q^a) ≡ 1 mod 𝔪^(a+1)`), fraction fields of Dedekind domains with a nonzero maximal ideal
+    of finite residue field are torally Kummer-faithful in characteristic `0`
+    (`isTorallyKummerFaithful_of_isDedekindDomain`), hence `ℚ`, number fields
+    (`NumberField.isTorallyKummerFaithful`), non-archimedean local fields of characteristic `0` and
+    `ℚ_p` (Rem. 1.5.4(i) for tori); Prop. 1.6(i) for torally Kummer-faithful `k`
+    (`kummerMapZHat_injective_of_isTorallyKummerFaithful`, `…_of_numberField`).
   * `Curve/Etale.lean`: transport to `pi1`'s étale fundamental group `etalePi1 R A Ω` along
     `GaloisData.equivPi1`: actions on `μ_n`, `Ẑ(1)`, `kummerMapEtale`, `kummerMapEtaleZHat`, and
     `kummerMapEtaleZHat_injective` (Prop. 1.6(i) for `π₁ᵉᵗ`).
@@ -179,8 +189,8 @@ the Jacobian), exactness of Prop. 1.6(iii) in the middle and the image character
 `H⁰(G_k, Δ_X^ab) = 0`, i.e. Jacobian torsion), Prop. 1.8 itself (NF-functions and NF-constants; only
 its ingredient `κ_U(f)|_x = κ(f(x))` is done), and Kummer theory on tempered coverings.
 
-No lana-agents repository depends on this one yet: `iut` and its pinned lana-agents
-dependencies do not `require` it.
+`curves-jacobian` and `tempered-fundamental-groups` `require` this repository; `iut` does not
+(yet). The plan for the rest of MR5 is `Plans/MR5Plan.md`.
 
 ## Goals
 

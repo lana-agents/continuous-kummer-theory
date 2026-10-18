@@ -17,6 +17,7 @@ import ContinuousKummerTheory.Kummer.CorRes
 import ContinuousKummerTheory.Kummer.Corestriction
 import ContinuousKummerTheory.Kummer.Decomposition
 import ContinuousKummerTheory.Kummer.Equiv
+import ContinuousKummerTheory.Kummer.Faithful
 import ContinuousKummerTheory.Kummer.Limit
 import ContinuousKummerTheory.Kummer.PAdic
 import ContinuousKummerTheory.Kummer.ProfiniteCompletion
