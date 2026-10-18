@@ -185,7 +185,8 @@ Proved results (namespace `KummerTheory` unless stated):
     `Curve/RationalPoint.lean` (`ratSectionMap`, `ratSectionMap_kummerMap`,
     `forall_ratSectionMap_kummerMap_eq_one_iff`); `Curve/RationalSection.lean` shows that
     `ratSectionMap` is a section of `piToGk : Π_U ↠ G_k` (`piToGk_ratSectionMap`, along
-    `kbarEquiv : k̄ ≃ₐ[k] κ(A)`).
+    `kbarEquiv : k̄ ≃ₐ[k] κ(A)`), and that classes inflated from `G_k` restrict along `s_x` to
+    their restriction to `Gal(κ(A)/k)` (`ratSectionMap_map_piToGk`).
   * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
     equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
     `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful

@@ -154,7 +154,9 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
 * 2026-10-18 (second session): `Curve/RationalSection.lean`: `kbarEquiv : k̄ ≃ₐ[k] κ(A)`
   (reduction of the constants), `kbarResidue_piToGk_decompToPi`, **`piToGk_ratSectionMap`**
   (`s_x` is a section of `Π_U ↠ G_k` under `G_k ≅ Gal(κ(A)/k)`: [AbsTopIII] Prop 1.6(ii),
-  l.1993, "the associated section"), `ratSectionMap_injective`.
+  l.1993, "the associated section"), `ratSectionMap_injective`; `piToGk_ratSectionMap_eq_galRestrict`
+  and `ratSectionMap_map_piToGk` (`η|_x` for `η ∈ H¹(G_k, μ_n)` inflated to `Π_U` is the
+  restriction of `η` along `Gal(κ(A)/k) → G_k`: the `H¹(G_k, M_X)`-part of Prop 1.8(ii)).
 * 2026-10-18 (second session): curves-jacobian's continuous-kummer-theory pin bumped
   e3fc64c → f85f126 (cj main c692f59).
 
@@ -189,7 +191,7 @@ Next steps, in order of value:
    or derive it from a Jacobian scheme (blocked); (c) inflation–restriction for `Ẑ(1)`
    coefficients along `Π_U ↠ Π_X` (levelwise exists in LCFT `Cohomology/FiveTerm`).
 2. **N1** (Prop 1.8, cj) after J3: (ii) is now only bookkeeping on top of
-   `ratSectionMap_kummerMap` and `piToGk_ratSectionMap` (constants: `kummerMap_const`); (i)
+   `ratSectionMap_kummerMap` and `ratSectionMap_map_piToGk` (constants: `kummerMap_const`); (i)
    needs `P_U` (J3) and surjectivity of nonconstant functions on `k̄_NF`-points.
 3. Optional packaging of R3: `I_W ∩ H ≃ Ẑ(1)` as a `MulEquiv` (needs `I_W ∩ H` as a closed
    subgroup and a compactness argument for surjectivity onto the inverse limit).

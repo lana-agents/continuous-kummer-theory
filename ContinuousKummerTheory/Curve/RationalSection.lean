@@ -107,6 +107,19 @@ theorem kbarResidue_piToGk_decompToPi [IsAlgClosed Ω] (σ : A.decompositionSubg
   change algebraMap (kbar k Ω) Ω (hToGk D (ofGalF D σ.1) y) = σ.1 (y : Ω)
   rw [algebraMap_hToGk_apply, ofGalF_apply]
 
+/-- The `k̄`-algebra structure on `κ(A)` given by the reduction of the constants. -/
+@[implicit_reducible]
+noncomputable def kbarAlgebra : Algebra (kbar k Ω) (ResidueField A) :=
+  (kbarResidue A hk).toAlgebra
+
+omit [IsGalois (K₀ k t) Ω] [CharZero k] in
+include hkres in
+theorem isScalarTower_kbarAlgebra :
+    letI := kbarAlgebra A hk
+    IsScalarTower k (kbar k Ω) (ResidueField A) := by
+  letI := kbarAlgebra A hk
+  exact IsScalarTower.of_algebraMap_eq fun c => (kbarResidue_algebraMap A hk hkres c).symm
+
 variable [IsAlgClosed Ω] [Algebra.IsIntegral k (ResidueField A)]
   (hrat : ∀ (a : F D) (ha : (a : Ω) ∈ A),
     ∃ c : k, residue A ⟨_, ha⟩ = algebraMap k (ResidueField A) c)
@@ -135,6 +148,62 @@ theorem ratSectionMap_injective :
   obtain ⟨x, rfl⟩ := (kbarEquiv A hk hkres).surjective y
   have := congrArg (fun e : kbar k Ω ≃ₐ[k] kbar k Ω => kbarEquiv A hk hkres (e x)) h'
   simpa using this
+
+/-- **`piToGk ∘ s_x` is the restriction `Gal(κ(A)/k) → Gal(k̄/k)`** along `k̄ → κ(A)`. -/
+theorem piToGk_ratSectionMap_eq_galRestrict (g : ResidueField A ≃ₐ[k] ResidueField A) :
+    letI := kbarAlgebra A hk
+    haveI := isScalarTower_kbarAlgebra A hk hkres
+    piToGk D (ratSectionMap D A hk hkres hrat hHL ht g) =
+      galRestrict k k (kbar k Ω) (ResidueField A) g := by
+  letI := kbarAlgebra A hk
+  haveI := isScalarTower_kbarAlgebra A hk hkres
+  refine AlgEquiv.ext fun y => (kbarResidue A hk).injective ?_
+  have h1 := algebraMap_galRestrict_apply (K := k) (L := k) g y
+  change kbarResidue A hk _ = kbarResidue A hk _
+  change kbarResidue A hk _ = g (kbarResidue A hk y) at h1
+  rw [h1]
+  have h2 := congrArg (fun e : kbar k Ω ≃ₐ[k] kbar k Ω => kbarEquiv A hk hkres (e y))
+    (piToGk_ratSectionMap D A hk hkres hrat hHL ht g)
+  simpa [kbarEquiv_apply] using h2
+
+variable (n : ℕ) [NeZero n]
+
+omit [IsGalois (K₀ k t) Ω] [CharZero k] [Algebra k (ResidueField A)] [IsAlgClosed Ω]
+  [Algebra.IsIntegral k (ResidueField A)] in
+/-- Reduction of roots of unity of `k̄`. -/
+theorem reduceMu_muMap (ζ : Mu n (kbar k Ω)) :
+    letI := kbarAlgebra A hk
+    Decomposition.reduceMu A n (NeZero.ne n) (muMap n (kbar k Ω) Ω ζ) =
+      muMap n (kbar k Ω) (ResidueField A) ζ := by
+  letI := kbarAlgebra A hk
+  apply Mu.ext
+  apply Units.ext
+  rfl
+
+/-- **Classes coming from `G_k` restrict to themselves along `s_x`** ([AbsTopIII] Prop. 1.8(ii),
+`η|_x` for `η ∈ H¹(G_k, μ_n)`): the pull-back along `s_x` of the inflation of `η` to `Π_U` is
+the restriction of `η` along `Gal(κ(A)/k) → Gal(k̄/k)`. -/
+theorem ratSectionMap_map_piToGk (η : ContH1 (Gk k Ω) (Mu n (kbar k Ω))) :
+    letI := kbarAlgebra A hk
+    haveI := isScalarTower_kbarAlgebra A hk hkres
+    ContH1.map (ratSectionMap D A hk hkres hrat hHL ht)
+        (continuous_ratSectionMap D A hk hkres hrat hHL ht)
+        (Decomposition.reduceMu A n (NeZero.ne n)) continuous_of_discreteTopology
+        (reduceMu_sectionMap_smul D A hk hkres hHL ht _ n)
+        (ContH1.map (piToGk D) (continuous_piToGk D) (muMap n (kbar k Ω) Ω)
+          continuous_of_discreteTopology (muMap_piToGk_smul D n) η) =
+      restriction k k (kbar k Ω) (ResidueField A) n η := by
+  letI := kbarAlgebra A hk
+  haveI := isScalarTower_kbarAlgebra A hk hkres
+  rw [ContH1.map_map]
+  induction η using ContH1.induction_on with
+  | h c =>
+    rw [restriction, ContH1.map_mk, ContH1.map_mk]
+    congr 1
+    apply Subtype.ext
+    funext g
+    simp only [ContH1.cocyclesMap_apply, MonoidHom.coe_comp, Function.comp_apply]
+    rw [reduceMu_muMap, piToGk_ratSectionMap_eq_galRestrict D A hk hkres hrat hHL ht g]
 
 end Curve
 
