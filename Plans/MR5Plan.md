@@ -125,11 +125,16 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
   `D_A → Gal(κ(A)/k)` surjective — a theorem hypothesis, the open part (1) of R2b), and step (2):
   `ker_decompositionMap_le_ker_decompToPi` (for `H_L = H`, `t ∈ A`, the inertia of `A` dies in
   `Π_U`), so `s_x := MonoidHom.liftOfSurjective` of `decompToPi` once (1) is proved.
+* 2026-10-18: `Curve/PointSection.lean`: `isClosed_decompositionSubgroup` (`D_A` closed, hence
+  compact), `sectionMap` (`s_x : Gal(κ(A)/k) → Π_U`, continuous: `decompositionMap` is a closed,
+  hence quotient, map), `sectionMap_kummerMap` (**`s_x^* κ_U(u) = κ_k(u(x))`**, Prop 1.8(ii)) and
+  `forall_sectionMap_kummerMap_eq_one_iff` (Prop 1.8(i) ingredient), all under the single
+  hypothesis `hsurj` (R2b(1)).
 
 ## 6. Hand-off (2026-10-18, end of the first MR5 session)
 
 Merged on continuous-kummer-theory main: 2216e1a (K1 + this plan), a22f306 (R1), 7ccc01d (R2a),
-and the R2b-partial commit after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
+a9afcd1 (R2b partial + hand-off), and the `Curve/PointSection.lean` commit after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
 torally Kummer-faithful fields and the standard examples (Def 1.5, Rem 1.5.3(i), 1.5.4(i) for
 tori), Prop 1.6(i) for torally KF `k`, the complex `(kˣ)^∧ → H¹(Π_U, Ẑ(1)) → ⊕ Ẑ` with
 `κ_U(u) ↦ ord(u)` and `κ_U(u) ∈ (kˣ)^∧ ⇒ ord_W(u) = 0`, and the point-evaluation statements of
@@ -141,9 +146,8 @@ Next steps, in order of value for MR9:
    is `Stab(Q) = D_A` (equivalently: the localisation of the integral closure of the valuation ring
    `A ∩ F` at `Q` is `A`); if that is too costly, restate R2a/R2b with `Stab(Q)` and `B ⧸ Q`
    (`Kummer/Specialization.map_kummer_eq_map_kummer` takes any `D`-stable subring `B` closed under
-   `n`-th roots, so it applies to the integral closure). Then also continuity of `s_x` (`D_A` is
-   closed in `Gal(Ω/F)`: if `σ • A ≠ A`, pick `x` in the symmetric difference; `{τ | τ⁻¹ x = σ⁻¹ x}`
-   is an open neighbourhood of `σ` missing `D_A`; then `decompositionMap` is a closed map).
+   `n`-th roots, so it applies to the integral closure). Everything downstream of `hsurj`
+   (`sectionMap`, its continuity, `sectionMap_kummerMap`) is done in `Curve/PointSection.lean`.
 2. **J1–J3** (curves-jacobian, which depends on CKT): Prop 1.6(iii) middle exactness and image.
    Inputs there: `picTorsionEquivUnramified` (only over algebraically closed `k`; needs the
    `G_k`-equivariant version), `Galois/AbelianPi1.dvd_ord_of_evalTriv_eq_one`, places/`ord` from

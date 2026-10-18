@@ -11,6 +11,7 @@ import ContinuousKummerTheory.Curve.Etale
 import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Point
+import ContinuousKummerTheory.Curve.PointSection
 import ContinuousKummerTheory.Curve.Residue
 import ContinuousKummerTheory.Curve.TameChar
 import ContinuousKummerTheory.Hilbert90
