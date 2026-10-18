@@ -482,3 +482,26 @@ Blocked on pi1 (H² of surface groups), not on JAC.
   (`χ_{h x}(τ) = h(χ_x(h⁻¹τh))`: `J(k̄)[n] ≅ Hom(Δ_X^{ab}, μ_n)` is `H`-equivariant),
   **`torsionChar_nsmul`** (`χ^{(n)}_{m x} = (χ^{(nm)}_x)^m`: Tate module versus
   `Hom(Δ_X^{ab}, Ẑ(1))` levelwise).
+* cj `Kummer/JacobianTate.lean`: generic `mulTorsion_surjective` (`#A[d] = d^r` for all `d` ⇒
+  `m · A[nm] = A[n]`), `tateModule A ℓ` (`T_ℓ A` as compatible sequences), `tateProj_surjective`,
+  `tateMap` (endomorphisms, e.g. `picAct`, act on `T_ℓ`); for a curve over an algebraically closed
+  field of characteristic `0`: `exists_nsmul_eq_of_mem_picTorsion`, `tateProj_surjective_pic`
+  (from `natCard_picTorsion`). For the Galois model `F k̄` the count `#J[n] = n^{2g}` needs
+  `F (baseChange D) ≅ K(X_{k̄})` (part (i) of JAC-1b); not done.
+
+## 11. Hand-off (2026-10-18, end of the eighth MR5 session)
+
+Merged: CKT 43efaf7 (§10); cj da23387 (`Kummer/JacobianTorsion.lean`, `Kummer/JacobianTate.lean`).
+No `sorry`/axioms. Meanwhile JAC20 proved JAC-1a (cj 4d2d8b1: `picRes` injective,
+`jacPointsEquivInv : J(K) ≅ J(Ω)^{Gal(Ω/K)}`). `IsKummerFaithfulJac D` remains a named theorem
+hypothesis; J1 still needs JAC-1b (bridge `Pic(F k̄) → J(k̄)`) and the JAC-1c decision.
+
+Next steps (MR5 side, in order):
+1. JAC-1b(i): `F (baseChange (curveGaloisData C)) ≃ₐ[k̄] K(C_{k̄})`, compatible with `H → G_k` and
+   `Spec τ` (gives `#J(k̄)[n] = n^{2g}` and the Tate module of the Galois model too).
+2. JAC-1b(ii)–(iv): `Pic(F k̄) → Pic⁰_{C_k̄,σ}(k̄)`, `[x_P] ↦ [𝒪(x_P)]` (`RelEffCartier.ofSection`),
+   principal divisors map to `0`, injective, `G_k`-equivariant (`picGal` vs `picAct`).
+3. Then J1: from `jacPointsEquivInv` (JAC-1a, done) + 1b, `IsKummerFaithfulJac D` follows from
+   `⋂_N N · jacPoints C σ hσ k = 0` (state this as the J1 theorem now if the lead accepts JAC-1c (B)).
+4. J4 group side: `Π_{J¹} := Π_X/\overline{[Δ_X, Δ_X]}`, `t_x`, `η_D ∈ H¹(G_k, Δ_X^{ab})`;
+   the principal ⇔ `η_D = 0` theorem waits for divisibility (JAC-4a) and the Weil pairing (JAC-4b).
