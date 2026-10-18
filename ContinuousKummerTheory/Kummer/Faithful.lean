@@ -43,6 +43,8 @@ equivalent (every finite extension embeds into `k̄`), and closed under finite e
   `NumberField.isTorallyKummerFaithful` (number fields),
   `KummerTheory.isTorallyKummerFaithful_of_isNonarchimedeanLocalField` (finite extensions of
   `ℚ_p` with their local field structure) and `KummerTheory.isTorallyKummerFaithful_padic`.
+* `KummerTheory.IsKummerFaithfulGm.not_forall_exists_isPrimitiveRoot`: Remark 1.5.1 (a field
+  Kummer-faithful for `𝔾_m` does not contain all `l`-power roots of unity).
 * `KummerTheory.Curve.kummerMapZHat_injective_of_isTorallyKummerFaithful` (and the étale and
   number-field versions): [AbsTopIII] Proposition 1.6(i) for torally Kummer-faithful `k`.
 -/
@@ -317,6 +319,65 @@ theorem isTorallyKummerFaithful_padic (p : ℕ) [Fact p.Prime] :
     (IsDiscreteValuationRing.not_a_field _)
 
 end Examples
+
+section Cyclotomic
+
+/-- **[AbsTopIII] Remark 1.5.1** (`T3` l.1837–1855), field-theoretic content: a field which is
+Kummer-faithful for `𝔾_m` does not contain all `l`-power roots of unity. (Otherwise a primitive
+`l`-th root of unity `ξ ≠ 1` is an `N`-th power for every `N = l^e r`, `l ∤ r`: `ξ` is a power of
+`ζ^(l^e)` for a primitive `l^(e+1)`-th root `ζ`, and `ζ` is an `r`-th power since `r` is invertible
+modulo `l^(e+1)`.) Applied to all finite extensions of a torally Kummer-faithful field, this says
+that `k(μ_{l^∞})/k` is infinite, i.e. the `l`-adic cyclotomic character has infinite, hence open,
+image. -/
+theorem IsKummerFaithfulGm.not_forall_exists_isPrimitiveRoot {L : Type*} [Field L]
+    (h : IsKummerFaithfulGm L) {l : ℕ} (hl : l.Prime) :
+    ¬ ∀ m : ℕ, ∃ ζ : L, IsPrimitiveRoot ζ (l ^ m) := by
+  intro hall
+  obtain ⟨ξ, hξ⟩ := hall 1
+  rw [pow_one] at hξ
+  have hξ0 : ξ ≠ 0 := hξ.ne_zero hl.ne_zero
+  apply hξ.ne_one hl.one_lt
+  have key := h (Units.mk0 ξ hξ0) fun N hN => by
+    obtain ⟨e, r, hr, rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hN.ne' l hl.ne_one
+    obtain ⟨ζ, hζ⟩ := hall (e + 1)
+    have hζ0 : ζ ≠ 0 := hζ.ne_zero (pow_ne_zero _ hl.ne_zero)
+    -- `ζ^(l^e)` is a primitive `l`-th root of unity, and `ξ` is a power of it
+    have hη : IsPrimitiveRoot (ζ ^ l ^ e) l := by
+      have := hζ.pow_of_dvd (pow_ne_zero e hl.ne_zero) (pow_dvd_pow l (Nat.le_succ e))
+      rwa [pow_succ, Nat.mul_div_cancel_left _ (pow_pos hl.pos e)] at this
+    haveI : NeZero l := ⟨hl.ne_zero⟩
+    obtain ⟨j, -, hj⟩ := hη.eq_pow_of_pow_eq_one hξ.pow_eq_one
+    -- `ζ` is an `r`-th power: `r` is invertible modulo `l^(e+1)`
+    have hcop : Nat.Coprime r (l ^ (e + 1)) :=
+      (Nat.Coprime.pow_left (e + 1) ((Nat.Prime.coprime_iff_not_dvd hl).mpr hr)).symm
+    have hg := Nat.gcd_eq_gcd_ab r (l ^ (e + 1))
+    rw [Nat.Coprime.gcd_eq_one hcop, Nat.cast_one] at hg
+    set A := Nat.gcdA r (l ^ (e + 1))
+    set B := Nat.gcdB r (l ^ (e + 1))
+    have h1 : ζ ^ ((r : ℤ) * A + ((l ^ (e + 1) : ℕ) : ℤ) * B) = ζ := by rw [← hg, zpow_one]
+    rw [zpow_add₀ hζ0, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hζ.pow_eq_one, one_zpow,
+      mul_one] at h1
+    have hζr : (ζ ^ A) ^ r = ζ := by
+      rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]
+      exact h1
+    have hw0 : ζ ^ A ≠ 0 := zpow_ne_zero A hζ0
+    refine ⟨Units.mk0 ((ζ ^ A) ^ j) (pow_ne_zero j hw0), Units.ext ?_⟩
+    simp only [Units.val_pow_eq_pow_val, Units.val_mk0]
+    rw [← hj]
+    conv_rhs => rw [← hζr]
+    rw [← pow_mul, ← pow_mul, ← pow_mul]
+    congr 1
+    ring
+  simpa using congrArg Units.val key
+
+/-- For a torally Kummer-faithful field `k`, no finite extension contains all `l`-power roots of
+unity ([AbsTopIII] Remark 1.5.1: the `l`-adic cyclotomic character of `k` has open image). -/
+theorem IsTorallyKummerFaithful.not_forall_exists_isPrimitiveRoot {K : Type u} [Field K]
+    (h : IsTorallyKummerFaithful K) (L : Type u) [Field L] [Algebra K L] [FiniteDimensional K L]
+    {l : ℕ} (hl : l.Prime) : ¬ ∀ m : ℕ, ∃ ζ : L, IsPrimitiveRoot ζ (l ^ m) :=
+  (h L).not_forall_exists_isPrimitiveRoot hl
+
+end Cyclotomic
 
 namespace Curve
 

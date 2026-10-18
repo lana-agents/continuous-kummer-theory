@@ -130,11 +130,15 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
   hence quotient, map), `sectionMap_kummerMap` (**`s_x^* κ_U(u) = κ_k(u(x))`**, Prop 1.8(ii)) and
   `forall_sectionMap_kummerMap_eq_one_iff` (Prop 1.8(i) ingredient), all under the single
   hypothesis `hsurj` (R2b(1)).
+* 2026-10-18: Rem 1.5.1 (`Kummer/Faithful.lean`): `IsKummerFaithfulGm.not_forall_exists_isPrimitiveRoot`
+  (a `𝔾_m`-Kummer-faithful field does not contain all `l`-power roots of unity), and the torally
+  KF version for all finite extensions (the `l`-adic cyclotomic character has open image).
 
 ## 6. Hand-off (2026-10-18, end of the first MR5 session)
 
 Merged on continuous-kummer-theory main: 2216e1a (K1 + this plan), a22f306 (R1), 7ccc01d (R2a),
-a9afcd1 (R2b partial + hand-off), and the `Curve/PointSection.lean` commit after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
+a9afcd1 (R2b partial + hand-off), ce7c052 (`Curve/PointSection.lean`), and the Rem 1.5.1 commit
+after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
 torally Kummer-faithful fields and the standard examples (Def 1.5, Rem 1.5.3(i), 1.5.4(i) for
 tori), Prop 1.6(i) for torally KF `k`, the complex `(kˣ)^∧ → H¹(Π_U, Ẑ(1)) → ⊕ Ẑ` with
 `κ_U(u) ↦ ord(u)` and `κ_U(u) ∈ (kˣ)^∧ ⇒ ord_W(u) = 0`, and the point-evaluation statements of

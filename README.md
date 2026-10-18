@@ -183,7 +183,9 @@ Proved results (namespace `KummerTheory` unless stated):
     of finite residue field are torally Kummer-faithful in characteristic `0`
     (`isTorallyKummerFaithful_of_isDedekindDomain`), hence `ℚ`, number fields
     (`NumberField.isTorallyKummerFaithful`), non-archimedean local fields of characteristic `0` and
-    `ℚ_p` (Rem. 1.5.4(i) for tori); Prop. 1.6(i) for torally Kummer-faithful `k`
+    `ℚ_p` (Rem. 1.5.4(i) for tori); Rem. 1.5.1: such fields do not contain all `l`-power roots of
+    unity (`IsKummerFaithfulGm.not_forall_exists_isPrimitiveRoot`); Prop. 1.6(i) for torally
+    Kummer-faithful `k`
     (`kummerMapZHat_injective_of_isTorallyKummerFaithful`, `…_of_numberField`).
   * `Curve/Etale.lean`: transport to `pi1`'s étale fundamental group `etalePi1 R A Ω` along
     `GaloisData.equivPi1`: actions on `μ_n`, `Ẑ(1)`, `kummerMapEtale`, `kummerMapEtaleZHat`, and
