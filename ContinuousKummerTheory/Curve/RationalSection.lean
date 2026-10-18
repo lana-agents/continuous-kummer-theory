@@ -205,6 +205,59 @@ theorem ratSectionMap_map_piToGk (η : ContH1 (Gk k Ω) (Mu n (kbar k Ω))) :
     simp only [ContH1.cocyclesMap_apply, MonoidHom.coe_comp, Function.comp_apply]
     rw [reduceMu_muMap, piToGk_ratSectionMap_eq_galRestrict D A hk hkres hrat hHL ht g]
 
+omit [NeZero n] in
+/-- **[AbsTopIII] Prop. 1.8(ii) at a rational point**: for `k` Kummer-faithful for `𝔾_m`, the
+restriction `κ_U(u)|_x` agrees at every level with `η|_x` for the constant class
+`η = κ(c) ∈ H¹(G_k, μ_n)` (inflated to `Π_U`) iff `u(x) = c`. -/
+theorem forall_ratSectionMap_kummerMap_eq_iff [IsGalois k (ResidueField A)]
+    (hroots : ∀ (n : ℕ) [NeZero n], HasKummerRoots n k (ResidueField A))
+    (hkf : IsKummerFaithfulGm k) (u : units D) (a c : kˣ)
+    (hu : (((u : (F D)ˣ) : F D) : Ω) ∈ A) (hu' : ((((u : (F D)ˣ)⁻¹ : (F D)ˣ) : F D) : Ω) ∈ A)
+    (hua : residue A ⟨_, hu⟩ = algebraMap k (ResidueField A) a) :
+    (∀ (n : ℕ) [NeZero n],
+      ContH1.map (ratSectionMap D A hk hkres hrat hHL ht)
+          (continuous_ratSectionMap D A hk hkres hrat hHL ht)
+          (Decomposition.reduceMu A n (NeZero.ne n)) continuous_of_discreteTopology
+          (reduceMu_sectionMap_smul D A hk hkres hHL ht _ n) (kummerMap D n u) =
+        ContH1.map (ratSectionMap D A hk hkres hrat hHL ht)
+          (continuous_ratSectionMap D A hk hkres hrat hHL ht)
+          (Decomposition.reduceMu A n (NeZero.ne n)) continuous_of_discreteTopology
+          (reduceMu_sectionMap_smul D A hk hkres hHL ht _ n)
+          (ContH1.map (piToGk D) (continuous_piToGk D) (muMap n (kbar k Ω) Ω)
+            continuous_of_discreteTopology (muMap_piToGk_smul D n) (kummer n k (kbar k Ω) c))) ↔
+      a = c := by
+  letI := kbarAlgebra A hk
+  haveI := isScalarTower_kbarAlgebra A hk hkres
+  -- both sides are Kummer classes over `κ(A)`
+  have key : ∀ (n : ℕ) [NeZero n],
+      ContH1.map (ratSectionMap D A hk hkres hrat hHL ht)
+          (continuous_ratSectionMap D A hk hkres hrat hHL ht)
+          (Decomposition.reduceMu A n (NeZero.ne n)) continuous_of_discreteTopology
+          (reduceMu_sectionMap_smul D A hk hkres hHL ht _ n)
+          (ContH1.map (piToGk D) (continuous_piToGk D) (muMap n (kbar k Ω) Ω)
+            continuous_of_discreteTopology (muMap_piToGk_smul D n) (kummer n k (kbar k Ω) c)) =
+        (letI := hroots n; kummer n k (ResidueField A) c) := by
+    intro n _
+    letI := hroots n
+    rw [ratSectionMap_map_piToGk, restriction_kummer]
+    congr 1
+  constructor
+  · intro h
+    have h1 : a * c⁻¹ = 1 := by
+      refine hkf _ fun n hn => ?_
+      haveI : NeZero n := ⟨hn.ne'⟩
+      letI := hroots n
+      have hn' := h n
+      rw [ratSectionMap_kummerMap D A hk hkres hrat hHL ht n u a hu hu' hua, key n] at hn'
+      have hker : a * c⁻¹ ∈ (kummer n k (ResidueField A)).ker := by
+        rw [MonoidHom.mem_ker, map_mul, map_inv, hn', mul_inv_cancel]
+      rw [ker_kummer] at hker
+      exact hker
+    exact mul_inv_eq_one.mp h1
+  · rintro rfl n _
+    letI := hroots n
+    rw [ratSectionMap_kummerMap D A hk hkres hrat hHL ht n u a hu hu' hua, key n]
+
 end Curve
 
 end KummerTheory

@@ -156,7 +156,9 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
   (`s_x` is a section of `Π_U ↠ G_k` under `G_k ≅ Gal(κ(A)/k)`: [AbsTopIII] Prop 1.6(ii),
   l.1993, "the associated section"), `ratSectionMap_injective`; `piToGk_ratSectionMap_eq_galRestrict`
   and `ratSectionMap_map_piToGk` (`η|_x` for `η ∈ H¹(G_k, μ_n)` inflated to `Π_U` is the
-  restriction of `η` along `Gal(κ(A)/k) → G_k`: the `H¹(G_k, M_X)`-part of Prop 1.8(ii)).
+  restriction of `η` along `Gal(κ(A)/k) → G_k`: the `H¹(G_k, M_X)`-part of Prop 1.8(ii)), and
+  `forall_ratSectionMap_kummerMap_eq_iff` (Prop 1.8(ii) at a rational point: for `k`
+  Kummer-faithful for `𝔾_m`, `κ_U(u)|_x = κ(c)|_x` at all levels iff `u(x) = c`).
 * 2026-10-18 (second session): curves-jacobian's continuous-kummer-theory pin bumped
   e3fc64c → f85f126 (cj main c692f59).
 
@@ -164,8 +166,10 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
 
 Merged in the second session: continuous-kummer-theory main f85f126 (R2b(1): surjectivity of
 `D_A → Gal(κ(A)/k)` for rational points, `Curve/RationalPoint.lean`; R3: injectivity of the tame
-character, `Curve/TameCharInjective.lean`), the `Curve/RationalSection.lean` commit after it
-(`s_x` is a section of `Π_U ↠ G_k`), and curves-jacobian main c692f59 (CKT pin bump to f85f126).
+character, `Curve/TameCharInjective.lean`), e24eae7 and 9597fa9 and the commit after them
+(`Curve/RationalSection.lean`: `s_x` is a section of `Π_U ↠ G_k`, `η|_x` for `η` from `G_k`,
+Prop 1.8(ii) at a rational point), and curves-jacobian main c692f59 (CKT pin bump to f85f126;
+bump again to pick up `Curve/RationalSection.lean`).
 Earlier: 2216e1a (K1), a22f306 (R1), 7ccc01d (R2a), a9afcd1, ce7c052 (R2b(2)), b4003d6
 (Rem 1.5.1). No `sorry`/axioms/Prop-field hypotheses; the only hypotheses on points are the
 geometric ones (`hrat`: `x` is `k`-rational, i.e. `κ(A ∩ F) = k`; `t ∈ A`, `H_L = H`: `x ∈ U`).
@@ -190,8 +194,9 @@ Next steps, in order of value:
    it for `Pic⁰(X_{k̄})` with its `G_k`-action (a hypothesis on `k`, like `IsKummerFaithfulGm`)
    or derive it from a Jacobian scheme (blocked); (c) inflation–restriction for `Ẑ(1)`
    coefficients along `Π_U ↠ Π_X` (levelwise exists in LCFT `Cohomology/FiveTerm`).
-2. **N1** (Prop 1.8, cj) after J3: (ii) is now only bookkeeping on top of
-   `ratSectionMap_kummerMap` and `ratSectionMap_map_piToGk` (constants: `kummerMap_const`); (i)
+2. **N1** (Prop 1.8, cj) after J3: (ii) at `k`-rational points is
+   `forall_ratSectionMap_kummerMap_eq_iff`; what remains is the NF-bookkeeping (Def 1.7: `k_x`
+   finite over `k`, base change of `D` to `k_x`, `P_U`); (i)
    needs `P_U` (J3) and surjectivity of nonconstant functions on `k̄_NF`-points.
 3. Optional packaging of R3: `I_W ∩ H ≃ Ẑ(1)` as a `MulEquiv` (needs `I_W ∩ H` as a closed
    subgroup and a compactness argument for surjectivity onto the inverse limit).
