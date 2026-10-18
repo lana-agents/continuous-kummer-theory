@@ -366,3 +366,37 @@ Next steps:
    J1 (`IsKummerFaithfulJac`) becomes a theorem once cj has `J = Pic⁰`.
 3. Optional: deduplicate cj `Cusp/LineCuspInertia.lean` against CKT `KummerTheory.PlaceInertia`
    (not done: PI1TOP is actively building on `LineCuspInertia`, e.g. `Cusp/LineChart.lean`).
+
+## 9. Hand-off (2026-10-18, end of the seventh MR5 session)
+
+Merged: cj main 6ae22fd (3205809 + docstring fix). No `sorry`/axioms.
+
+* **Debt N2 closed.** `NFModel` gained the field `linearDisjoint`: `F_NF` and `k̄` are linearly
+  disjoint over `k̄_NF` (Mathlib `IntermediateField.LinearDisjoint`, with `kbarNF` = `k̄` as an
+  intermediate field of `Ω / k̄_NF`). Re-checked against [AbsTopIII] Def. 1.7 (T3 l.2040–2050):
+  "X is an NF-curve if `X_{k̄} = X ×_k k̄` is defined over `k̄_NF`", i.e. `X_{k̄} ≅ X_NF ×_{k̄_NF} k̄`;
+  on function fields this is exactly `F_NF ⊗_{k̄_NF} k̄ ↪ F k̄` (linear disjointness) with image
+  generating `F k̄` (`mem_closure`) — base-change data of the model, not a stand-in for a theorem.
+* `Kummer/NFDescent.lean` (new, ~1060 lines): **`NFModel.unitsDescend`** (every unit `w` of `U`
+  has `l ∈ k̄ˣ` with `l·w ∈ F_NF`). Route: nonconstant `y ∈ F_NF`; `Ω` algebraic over `k̄(y)`
+  (exchange, `isAlgebraic_adjoin_kbar`); `k̄_NF(y)`-independent families of `F_NF` stay
+  `k̄(y)`-independent (`linearIndependent_adjoin`, from linear disjointness); `F_NF` finite over
+  `k̄_NF(y)` with integral basis (`exists_basis`); trace dual basis of that basis lies in `F_NF`, so
+  the integral closure of `k̄[y]` in `F k̄` lies in `k̄·F_NF` (`mem_adjoin_of_isIntegral`, Mathlib
+  `integralClosure_le_span_dualBasis`); units lie in all valuation rings ⊇ `k̄ ∪ F_NF` (non-cusps),
+  hence (valuative criterion, clearing denominators) `q·w` is integral over `k̄[y]`
+  (`exists_isIntegral_mul`); Gauss lemma at NF-points (`valuation_le_valuation_sum`) makes
+  `a_b / w` pole-free, hence a constant.
+* `hdesc` removed from `NFModel.exists_eq_kummerMapZHat_of_restrictClosed` (Prop. 1.8(i) NF "if");
+  the `UnitsDescend` definition is gone.
+* **`trdeg_le_one` is no longer a field**: derived as the theorem `NFModel.trdeg_le_one`
+  (`F_NF` finite over `k̄_NF(y)`), so `NFModel` = (F_NF, k̄_NF ⊆ F_NF ⊆ F k̄, F_NF ∩ k̄ = k̄_NF,
+  F_NF·k̄ = F k̄, linear disjointness, cusps NF).
+* Reading of Prop. 1.8(i) via `η† = η^N` (lead decision 3): the "if" direction concludes for the
+  class it is applied to; with the paper's "positive multiple η†" this is the statement for `η†`.
+  The η-level corollary would need `(kˣ)^∧/kˣ` torsion-free; not cheap for general torally
+  Kummer-faithful `k` (not done).
+
+Next steps: J1/J4/S1 stay blocked on the Jacobian scheme (JAC agent). LineCuspInertia /
+PlaceInertia dedup left alone (PI1TOP builds on it). MR5 Prop. 1.8 is otherwise complete at the
+closed-point Ẑ(1)-level.
