@@ -120,3 +120,36 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
 * 2026-10-18: R2a done (`Curve/Point.lean`): `section_kummerMap` (`s^*(κ_U(u)|_{D_A}) = κ_k(u(x))`),
   `section_kummerMap_eq_one_iff` (trivial ⟺ `u(x) ∈ (kˣ)ⁿ`), `forall_section_kummerMap_eq_one_iff`
   (trivial at all levels ⟺ `u(x) = 1`, for `k` Kummer-faithful for `𝔾_m`).
+* 2026-10-18: R2b partial (`Curve/Point.lean`): `decomposition_kummerMap_eq_one_iff`,
+  `forall_decomposition_kummerMap_eq_one_iff` (the same on `D_A` itself, assuming
+  `D_A → Gal(κ(A)/k)` surjective — a theorem hypothesis, the open part (1) of R2b), and step (2):
+  `ker_decompositionMap_le_ker_decompToPi` (for `H_L = H`, `t ∈ A`, the inertia of `A` dies in
+  `Π_U`), so `s_x := MonoidHom.liftOfSurjective` of `decompToPi` once (1) is proved.
+
+## 6. Hand-off (2026-10-18, end of the first MR5 session)
+
+Merged on continuous-kummer-theory main: 2216e1a (K1 + this plan), a22f306 (R1), 7ccc01d (R2a),
+and the R2b-partial commit after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
+torally Kummer-faithful fields and the standard examples (Def 1.5, Rem 1.5.3(i), 1.5.4(i) for
+tori), Prop 1.6(i) for torally KF `k`, the complex `(kˣ)^∧ → H¹(Π_U, Ẑ(1)) → ⊕ Ẑ` with
+`κ_U(u) ↦ ord(u)` and `κ_U(u) ∈ (kˣ)^∧ ⇒ ord_W(u) = 0`, and the point-evaluation statements of
+Prop 1.8 relative to a section / to surjectivity of `D_A → Gal(κ(A)/k)`.
+
+Next steps, in order of value for MR9:
+1. **R2b(1)** (CKT): surjectivity of `D_A → Gal(κ(A)/k)` for `κ(A ∩ F) = k`, via Mathlib's
+   `Ideal.Quotient.stabilizerHom_surjective_of_profinite` (recipe in the R2b row). The hard part
+   is `Stab(Q) = D_A` (equivalently: the localisation of the integral closure of the valuation ring
+   `A ∩ F` at `Q` is `A`); if that is too costly, restate R2a/R2b with `Stab(Q)` and `B ⧸ Q`
+   (`Kummer/Specialization.map_kummer_eq_map_kummer` takes any `D`-stable subring `B` closed under
+   `n`-th roots, so it applies to the integral closure). Then also continuity of `s_x` (`D_A` is
+   closed in `Gal(Ω/F)`: if `σ • A ≠ A`, pick `x` in the symmetric difference; `{τ | τ⁻¹ x = σ⁻¹ x}`
+   is an open neighbourhood of `σ` missing `D_A`; then `decompositionMap` is a closed map).
+2. **J1–J3** (curves-jacobian, which depends on CKT): Prop 1.6(iii) middle exactness and image.
+   Inputs there: `picTorsionEquivUnramified` (only over algebraically closed `k`; needs the
+   `G_k`-equivariant version), `Galois/AbelianPi1.dvd_ord_of_evalTriv_eq_one`, places/`ord` from
+   weil-curves. Bump cj's CKT pin (e3fc64c → current main) first; cj's other agents (Jacobian,
+   MR8) push there, so rebase right before validating.
+3. **R3** (CKT): `I_W ∩ H ≅ Ẑ(1)` via the tame character (injectivity), so that
+   `Hom(I_x, Ẑ(1)) ≅ Ẑ` canonically and R1 becomes the map to `⊕ Ẑ` of Prop 1.6(iii).
+4. N1 after J3, R2b; J4 and S1 stay blocked (Jacobian scheme / `r = 0` surface groups).
+`iut` requires neither CKT nor cj; MR9 consumes MR5 only after a pin is added there.

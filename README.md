@@ -166,7 +166,11 @@ Proved results (namespace `KummerTheory` unless stated):
     section `s` of `D_A → Gal(κ(A)/k)` (an argument; its existence is not formalised),
     `section_kummerMap`: `s^*(κ_U(u)|_{D_A}) = κ_k(u(x))`; it is trivial iff `u(x) ∈ (kˣ)ⁿ`
     (`section_kummerMap_eq_one_iff`), and trivial at every level iff `u(x) = 1` when `k` is
-    Kummer-faithful for `𝔾_m` (`forall_section_kummerMap_eq_one_iff`).
+    Kummer-faithful for `𝔾_m` (`forall_section_kummerMap_eq_one_iff`); the same on `D_A` itself
+    when `D_A → Gal(κ(A)/k)` is surjective (`decomposition_kummerMap_eq_one_iff`,
+    `forall_decomposition_kummerMap_eq_one_iff`; surjectivity is a hypothesis, not yet proved), and
+    for `U = Spec R` and `A` centered on `U` the inertia of `A` dies in `Π_U`
+    (`ker_decompositionMap_le_ker_decompToPi`).
   * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
     equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
     `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful
