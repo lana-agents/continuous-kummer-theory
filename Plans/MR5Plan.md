@@ -92,7 +92,7 @@ continuous-kummer-theory`). Hence:
 | # | step | repo | size | status |
 |---|---|---|---|---|
 | K1 | Def 1.5 torally Kummer-faithful (`𝔾_m`-form over all finite extensions); DVR/Dedekind criterion (Rem 1.5.3(i) argument); `ℚ`, number fields, `p`-adic fields (Rem 1.5.4(i) for tori); Prop 1.6(i) for torally KF `k` | CKT `Kummer/Faithful.lean` | 300 | **done** |
-| R1 | Prop 1.6(iii), first two maps as a complex, levelwise and for `Ẑ(1)`: residue at a cusp `res_W : H¹(Π_U, μ_n) → μ_n` (evaluation at an inertia element with tame character a chosen `ζ`), `res_W(κ_U(u)) = ζ^{ord_W u}`, `res_W ∘ const = 1` | CKT `Curve/CuspResidue.lean` | 200–400 | next |
+| R1 | Prop 1.6(iii), first two maps as a complex, levelwise and for `Ẑ(1)`: residue at a cusp `res_W : H¹(Π_U, μ_n) → μ_n` (evaluation at an inertia element with tame character a chosen `ζ`), `res_W(κ_U(u)) = ζ^{ord_W u}`, `res_W ∘ const = 1` | CKT `Curve/CuspResidue.lean` | 200 | **done** |
 | R2 | `η|x = 0 ⟺ f(x) = 1` for points with residue in `k` (and in finite `k_x/k`), from `decomposition_kummerMap`, surjectivity of `D_A → Gal(κ(A)/k)` and KF of `k_x` (Prop 1.8 ingredient) | CKT | 300–600 | open |
 | R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character (injectivity needs that `I_W` acts faithfully on `⋃_n F^{ur}_W(π^{1/n})`) | CKT | 500–1000 | open |
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic⁰(X_{k̄})^{G_k} = 0` as a definition (`Pic⁰` of weil-curves over `k̄` with its `G_k`-action), implied by Def 1.5; then `(T J)^{G_k} = 0` | cj | 300–600 | open |
@@ -109,3 +109,10 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
 ## 5. Status log
 
 * 2026-10-18: plan written. K1 done (`Kummer/Faithful.lean`).
+* 2026-10-18: R1 done (`Curve/CuspResidue.lean`): `evalTriv_constMapZHat` (complex),
+  `exists_inertia_evalTriv_kummerMap_eq`, `eq_zero_of_kummerMapZHat_eq_constMapZHat` (`κ_U(u)` in
+  the image of `(kˣ)^∧` ⇒ `ord_W(u) = 0` at all places `W ⊇ k`, given a uniformiser of `W ∩ F` and
+  `m` with `u π^{-m}` a `W`-unit). The conclusion "`u ∈ kˣ`" needs the existence of a place with
+  `ord_W(u) ≠ 0` for transcendental `u` and of uniformisers of `W ∩ F` (DVR structure): this uses
+  `Place`/`ord` and belongs to curves-jacobian (cf. `Galois/AbelianPi1.dvd_ord_of_evalTriv_eq_one`),
+  as part of J2/J3.

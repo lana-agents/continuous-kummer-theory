@@ -155,6 +155,13 @@ Proved results (namespace `KummerTheory` unless stated):
     Kummer character `σ ↦ σ(π^{1/n})/π^{1/n}` maps `I_W ∩ H` onto `μ_n`. Proof by counting
     inertia in a Galois closure (`pi1`'s `ramificationIdx_mul_card`, surjectivity of inertia) and
     `le_ramificationIdx_of_eq_pow` (`e ≥ n` for `π = αⁿ`).
+  * The first two maps of [AbsTopIII] Prop. 1.6(iii) form a complex (`Curve/CuspResidue.lean`):
+    inertia maps to `1` in `G_k` (`piToGk_of_mem_inertia`), so the classes of `(kˣ)^∧` vanish on
+    every inertia group `I_W ∩ H`, `W ⊇ k` (`evalTriv_constMapZHat`, `evalTriv_kummerMap_constUnit`);
+    for a uniformiser `π` of `W ∩ F` and `ζ ∈ μ_n` some `σ ∈ I_W ∩ H` has `κ_U(u)(σ) = ζ^{ord_W u}`
+    for all `u` (`exists_inertia_evalTriv_kummerMap_eq`); hence if `κ_U(u)` lies in the image of
+    `(kˣ)^∧` then `ord_W(u) = 0` at every place `W ⊇ k`, cusps included
+    (`eq_zero_of_kummerMapZHat_eq_constMapZHat`).
   * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
     equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
     `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful
