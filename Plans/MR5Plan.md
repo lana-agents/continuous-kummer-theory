@@ -400,3 +400,85 @@ Merged: cj main 6ae22fd (3205809 + docstring fix). No `sorry`/axioms.
 Next steps: J1/J4/S1 stay blocked on the Jacobian scheme (JAC agent). LineCuspInertia /
 PlaceInertia dedup left alone (PI1TOP builds on it). MR5 Prop. 1.8 is otherwise complete at the
 closed-point Ẑ(1)-level.
+
+## 10. Jacobian needs of J1, J4, S1 (eighth MR5 session, 2026-10-18; for the JAC agents)
+
+State of the Jacobian (cj main a039329): over `k` separably closed perfect, `Pic_{C/k,σ}` and
+`Pic^d` are schemes, `J = Pic⁰` is an abelian variety of dimension `g` (JAC20, 8bb3c56). Over
+an arbitrary perfect `k` with a rational point `σ`, JAC20 chose the **functor-of-points route (B)**:
+`J(K) := Pic⁰_{C/k,σ}(Spec K)` (`jacPoints`), Galois action `picGal`, restriction `picRes` into the
+invariants `picInv`, and descent surjectivity `exists_jacPoints_picRes_eq`
+(`J(K) ↠ J(Ω)^{Gal(Ω/K)}`); injectivity of `picRes` (B3) is open. No `k`-scheme `J` (route (A),
+Galois descent of schemes) is planned.
+
+MR5 objects live in pi1's Galois model `D` (`F = Ω^H`, `F k̄ = F (baseChange D)`), and
+`J(k̄)` there is weil-curves' divisor class group `Pic(F k̄)` with the semilinear action `picAct`.
+
+### J1: `IsKummerFaithfulJac D` as a theorem
+`IsKummerFaithfulJac D : ∀ x ∈ Pic(F k̄), (∀ N ≥ 1, x ∈ N · Pic(F k̄)^{G_k}) → x = 0`
+(cj `Kummer/PicAction.lean`). Paper: Def 1.5 (T3 l.1807–1836) for `A = J`, `k_H = k`
+(`⋂_N N·J(k) = 0`), used in the proof of Prop 1.6(iii) (l.2032–2039).
+Minimal inputs (with `X` having a `k`-point `σ`; for `X(k) = ∅` route (B) does not apply):
+* **JAC-1a** (JAC, B3): `picRes : J(k) → J(k̄)` injective. With JAC20's surjectivity onto
+  invariants this gives `J(k) ≅ J(k̄)^{G_k}`. Only "invariants → J(k), additive, injective" is used:
+  `x = N y_N` in the invariants ⇒ image in `⋂_N N·J(k)`.
+* **JAC-1b** (bridge; MR5 or JAC, `k̄`-level, ~1–2k lines): an injective, `G_k`-equivariant
+  additive map `Pic⁰(F k̄) → J(k̄) = Pic⁰_{C_k̄/k̄,σ}(k̄)` (`[D] ↦ [𝒪(D)]`, divisor classes of the
+  function field to line bundles; JAC plan JAC6 "k-points = CurvePic"). Ingredients: (i) for the
+  Galois model `D = curveGaloisData C`: `F k̄ ≅ K(C_{k̄})` compatibly with `H → G_k` and
+  `Spec τ` (function field of the base change); (ii) places of `F k̄` ↔ `k̄`-points of `C_{k̄}`;
+  (iii) `Σ n_P [𝒪(x_P)]` kills principal divisors (`O(div f) ≅ O` via the ideal of zeros
+  `∏ m_P^{ord_P f}` on affine charts); (iv) injectivity (`O(D₁) ≅ O(D₂)` ⇒ `D₁ − D₂` principal:
+  the transported canonical section is a rational function with divisor `D₁ − D₂`).
+  Surjectivity is not needed.
+* **JAC-1c** (decision for the lead): Def 1.5 quantifies over semi-abelian varieties over `k`
+  (schemes). In route (B) `J` is not a `k`-scheme, so "`k` Kummer-faithful ⇒ `⋂_N N·J(k) = 0`"
+  is derivable only if (A) (a `k`-scheme `J_k` with `J_k(K) ≅ J(K)`) is done, or if Def 1.5 is
+  formalised through `k̄`-models with Galois descent data (equivalent by Galois descent of
+  quasi-projective varieties, which is (A) again). Until then `IsKummerFaithfulJac D` stays a
+  named theorem hypothesis (debt), as decided in the third session. Recommended minimal statement
+  for (A): a commutative `k`-group scheme `J_k` (`GrpObj` in `Over (Spec k)`, proper, smooth,
+  geometrically connected) with `Hom_k(Spec K, J_k) ≃+ jacPoints C σ hσ K` naturally in `K`.
+
+### J4: Prop 1.6(ii) (`t_D` vs principal divisors)
+Paper: T3 l.1993–2000, proof "argument of [Mzk19] Prop 2.2(i)"; [Cusp] = Mochizuki, *Absolute
+anabelian cuspidalizations*, §2 (txt l.2040–2100): `Π_{J^d}` is **constructed group-theoretically**
+from `Π_{J¹} = Π_X / [Δ_X, Δ_X]` by push-forward along `·d` resp. sums, `t_D` from the `t_x`, and
+`η_D ∈ H¹(G_k, Δ_X^{ab})` for `deg D = 0`; [Cusp] Prop 2.3(i) (txt l.2077–2104; AbsTopIII cites it
+as "[Mzk19] Prop 2.2(i)", our copy is the June 2007 version): `D` principal ⟺ `η_D = 0`, via the
+"general nonsense" isomorphism `H¹(k, Δ_X^{ab}) ≅ J(k)^∧ ⊇ J(k)` (Kummer sequence of `J`) mapping
+`η_D ↦ [D]`. **Decision taken here: `Π_{J^d}` group-side (JAC plan red flag 7), no `π₁ᵉᵗ(J)`.**
+Inputs:
+* J1 (`J(k) ↪ J(k)^∧`, i.e. `⋂_N N·J(k) = 0`);
+* **JAC-4a**: `J(k̄)` divisible (`[n] : J(k̄) → J(k̄)` surjective), for the Kummer sequence
+  `0 → J[n] → J(k̄) → J(k̄) → 0`. On the torsion it follows from `#J[n] = n^{2g}`
+  (`natCard_picTorsion`); on all of `J(k̄)` it needs the abelian variety (`[n]` has finite kernel,
+  so it is surjective for dimension reasons), or `Pic(F k̄)/n ↪ H²(Δ_X, μ_n) ≅ ℤ/n`.
+* **JAC-4b**: `Δ_X^{ab}/n ≅ J[n]` `G_k`-equivariantly such that `t_x t_y⁻¹ ↦` the Kummer cocycle
+  `σ ↦ σz − z` of `[x − y] = n z`. Done in this session (cj `Kummer/JacobianTorsion.lean`):
+  `J[n] ≅ Hom(Δ_X^{ab}, μ_n)` equivariantly and compatibly in `n`. Missing: the **Weil pairing**
+  `e_n : J[n] × J[n] → μ_n`, perfect and `G_k`-equivariant (to pass from `Hom(J[n], μ_n)` to `J[n]`),
+  and the reciprocity computation relating `t_x t_y⁻¹` to `e_n(·, z)` (Weil reciprocity on `F k̄`).
+  Alternative: geometric class field theory (the `[n]`-pullback of `X → J¹` is the maximal abelian
+  exponent-`n` unramified cover), which needs `π₁(J)`; not recommended.
+So J4 needs from JAC: B3 + (A)-or-decision (as J1), divisibility (JAC-4a) and the Weil pairing
+(JAC-4b, JAC plan JAC9 "autoduality" or a divisor-side construction).
+
+### S1: Prop 1.4(ii) (`M_X ≅ I_x`)
+T3 l.1771–1795, proof: [Mzk19] Prop 1.6(iii) ([Cusp] txt l.513–560: characteristic class of the
+diagonal, `c₁(𝒪_{Z'}(ι'(X)))` on a neighbourhood of the diagonal of `X × X`, and the `𝔾_m`-torsor
+`L^×_{diag}`). **No Jacobian input** (line bundles on `X × X` and their Kummer/Chern classes only). Needs `H²(Δ_X, Ẑ) ≅ Ẑ`
+for the profinite surface group (cj `etaleFundamentalGroup_equiv_profiniteSurfaceGroup_zero`,
+PI1TOP `Π̂_{g,r}`), the maximal cuspidally central quotient `Δ_{U_x}^{c-cn}` and the
+`E₂`-differential (group cohomology; pi1 / iut C1 `CuspCentral`). The identifications of `I_x`,
+`M_X` with `Ẑ(1)` (l.1792) use `I_x ≅ Ẑ(1)` (CKT `inertiaZHatEquiv`, done) and the degree on
+`Pic(F k̄)` via the Kummer boundary `Pic → H²(Δ_X, μ_n)` ([Cusp] §2, l.1795–1806), divisor side only.
+Blocked on pi1 (H² of surface groups), not on JAC.
+
+### Done in the eighth session (k̄-level)
+* cj `Kummer/JacobianTorsion.lean`: `conjAut`/`conjGal` (`τ ↦ h⁻¹τh` on `Δ = Gal(Ω/F k̄)`),
+  `val_evalTriv_kummer_map` (semilinear transport of Kummer classes), `kummerToPic_kummerClassMap`,
+  `torsionChar D hn x σ` (`χ_x(σ) ∈ μ_n`, `x ∈ Pic(F)[n]`), **`torsionChar_picAct`**
+  (`χ_{h x}(τ) = h(χ_x(h⁻¹τh))`: `J(k̄)[n] ≅ Hom(Δ_X^{ab}, μ_n)` is `H`-equivariant),
+  **`torsionChar_nsmul`** (`χ^{(n)}_{m x} = (χ^{(nm)}_x)^m`: Tate module versus
+  `Hom(Δ_X^{ab}, Ẑ(1))` levelwise).
