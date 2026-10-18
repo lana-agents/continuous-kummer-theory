@@ -94,8 +94,8 @@ continuous-kummer-theory`). Hence:
 | K1 | Def 1.5 torally Kummer-faithful (`𝔾_m`-form over all finite extensions); DVR/Dedekind criterion (Rem 1.5.3(i) argument); `ℚ`, number fields, `p`-adic fields (Rem 1.5.4(i) for tori); Prop 1.6(i) for torally KF `k` | CKT `Kummer/Faithful.lean` | 300 | **done** |
 | R1 | Prop 1.6(iii), first two maps as a complex, levelwise and for `Ẑ(1)`: residue at a cusp `res_W : H¹(Π_U, μ_n) → μ_n` (evaluation at an inertia element with tame character a chosen `ζ`), `res_W(κ_U(u)) = ζ^{ord_W u}`, `res_W ∘ const = 1` | CKT `Curve/CuspResidue.lean` | 200 | **done** |
 | R2a | `η|x = 0 ⟺ f(x) = 1` along a given continuous section `s : Gal(κ(A)/k) → D_A` of `decompositionMap` (Prop 1.8 ingredient; KF of `k` enters here) | CKT `Curve/Point.lean` | 130 | **done** |
-| R2b | the section `s_x : G_k → Π_U` of a point `x ∈ U(k)` itself: (1) `D_A → Gal(κ(A)/k)` surjective when `κ(A ∩ F) = k`, (2) `decompToPi` kills `I_A ∩ H` for `A` centered on `U`, so it factors as `s_x ∘ decompositionMap`; then R2a for `s_x` via injectivity of inflation along a surjection. Recipe for (1): `B` := integral closure of `V = A ∩ F` in `Ω`, `G = Gal(Ω/F)` acting on `B` (discrete), `IsInvariant V B G`, `Q = 𝔪_A ∩ B`; Mathlib `Ideal.Quotient.stabilizerHom_surjective_of_profinite` gives `Stab(Q) ↠ Aut((B/Q)/(V/𝔪_V))`; identify `Stab(Q) = D_A`, `B/Q = κ(A)` (needs `B_Q = A`: the localisation of the integral closure of a valuation ring at a maximal ideal is a valuation ring) | CKT | 500–900 | open |
-| R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character (injectivity needs that `I_W` acts faithfully on `⋃_n F^{ur}_W(π^{1/n})`) | CKT | 500–1000 | open |
+| R2b | the section `s_x : G_k → Π_U` of a point `x ∈ U(k)`: (1) `D_A → Gal(κ(A)/k)` surjective when `κ(A ∩ F) = k`, (2) `decompToPi` kills `I_A ∩ H`, so it factors as `s_x ∘ decompositionMap`; R2a for `s_x` | CKT `Kummer/DecompositionSurjective.lean`, `Curve/PointSection.lean`, `Curve/RationalPoint.lean` | 900 | **done** |
+| R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character: levelwise surjective (`evalTriv_kummer_surjective`) and injective (`⋂_n ker θ_{π,n} = 1`) | CKT `Curve/TameCharInjective.lean` | 450 | **done** (as the two statements; no packaged `≃` with `ZHatOne`, `GaloisPi1.inertia` being a set) |
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic⁰(X_{k̄})^{G_k} = 0` as a definition (`Pic⁰` of weil-curves over `k̄` with its `G_k`-action), implied by Def 1.5; then `(T J)^{G_k} = 0` | cj | 300–600 | open |
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`: descend to `Π_X`, inflation–restriction for `Ẑ(1)` (levelwise + compactness), `Hom(Δ_X, μ_n)^{G_k} ≅ Pic(X_{k̄})[n]^{G_k}` (`picTorsionEquivUnramified`, made `G_k`-equivariant), J1 | cj | 1.5–3k | open |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj | 400–800 | after J2, R1 |
@@ -133,6 +133,23 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
 * 2026-10-18: Rem 1.5.1 (`Kummer/Faithful.lean`): `IsKummerFaithfulGm.not_forall_exists_isPrimitiveRoot`
   (a `𝔾_m`-Kummer-faithful field does not contain all `l`-power roots of unity), and the torally
   KF version for all finite extensions (the `l`-adic cyclotomic character has open image).
+
+* 2026-10-18 (second MR5 session): **R2b(1) done** (`Kummer/DecompositionSurjective.lean`):
+  Kaplansky's lemma `isIntegral_partialSum`; `le_of_valuation_lt_one_imp` (a valuation subring of
+  an algebraic extension is determined by its centre on the integral closure `B` of the base
+  valuation ring); `mem_decompositionSubgroup_of_smul_centre` (`Stab(Q) = D_A`); and
+  `decompositionMap_surjective` (`Ω` algebraically closed, `κ(A)` algebraic over `k`,
+  `κ(A ∩ F) = k`), from Mathlib's `Ideal.Quotient.stabilizerHom_surjective_of_profinite`.
+  `Curve/RationalPoint.lean` discharges `hsurj` for rational points (`hrat`):
+  `decompositionMap_surjective_of_rational`, `ratSectionMap` (`s_x`), `ratSectionMap_kummerMap`
+  (Prop 1.8(ii)), `forall_ratSectionMap_kummerMap_eq_one_iff`,
+  `forall_decomposition_kummerMap_eq_one_iff_of_rational` (Prop 1.8(i) ingredient),
+  `exists_residue_eq_of_rational` (the value `u(x) ∈ kˣ`).
+* 2026-10-18 (second session): **R3 done** (`Curve/TameCharInjective.lean`):
+  `eq_one_of_mem_inertia_of_fixes_roots` / `eq_one_of_forall_evalTriv_kummer_eq_one`: an element
+  of `I_W ∩ H` fixing an `n`-th root of a uniformiser `π` for all `n` is `1` (any place `W ⊇ k`,
+  cusps included). Proof by counting inertia in finite Galois layers with pi1's
+  `ramificationIdx_mul_card` and `ramificationIdx_sup_dvd` (tame inertia cyclic).
 
 ## 6. Hand-off (2026-10-18, end of the first MR5 session)
 

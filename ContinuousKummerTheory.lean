@@ -12,13 +12,16 @@ import ContinuousKummerTheory.Curve.FunctionField
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Point
 import ContinuousKummerTheory.Curve.PointSection
+import ContinuousKummerTheory.Curve.RationalPoint
 import ContinuousKummerTheory.Curve.Residue
 import ContinuousKummerTheory.Curve.TameChar
+import ContinuousKummerTheory.Curve.TameCharInjective
 import ContinuousKummerTheory.Hilbert90
 import ContinuousKummerTheory.Kummer.Basic
 import ContinuousKummerTheory.Kummer.CorRes
 import ContinuousKummerTheory.Kummer.Corestriction
 import ContinuousKummerTheory.Kummer.Decomposition
+import ContinuousKummerTheory.Kummer.DecompositionSurjective
 import ContinuousKummerTheory.Kummer.Equiv
 import ContinuousKummerTheory.Kummer.Faithful
 import ContinuousKummerTheory.Kummer.Limit
