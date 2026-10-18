@@ -29,6 +29,8 @@ that some coefficient is a unit.
 * `KummerTheory.Decomposition.isIntegral_partialSum` (Kaplansky's lemma);
 * `KummerTheory.Decomposition.le_of_valuation_lt_one_imp`: a valuation subring of an algebraic
   extension is determined by its centre on the integral closure of the base valuation ring;
+* `KummerTheory.Decomposition.exists_decompositionMap_eq_of_fixes`: the image of
+  `D_A → Gal(κ(A)/k)` contains every `τ` trivial on the residues of `A ∩ F`;
 * `KummerTheory.Decomposition.decompositionMap_surjective`: for `Ω` algebraically closed and
   `κ(A ∩ F) = k` (a `k`-rational point), `D_A → Gal(κ(A) / k)` is surjective.
 -/
@@ -428,15 +430,16 @@ theorem exists_residue_integralClosureToA_eq [IsAlgClosed Ω] (y : ResidueField 
 variable [IsGalois F Ω]
 
 include hkres in
-/-- **Surjectivity of the decomposition map for rational points.** Let `Ω / F` be Galois with
+/-- **The image of the decomposition map is `Gal(κ(A)/κ(A ∩ F))`.** Let `Ω / F` be Galois with
 `Ω` algebraically closed, `A ⊆ Ω` a valuation subring containing `k ⊆ F`, with `κ(A)` algebraic
-over `k` and `κ(A ∩ F) = k` (`hres`: every element of `A ∩ F` has a residue in `k`; for a curve
-over `k` and a place `A` above a point `x`, this says that `x` is `k`-rational). Then the
-decomposition map `D_A → Gal(κ(A)/k)` is surjective. -/
-theorem decompositionMap_surjective [IsAlgClosed Ω] [Algebra.IsIntegral k (ResidueField A)]
-    (hres : ∀ (a : F) (ha : algebraMap F Ω a ∈ A),
-      ∃ c : k, residue A ⟨_, ha⟩ = algebraMap k (ResidueField A) c) :
-    Function.Surjective (decompositionMap F A hk hkres) := by
+over `k`. Every `τ ∈ Gal(κ(A)/k)` fixing the residues of the elements of `A ∩ F` (i.e. trivial
+on the residue field `κ(A ∩ F) ⊆ κ(A)`) is the image of an element of the decomposition group
+`D_A`. For a curve over `k` and a place `A` above a closed point `x`, this identifies the image
+of `D_A` with `G_{k_x} = Gal(κ(A)/k_x)`. -/
+theorem exists_decompositionMap_eq_of_fixes [IsAlgClosed Ω]
+    [Algebra.IsIntegral k (ResidueField A)] (τ : Gal(ResidueField A/k))
+    (hτ : ∀ (a : F) (ha : algebraMap F Ω a ∈ A), τ (residue A ⟨_, ha⟩) = residue A ⟨_, ha⟩) :
+    ∃ σ, decompositionMap F A hk hkres σ = τ := by
   set V := A.comap (algebraMap F Ω)
   set B := integralClosure V Ω
   set Q := centre F A
@@ -473,16 +476,14 @@ theorem decompositionMap_surjective [IsAlgClosed Ω] [Algebra.IsIntegral k (Resi
   let e : B ⧸ Q ≃+* ResidueField A := RingEquiv.ofBijective ψ ⟨hψinj, hψsurj⟩
   have he : ∀ b : B, e (Ideal.Quotient.mk Q b) = residue A (integralClosureToA F A b) :=
     fun _ => rfl
-  intro τ
   let τ' : (B ⧸ Q) ≃ₐ[V ⧸ Q.under V] (B ⧸ Q) :=
     AlgEquiv.ofRingEquiv (f := (e.trans τ.toRingEquiv).trans e.symm) fun x => by
       obtain ⟨v, rfl⟩ := Ideal.Quotient.mk_surjective x
       change e.symm (τ (e (Ideal.Quotient.mk Q (algebraMap V B v)))) = _
       rw [he]
-      obtain ⟨c, hc⟩ := hres v v.2
       have : residue A (integralClosureToA F A (algebraMap V B v)) =
-          algebraMap k (ResidueField A) c := hc
-      rw [this, AlgEquiv.commutes, ← this, ← he, RingEquiv.symm_apply_apply]
+          residue A ⟨_, v.2⟩ := rfl
+      rw [this, hτ, ← this, ← he, RingEquiv.symm_apply_apply]
       rfl
   obtain ⟨⟨σ, hσ⟩, hστ⟩ :=
     Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := Ω ≃ₐ[F] Ω) (Q.under V) Q τ'
@@ -495,6 +496,20 @@ theorem decompositionMap_surjective [IsAlgClosed Ω] [Algebra.IsIntegral k (Resi
     rw [RingEquiv.apply_symm_apply]
   rw [← he, h1, ← hστ, Ideal.Quotient.stabilizerHom_apply, he]
   rfl
+
+include hkres in
+/-- **Surjectivity of the decomposition map for rational points.** Let `Ω / F` be Galois with
+`Ω` algebraically closed, `A ⊆ Ω` a valuation subring containing `k ⊆ F`, with `κ(A)` algebraic
+over `k` and `κ(A ∩ F) = k` (`hres`: every element of `A ∩ F` has a residue in `k`; for a curve
+over `k` and a place `A` above a point `x`, this says that `x` is `k`-rational). Then the
+decomposition map `D_A → Gal(κ(A)/k)` is surjective. -/
+theorem decompositionMap_surjective [IsAlgClosed Ω] [Algebra.IsIntegral k (ResidueField A)]
+    (hres : ∀ (a : F) (ha : algebraMap F Ω a ∈ A),
+      ∃ c : k, residue A ⟨_, ha⟩ = algebraMap k (ResidueField A) c) :
+    Function.Surjective (decompositionMap F A hk hkres) := fun τ =>
+  exists_decompositionMap_eq_of_fixes (F := F) A hk hkres τ fun a ha => by
+    obtain ⟨c, hc⟩ := hres a ha
+    rw [hc, AlgEquiv.commutes]
 
 end Rational
 

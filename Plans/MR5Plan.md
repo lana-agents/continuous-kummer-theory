@@ -259,3 +259,17 @@ Next steps, in order of value:
   (`θ_π : I_W ∩ H →* Ẑ(1)`, continuous, `val_proj_tameChar`: independent of the roots),
   `tameChar_injective`, `tameChar_surjective`, **`inertiaZHatEquiv : I_W ∩ H ≃ₜ* Ẑ(1)`**
   ([AbsTopIII] Prop 1.4(i), T3 l.1764). The `mr5d-r3` WIP above is merged.
+* 2026-10-18 (fifth session): **closed points over finite `k_x`** (CKT `Kummer/ClosedPoint.lean`,
+  `Curve/ClosedPoint.lean`): `Decomposition.exists_decompositionMap_eq_of_fixes` (the image of
+  `D_A → Gal(κ(A)/k)` is `Gal(κ(A)/k_x)`; `decompositionMap_surjective` is now a corollary),
+  `Decomposition.pointField` (`k_x = κ(A ∩ F) ⊆ κ(A)`), `range_decompositionMap`,
+  `mem_pointField_iff` (the `D_A`-fixed part of `κ(A)` is `k_x`), `decomposition_kummer_eq_one_iff`
+  (`κ_F(f)|_{D_A}` trivial at level `n` iff `f(x) ∈ (k_xˣ)ⁿ`, no rationality),
+  `forall_decomposition_kummer_eq_one_iff`, `isKummerFaithfulGm_pointField`; curve level
+  `Curve.decompToPi_kummerMap`, `decompToPi_kummerMap_eq_one_iff`,
+  `forall_decompToPi_kummerMap_eq_one_iff` (`k` torally KF, `[k_x : k] < ∞`: all restrictions of
+  `κ_U(u)` along `D_A → Π_U` vanish iff `u(x) = 1`). `η|_x = 0` is expressed as the vanishing of the
+  restriction along `D_A → Π_U` (equivalent: `D_A → Π_U` factors through `D_A ↠ G_{k_x}`, inflation
+  is injective on `H¹`). The inertia-subgroup lemmas of `Curve/InertiaZHat.lean` moved to the
+  namespace `KummerTheory.PlaceInertia` (cj `Cusp/LineCuspInertia.lean` defines
+  `GaloisPi1.inertiaSubgroup` etc.; the old names would clash at the next cj pin bump).

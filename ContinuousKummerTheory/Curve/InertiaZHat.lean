@@ -22,8 +22,8 @@ construction (it takes values in the inverse limit).
 
 ## Main results
 
-* `GaloisPi1.inertiaSubgroup W`: the inertia set of a place `W` is a closed subgroup of the
-  Galois group (`GaloisPi1.isClosed_inertiaSubgroup`);
+* `KummerTheory.PlaceInertia.inertiaSubgroup W`: the inertia set `GaloisPi1.inertia W` of a place
+  `W` is a closed subgroup of the Galois group (`PlaceInertia.isClosed_inertiaSubgroup`);
 * `Curve.inertiaH D W`: the inertia group `I_W ∩ H`, as a closed (`Curve.isClosed_inertiaH`),
   hence compact, subgroup of `H`;
 * `Curve.tameChar`: the tame character `θ_π : I_W ∩ H →* Ẑ(1)`, continuous
@@ -68,7 +68,12 @@ theorem continuous_evalTrivHom (I : Subgroup G) (hI : ∀ g ∈ I, ∀ m : M, g 
 
 end ContH1
 
-namespace GaloisPi1
+/-! The subgroup structure on the inertia set `GaloisPi1.inertia W`. These lemmas live in the
+namespace `KummerTheory.PlaceInertia` (not `GaloisPi1`) to avoid clashes with downstream copies. -/
+
+namespace KummerTheory.PlaceInertia
+
+open GaloisPi1
 
 variable {P Ω : Type u} [Field P] [Field Ω] [Algebra P Ω] {W : ValuationSubring Ω}
 
@@ -160,7 +165,7 @@ theorem isClosed_inertiaSubgroup [Algebra.IsIntegral P Ω] :
   rw [MulAction.mem_stabilizer_iff, AlgEquiv.smul_def] at hν
   rw [AlgEquiv.mul_apply, hν]
 
-end GaloisPi1
+end KummerTheory.PlaceInertia
 
 namespace KummerTheory
 
@@ -172,7 +177,7 @@ variable {k Ω : Type u} [Field k] [Field Ω] [Algebra k Ω] [CharZero k] {t : �
 variable (D : Pi1.Orbifold.GaloisData k t) (W : ValuationSubring Ω)
 
 /-- **The inertia group `I_W ∩ H`** of a place `W` of `Ω`, as a subgroup of `H`. -/
-def inertiaH : Subgroup D.H := (GaloisPi1.inertiaSubgroup W).comap D.H.subtype
+def inertiaH : Subgroup D.H := (PlaceInertia.inertiaSubgroup W).comap D.H.subtype
 
 omit [CharZero k] in
 variable {D W} in
@@ -181,7 +186,7 @@ theorem mem_inertiaH {σ : D.H} :
 
 omit [CharZero k] in
 theorem isClosed_inertiaH : IsClosed (inertiaH D W : Set D.H) :=
-  (GaloisPi1.isClosed_inertiaSubgroup (P := K₀ k t) (W := W)).preimage continuous_subtype_val
+  (PlaceInertia.isClosed_inertiaSubgroup (P := K₀ k t) (W := W)).preimage continuous_subtype_val
 
 instance : CompactSpace D.H := GaloisPi1.compactSpace_of_isClosed D.H D.isClosed_H
 
