@@ -505,3 +505,36 @@ Next steps (MR5 side, in order):
    `⋂_N N · jacPoints C σ hσ k = 0` (state this as the J1 theorem now if the lead accepts JAC-1c (B)).
 4. J4 group side: `Π_{J¹} := Π_X/\overline{[Δ_X, Δ_X]}`, `t_x`, `η_D ∈ H¹(G_k, Δ_X^{ab})`;
    the principal ⇔ `η_D = 0` theorem waits for divisibility (JAC-4a) and the Weil pairing (JAC-4b).
+
+## 12. Hand-off (2026-10-18, end of the ninth MR5 session)
+
+Lead decisions applied: JAC-1c option (A) (pending JAC20), JAC-1b on the MR5 side, J4 group-side
+`Π_{J^d}`. Merged: cj f98c565 and 44f2258. No `sorry`/axioms.
+
+* **JAC-1b (i)** `Kummer/BaseChangeFunctionField.lean`: `ffEquiv : F (baseChange (curveGaloisData k hτ))
+  ≃ₐ[k̄] K(X_k̄)` (X_k̄ = `baseChangeKbar k X`), `ffEquiv_curveEquivL` (compatible with K(X)),
+  `galMap g` (= the `bcMap` along `specAut g` of `picGal`), **`ffEquiv_autF`** (ffEquiv ∘ autF h =
+  galFF (hToGk h) ∘ ffEquiv), `galFF_mem_stalkValuationSubring_iff` (places ↔ points).
+  `Kummer/JacobianTorsionCount.lean`: `natCard_picTorsion_baseChange'` (#Pic(F k̄)[n] = n^{2g},
+  g = genus of X), `curveGenus_baseChangeKbar`, divisibility of torsion, `tateProj_surjective_pic_baseChange`.
+* **JAC-1b (ii)–(iv)** `Scheme/CurveIdealDivisor.lean` (Weil divisors `HasDiv` of locally principal
+  ideal sheaves, `HasDiv.eq/mul`, zero schemes of sections, `exists_ord_eq_sub`, `placeSection`
+  = κ-point of a place, `placeSection_unique`); `Picard/RelEffCartierPicAdd.lean` (`picClass_add`);
+  `Picard/DivisorPic.lean`: `divPic : Div(K(C_κ)) →+ Pic(C_κ)`, `[P] ↦ [𝒪(x_P)]`,
+  **`divPic_div`** (principal ↦ 0, via the two-chart twist), **`divPic_eq_zero_iff`**,
+  `picDivPic_injective`, `jacBridge : Pic⁰(K(C_κ)) ↪ jacPoints C σ hσ κ` (κ algebraically closed).
+* **J1** `Kummer/JacobianBridge.lean`: `jacPsi : Pic⁰(F k̄) ↪ J(k̄)`, **`picPsi_picAct`**
+  (G_k-equivariance), **`isKummerFaithfulJac_curveGaloisData`**: `IsKummerFaithfulJac (curveGaloisData k hτ)`
+  from `hJ : ⋂_{N≥1} N · jacPoints X σ hσ k = 0`. `hJ` is the Def 1.5 input for `A = J`, `k_H = k`
+  (**debt**, until JAC20's k-scheme `J_k` with `Hom_k(Spec K, J_k) ≃ jacPoints` lands; then derive `hJ`
+  from the genuine Def 1.5). Needs a rational point σ (route (B)).
+* **J4 group side** `Kummer/JacobianPi1.lean`: `DeltaX`, `commClosure`, `PiJ1 = Π_X/[Δ_X,Δ_X]⁻`,
+  `DeltaAb` with continuous G_k-action, exact sequence (`deltaAbToPiJ1_injective`,
+  `range_deltaAbToPiJ1`, `piJ1ToGk_surjective`), `RatPoint`, `tSection` (t_x), `diffClass`
+  (difference classes in `ContH1 G_k Δ_X^ab`), `eta`/`etaDiv` (η_D for deg D = 0, independent of the
+  base point). Not done: "D principal ⟺ η_D = 0" ([Cusp] Prop 2.3(i)), waits for JAC-4a
+  (divisibility of J(k̄); torsion part done) and JAC-4b (Weil pairing); independence of t_x of the
+  place of Ω above x up to Δ_X-conjugacy.
+
+Next steps: (1) once JAC20's `J_k` exists, state Def 1.5 for semi-abelian k-schemes and discharge `hJ`;
+(2) J4 equivalence after JAC-4a/4b; (3) S1 still blocked on H² of profinite surface groups (pi1).
