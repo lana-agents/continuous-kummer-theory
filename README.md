@@ -162,6 +162,11 @@ Proved results (namespace `KummerTheory` unless stated):
     for all `u` (`exists_inertia_evalTriv_kummerMap_eq`); hence if `κ_U(u)` lies in the image of
     `(kˣ)^∧` then `ord_W(u) = 0` at every place `W ⊇ k`, cusps included
     (`eq_zero_of_kummerMapZHat_eq_constMapZHat`).
+  * Points (`Curve/Point.lean`; [AbsTopIII] Prop. 1.8): for a place `A ⊇ k` and a continuous
+    section `s` of `D_A → Gal(κ(A)/k)` (an argument; its existence is not formalised),
+    `section_kummerMap`: `s^*(κ_U(u)|_{D_A}) = κ_k(u(x))`; it is trivial iff `u(x) ∈ (kˣ)ⁿ`
+    (`section_kummerMap_eq_one_iff`), and trivial at every level iff `u(x) = 1` when `k` is
+    Kummer-faithful for `𝔾_m` (`forall_section_kummerMap_eq_one_iff`).
   * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
     equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
     `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful

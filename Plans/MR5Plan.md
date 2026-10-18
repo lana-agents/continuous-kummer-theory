@@ -93,13 +93,14 @@ continuous-kummer-theory`). Hence:
 |---|---|---|---|---|
 | K1 | Def 1.5 torally Kummer-faithful (`𝔾_m`-form over all finite extensions); DVR/Dedekind criterion (Rem 1.5.3(i) argument); `ℚ`, number fields, `p`-adic fields (Rem 1.5.4(i) for tori); Prop 1.6(i) for torally KF `k` | CKT `Kummer/Faithful.lean` | 300 | **done** |
 | R1 | Prop 1.6(iii), first two maps as a complex, levelwise and for `Ẑ(1)`: residue at a cusp `res_W : H¹(Π_U, μ_n) → μ_n` (evaluation at an inertia element with tame character a chosen `ζ`), `res_W(κ_U(u)) = ζ^{ord_W u}`, `res_W ∘ const = 1` | CKT `Curve/CuspResidue.lean` | 200 | **done** |
-| R2 | `η|x = 0 ⟺ f(x) = 1` for points with residue in `k` (and in finite `k_x/k`), from `decomposition_kummerMap`, surjectivity of `D_A → Gal(κ(A)/k)` and KF of `k_x` (Prop 1.8 ingredient) | CKT | 300–600 | open |
+| R2a | `η|x = 0 ⟺ f(x) = 1` along a given continuous section `s : Gal(κ(A)/k) → D_A` of `decompositionMap` (Prop 1.8 ingredient; KF of `k` enters here) | CKT `Curve/Point.lean` | 130 | **done** |
+| R2b | the section `s_x : G_k → Π_U` of a point `x ∈ U(k)` itself: (1) `D_A → Gal(κ(A)/k)` surjective when `κ(A ∩ F) = k`, (2) `decompToPi` kills `I_A ∩ H` for `A` centered on `U`, so it factors as `s_x ∘ decompositionMap`; then R2a for `s_x` via injectivity of inflation along a surjection. Recipe for (1): `B` := integral closure of `V = A ∩ F` in `Ω`, `G = Gal(Ω/F)` acting on `B` (discrete), `IsInvariant V B G`, `Q = 𝔪_A ∩ B`; Mathlib `Ideal.Quotient.stabilizerHom_surjective_of_profinite` gives `Stab(Q) ↠ Aut((B/Q)/(V/𝔪_V))`; identify `Stab(Q) = D_A`, `B/Q = κ(A)` (needs `B_Q = A`: the localisation of the integral closure of a valuation ring at a maximal ideal is a valuation ring) | CKT | 500–900 | open |
 | R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character (injectivity needs that `I_W` acts faithfully on `⋃_n F^{ur}_W(π^{1/n})`) | CKT | 500–1000 | open |
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic⁰(X_{k̄})^{G_k} = 0` as a definition (`Pic⁰` of weil-curves over `k̄` with its `G_k`-action), implied by Def 1.5; then `(T J)^{G_k} = 0` | cj | 300–600 | open |
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`: descend to `Π_X`, inflation–restriction for `Ẑ(1)` (levelwise + compactness), `Hom(Δ_X, μ_n)^{G_k} ≅ Pic(X_{k̄})[n]^{G_k}` (`picTorsionEquivUnramified`, made `G_k`-equivariant), J1 | cj | 1.5–3k | open |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj | 400–800 | after J2, R1 |
 | J4 | Prop 1.6(ii): `t_D` and principal divisors (needs `J^d` and `π₁(J^d)`, or the [Cusp] Prop 2.2 route through `Π^{c-ab}`) | cj | 3–6k | blocked (no `J^d` scheme) |
-| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2 and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | after J3, R2 |
+| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | after J3, R2 |
 | S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + iut | — | blocked |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
@@ -116,3 +117,6 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
   `ord_W(u) ≠ 0` for transcendental `u` and of uniformisers of `W ∩ F` (DVR structure): this uses
   `Place`/`ord` and belongs to curves-jacobian (cf. `Galois/AbelianPi1.dvd_ord_of_evalTriv_eq_one`),
   as part of J2/J3.
+* 2026-10-18: R2a done (`Curve/Point.lean`): `section_kummerMap` (`s^*(κ_U(u)|_{D_A}) = κ_k(u(x))`),
+  `section_kummerMap_eq_one_iff` (trivial ⟺ `u(x) ∈ (kˣ)ⁿ`), `forall_section_kummerMap_eq_one_iff`
+  (trivial at all levels ⟺ `u(x) = 1`, for `k` Kummer-faithful for `𝔾_m`).
