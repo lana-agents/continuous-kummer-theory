@@ -13,6 +13,7 @@ import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Point
 import ContinuousKummerTheory.Curve.PointSection
 import ContinuousKummerTheory.Curve.RationalPoint
+import ContinuousKummerTheory.Curve.RationalSection
 import ContinuousKummerTheory.Curve.Residue
 import ContinuousKummerTheory.Curve.TameChar
 import ContinuousKummerTheory.Curve.TameCharInjective

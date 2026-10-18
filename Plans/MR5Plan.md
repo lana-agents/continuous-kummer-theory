@@ -151,30 +151,47 @@ Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: nu
   cusps included). Proof by counting inertia in finite Galois layers with pi1's
   `ramificationIdx_mul_card` and `ramificationIdx_sup_dvd` (tame inertia cyclic).
 
-## 6. Hand-off (2026-10-18, end of the first MR5 session)
+* 2026-10-18 (second session): `Curve/RationalSection.lean`: `kbarEquiv : k̄ ≃ₐ[k] κ(A)`
+  (reduction of the constants), `kbarResidue_piToGk_decompToPi`, **`piToGk_ratSectionMap`**
+  (`s_x` is a section of `Π_U ↠ G_k` under `G_k ≅ Gal(κ(A)/k)`: [AbsTopIII] Prop 1.6(ii),
+  l.1993, "the associated section"), `ratSectionMap_injective`.
+* 2026-10-18 (second session): curves-jacobian's continuous-kummer-theory pin bumped
+  e3fc64c → f85f126 (cj main c692f59).
 
-Merged on continuous-kummer-theory main: 2216e1a (K1 + this plan), a22f306 (R1), 7ccc01d (R2a),
-a9afcd1 (R2b partial + hand-off), ce7c052 (`Curve/PointSection.lean`), and the Rem 1.5.1 commit
-after it. Proved, with no `sorry`/axioms/Prop-field hypotheses:
-torally Kummer-faithful fields and the standard examples (Def 1.5, Rem 1.5.3(i), 1.5.4(i) for
-tori), Prop 1.6(i) for torally KF `k`, the complex `(kˣ)^∧ → H¹(Π_U, Ẑ(1)) → ⊕ Ẑ` with
-`κ_U(u) ↦ ord(u)` and `κ_U(u) ∈ (kˣ)^∧ ⇒ ord_W(u) = 0`, and the point-evaluation statements of
-Prop 1.8 relative to a section / to surjectivity of `D_A → Gal(κ(A)/k)`.
+## 6. Hand-off (2026-10-18, end of the second MR5 session)
 
-Next steps, in order of value for MR9:
-1. **R2b(1)** (CKT): surjectivity of `D_A → Gal(κ(A)/k)` for `κ(A ∩ F) = k`, via Mathlib's
-   `Ideal.Quotient.stabilizerHom_surjective_of_profinite` (recipe in the R2b row). The hard part
-   is `Stab(Q) = D_A` (equivalently: the localisation of the integral closure of the valuation ring
-   `A ∩ F` at `Q` is `A`); if that is too costly, restate R2a/R2b with `Stab(Q)` and `B ⧸ Q`
-   (`Kummer/Specialization.map_kummer_eq_map_kummer` takes any `D`-stable subring `B` closed under
-   `n`-th roots, so it applies to the integral closure). Everything downstream of `hsurj`
-   (`sectionMap`, its continuity, `sectionMap_kummerMap`) is done in `Curve/PointSection.lean`.
-2. **J1–J3** (curves-jacobian, which depends on CKT): Prop 1.6(iii) middle exactness and image.
-   Inputs there: `picTorsionEquivUnramified` (only over algebraically closed `k`; needs the
-   `G_k`-equivariant version), `Galois/AbelianPi1.dvd_ord_of_evalTriv_eq_one`, places/`ord` from
-   weil-curves. Bump cj's CKT pin (e3fc64c → current main) first; cj's other agents (Jacobian,
-   MR8) push there, so rebase right before validating.
-3. **R3** (CKT): `I_W ∩ H ≅ Ẑ(1)` via the tame character (injectivity), so that
-   `Hom(I_x, Ẑ(1)) ≅ Ẑ` canonically and R1 becomes the map to `⊕ Ẑ` of Prop 1.6(iii).
-4. N1 after J3, R2b; J4 and S1 stay blocked (Jacobian scheme / `r = 0` surface groups).
+Merged in the second session: continuous-kummer-theory main f85f126 (R2b(1): surjectivity of
+`D_A → Gal(κ(A)/k)` for rational points, `Curve/RationalPoint.lean`; R3: injectivity of the tame
+character, `Curve/TameCharInjective.lean`), the `Curve/RationalSection.lean` commit after it
+(`s_x` is a section of `Π_U ↠ G_k`), and curves-jacobian main c692f59 (CKT pin bump to f85f126).
+Earlier: 2216e1a (K1), a22f306 (R1), 7ccc01d (R2a), a9afcd1, ce7c052 (R2b(2)), b4003d6
+(Rem 1.5.1). No `sorry`/axioms/Prop-field hypotheses; the only hypotheses on points are the
+geometric ones (`hrat`: `x` is `k`-rational, i.e. `κ(A ∩ F) = k`; `t ∈ A`, `H_L = H`: `x ∈ U`).
+
+What is proved for MR9 (Galois model of `pi1`, `F = Ω^H`, `char k = 0`):
+* Def 1.5 / Rem 1.5.1–1.5.4 for tori (K1, Rem 1.5.1); Prop 1.6(i) for torally KF `k`;
+* the complex `(kˣ)^∧ → H¹(Π_U, Ẑ(1)) → ⊕_W` (R1) with `κ_U(u)` ↦ orders;
+* Prop 1.4(i): `I_W ∩ H → μ_n` onto for all `n` (`evalTriv_kummer_surjective`) and
+  `⋂_n ker = 1` (`eq_one_of_forall_evalTriv_kummer_eq_one`), for every place `W ⊇ k`;
+* the section `s_x = ratSectionMap` of a rational point `x ∈ U(k)`: continuous, a section of
+  `Π_U ↠ G_k` (`piToGk_ratSectionMap`), with `s_x^* κ_U(u) = κ_k(u(x))` (Prop 1.8(ii),
+  `ratSectionMap_kummerMap`) and, for `k` Kummer-faithful for `𝔾_m`,
+  `(∀ n, s_x^* κ_U(u) = 1) ↔ u(x) = 1` (`forall_ratSectionMap_kummerMap_eq_one_iff`).
+
+Next steps, in order of value:
+1. **J1–J3** (curves-jacobian, now pinned to f85f126): Prop 1.6(iii) middle exactness and
+   image. Missing inputs, all in cj: (a) `picTorsionEquivUnramified` exists only for `k`
+   algebraically closed; J2 needs its `G_k`-equivariant version for `F k̄ / F` (constant field
+   extension in the Galois model: `Gal(Ω/F k̄) ⊆ Gal(Ω/F)` with quotient `G_k`, `piToGk`), then
+   `Hom(Δ_X, μ_n)^{G_k} ≅ Pic(X_{k̄})[n]^{G_k}`; (b) J1 as a hypothesis-free statement needs
+   "Kummer-faithful for `J`" — Def 1.5 quantifies over semi-abelian varieties, so either define
+   it for `Pic⁰(X_{k̄})` with its `G_k`-action (a hypothesis on `k`, like `IsKummerFaithfulGm`)
+   or derive it from a Jacobian scheme (blocked); (c) inflation–restriction for `Ẑ(1)`
+   coefficients along `Π_U ↠ Π_X` (levelwise exists in LCFT `Cohomology/FiveTerm`).
+2. **N1** (Prop 1.8, cj) after J3: (ii) is now only bookkeeping on top of
+   `ratSectionMap_kummerMap` and `piToGk_ratSectionMap` (constants: `kummerMap_const`); (i)
+   needs `P_U` (J3) and surjectivity of nonconstant functions on `k̄_NF`-points.
+3. Optional packaging of R3: `I_W ∩ H ≃ Ẑ(1)` as a `MulEquiv` (needs `I_W ∩ H` as a closed
+   subgroup and a compactness argument for surjectivity onto the inverse limit).
+4. J4 (Prop 1.6(ii)) and S1 (Prop 1.4(ii)) stay blocked (no `J^d` scheme; `r = 0` surface groups).
 `iut` requires neither CKT nor cj; MR9 consumes MR5 only after a pin is added there.

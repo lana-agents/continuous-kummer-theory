@@ -154,7 +154,11 @@ Proved results (namespace `KummerTheory` unless stated):
     `W ⊇ k` of `Ω` (cusps included, via the `t⁻¹`-line) and a uniformiser `π` of `W ∩ F`, the
     Kummer character `σ ↦ σ(π^{1/n})/π^{1/n}` maps `I_W ∩ H` onto `μ_n`. Proof by counting
     inertia in a Galois closure (`pi1`'s `ramificationIdx_mul_card`, surjectivity of inertia) and
-    `le_ramificationIdx_of_eq_pow` (`e ≥ n` for `π = αⁿ`).
+    `le_ramificationIdx_of_eq_pow` (`e ≥ n` for `π = αⁿ`). Injectivity
+    (`Curve/TameCharInjective.lean`): an element of `I_W ∩ H` fixing an `n`-th root of `π` for
+    every `n` is `1` (`eq_one_of_mem_inertia_of_fixes_roots`,
+    `eq_one_of_forall_evalTriv_kummer_eq_one`); proof by counting inertia, using that tame inertia
+    is cyclic (`pi1`'s `ramificationIdx_sup_dvd`).
   * The first two maps of [AbsTopIII] Prop. 1.6(iii) form a complex (`Curve/CuspResidue.lean`):
     inertia maps to `1` in `G_k` (`piToGk_of_mem_inertia`), so the classes of `(kˣ)^∧` vanish on
     every inertia group `I_W ∩ H`, `W ⊇ k` (`evalTriv_constMapZHat`, `evalTriv_kummerMap_constUnit`);
@@ -163,18 +167,25 @@ Proved results (namespace `KummerTheory` unless stated):
     `(kˣ)^∧` then `ord_W(u) = 0` at every place `W ⊇ k`, cusps included
     (`eq_zero_of_kummerMapZHat_eq_constMapZHat`).
   * Points (`Curve/Point.lean`; [AbsTopIII] Prop. 1.8): for a place `A ⊇ k` and a continuous
-    section `s` of `D_A → Gal(κ(A)/k)` (an argument; its existence is not formalised),
+    section `s` of `D_A → Gal(κ(A)/k)` (an argument),
     `section_kummerMap`: `s^*(κ_U(u)|_{D_A}) = κ_k(u(x))`; it is trivial iff `u(x) ∈ (kˣ)ⁿ`
     (`section_kummerMap_eq_one_iff`), and trivial at every level iff `u(x) = 1` when `k` is
     Kummer-faithful for `𝔾_m` (`forall_section_kummerMap_eq_one_iff`); the same on `D_A` itself
     when `D_A → Gal(κ(A)/k)` is surjective (`decomposition_kummerMap_eq_one_iff`,
-    `forall_decomposition_kummerMap_eq_one_iff`; surjectivity is a hypothesis, not yet proved), and
+    `forall_decomposition_kummerMap_eq_one_iff`, under a surjectivity hypothesis), and
     for `U = Spec R` and `A` centered on `U` the inertia of `A` dies in `Π_U`
     (`ker_decompositionMap_le_ker_decompToPi`). Under that surjectivity hypothesis,
     `Curve/PointSection.lean` builds the section `sectionMap : Gal(κ(A)/k) → Π_U` of the point
     (continuous; `isClosed_decompositionSubgroup`) and proves `sectionMap_kummerMap`
     (`s_x^* κ_U(u) = κ_k(u(x))`, [AbsTopIII] Prop. 1.8(ii)) and
-    `forall_sectionMap_kummerMap_eq_one_iff`.
+    `forall_sectionMap_kummerMap_eq_one_iff`. The surjectivity hypothesis is discharged for
+    `k`-rational points (`κ(A ∩ F) = k`) in `Kummer/DecompositionSurjective.lean`
+    (`decompositionMap_surjective`: `Stab(𝔪_A ∩ B) = D_A` for the integral closure `B` of
+    `A ∩ F`, via Kaplansky's lemma, and Mathlib's `stabilizerHom_surjective_of_profinite`) and
+    `Curve/RationalPoint.lean` (`ratSectionMap`, `ratSectionMap_kummerMap`,
+    `forall_ratSectionMap_kummerMap_eq_one_iff`); `Curve/RationalSection.lean` shows that
+    `ratSectionMap` is a section of `piToGk : Π_U ↠ G_k` (`piToGk_ratSectionMap`, along
+    `kbarEquiv : k̄ ≃ₐ[k] κ(A)`).
   * Torally Kummer-faithful fields (`Kummer/Faithful.lean`; [AbsTopIII] Def. 1.5 for tori, in the
     equivalent `𝔾_m`-form `IsTorallyKummerFaithful k`: every finite extension `L` has
     `⋂_N (Lˣ)^N = {1}`): the fraction field of a DVR with finite residue field is Kummer-faithful
