@@ -95,7 +95,7 @@ continuous-kummer-theory`). Hence:
 | R1 | Prop 1.6(iii), first two maps as a complex, levelwise and for `Ẑ(1)`: residue at a cusp `res_W : H¹(Π_U, μ_n) → μ_n` (evaluation at an inertia element with tame character a chosen `ζ`), `res_W(κ_U(u)) = ζ^{ord_W u}`, `res_W ∘ const = 1` | CKT `Curve/CuspResidue.lean` | 200 | **done** |
 | R2a | `η|x = 0 ⟺ f(x) = 1` along a given continuous section `s : Gal(κ(A)/k) → D_A` of `decompositionMap` (Prop 1.8 ingredient; KF of `k` enters here) | CKT `Curve/Point.lean` | 130 | **done** |
 | R2b | the section `s_x : G_k → Π_U` of a point `x ∈ U(k)`: (1) `D_A → Gal(κ(A)/k)` surjective when `κ(A ∩ F) = k`, (2) `decompToPi` kills `I_A ∩ H`, so it factors as `s_x ∘ decompositionMap`; R2a for `s_x` | CKT `Kummer/DecompositionSurjective.lean`, `Curve/PointSection.lean`, `Curve/RationalPoint.lean` | 900 | **done** |
-| R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character: levelwise surjective (`evalTriv_kummer_surjective`) and injective (`⋂_n ker θ_{π,n} = 1`) | CKT `Curve/TameCharInjective.lean` | 450 | **done** (as the two statements; no packaged `≃` with `ZHatOne`, `GaloisPi1.inertia` being a set) |
+| R3 | Prop 1.4(i) at the `Ẑ`-level: `I_W ∩ H ≅ Ẑ(1)` via the tame character: levelwise surjective (`evalTriv_kummer_surjective`) and injective (`⋂_n ker θ_{π,n} = 1`) | CKT `Curve/TameCharInjective.lean` | 450 | **done**, packaged as `inertiaZHatEquiv : I_W ∩ H ≃ₜ* Ẑ(1)` (`Curve/InertiaZHat.lean`) |
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic(X_{k̄})^{G_k} = 0` as a hypothesis on the curve (`IsKummerFaithfulJac D`), `G_k` acting on weil-curves' `Pic` of `F k̄` | cj `Kummer/PicAction.lean` | 300–600 | **done** (decision: hypothesis, see §5) |
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`, via Kummer theory over `F k̄` (Galois model over `k̄`), `G_k`-invariance and level compatibility of the Kummer divisor classes, J1, descent along `Π_U ↠ G_k` | cj `Kummer/ConstantExtension.lean`, `Kummer/MiddleExact.lean` | 1.5–3k | **done** |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj `Kummer/Image.lean` | 400–800 | **done** |
@@ -229,3 +229,33 @@ Next steps, in order of value:
    surjectivity onto the inverse limit).
 4. J4 (Prop 1.6(ii)) and S1 (Prop 1.4(ii)) stay blocked (no `J^d` scheme; `r = 0` surface groups).
 `iut` requires neither CKT nor cj; MR9 consumes MR5 only after a pin is added there.
+
+### R3 packaging hand-off (WIP, branch mr5d-r3)
+- `Curve/InertiaZHat.lean` (NOT yet registered in `ContinuousKummerTheory.lean`): `inertiaSubgroup` (subgroup +
+  closed, compiles), `inertiaH D W`, compactness, `tameChar` (via `ContH1.evalTrivHom` of `resZHat (kummerZHat π)`),
+  `val_proj_tameChar` (root independence), `tameChar_injective/surjective`, `inertiaZHatEquiv : I_W ∩ H ≃ₜ* Ẑ(1)`.
+- Remaining errors: `proj_tameChar` (instance timeout on `MulDistribMulAction D.H (ZHatOne (F D) Ω)` in the
+  `evalTriv_map (hφh := ...)` rewrite; give `D` explicitly / use `change` + `ContH1.induction_on`); later parts unchecked.
+- Then: drop the no-op `change` in `isClosed_inertiaSubgroup`, `omit [CharZero k]` on `isClosed_inertiaH`, mk_all, build --wfail.
+
+### Hand-off (fourth MR5 session, 2026-10-18, stopped for usage; nothing pushed)
+* cj local branch `mr5d` (worktree ~/mr5d-cj, on cj main 47fd560), WIP commit: 
+  `Kummer/PointRestriction.lean` **builds clean**: `reduceZHat`, `restrictPt` (Ẑ-level `η|_x` along
+  `ratSectionMap`), `restrictPt_kummerMapZHat` (`κ_U(u)|_x = κ_k(u(x))`),
+  `kummerZHatEquiv_restrictPt_constMapZHat` (`c|_x = c`), `kummerZHatEquiv_restrictPt_of_eq`.
+  `Kummer/RationalCharacterization.lean` WIP: Prop 1.8(i) "if" at rational points
+  (`exists_eq_kummerMapZHat_of_restrictPt`), "only if" given points, Prop 1.8(ii) at a rational
+  point; remaining error: heartbeat timeout in `exists_value` (line ~66; split the statement or
+  pass `D` explicitly), plus unused-var/section-var lints. Not yet registered in CurvesJacobian.lean.
+* Plan for points over finite `k_x` (Prop 1.8(i) ⇒): restrict to `D_A` (decompToPi) instead of a
+  section; need (a) generalised `decompositionMap_surjective` onto `Gal(κ(A)/κ(A∩F))` (copy CKT proof,
+  replace `hres` by "τ fixes residues of `A ∩ F`"), (b) `[κ(A∩F):k] < ∞` (fundamental inequality
+  `[κ(V):κ(V₀)] ≤ [F:k(t)]`, `κ(V₀) = k(t̄)`), (c) torally KF of `k` for `κ(A∩F)`.
+* R3 packaging: see the R3 hand-off above (branch `mr5d-r3`, b839a07, one error left).
+* Package copies: ~/mr5d-pkgs (cj pins; `pi1-ckt` = pi1 8e0239a for CKT worktrees).
+
+* 2026-10-18 (fifth MR5 session): **R3 packaged** (`Curve/InertiaZHat.lean`): `GaloisPi1.inertiaSubgroup`
+  (closed subgroup), `Curve.inertiaH D W = I_W ∩ H` (closed, compact), `Curve.tameChar`
+  (`θ_π : I_W ∩ H →* Ẑ(1)`, continuous, `val_proj_tameChar`: independent of the roots),
+  `tameChar_injective`, `tameChar_surjective`, **`inertiaZHatEquiv : I_W ∩ H ≃ₜ* Ẑ(1)`**
+  ([AbsTopIII] Prop 1.4(i), T3 l.1764). The `mr5d-r3` WIP above is merged.

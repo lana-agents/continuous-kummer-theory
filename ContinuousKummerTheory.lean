@@ -9,6 +9,7 @@ import ContinuousKummerTheory.Curve.CuspResidue
 import ContinuousKummerTheory.Curve.Decomposition
 import ContinuousKummerTheory.Curve.Etale
 import ContinuousKummerTheory.Curve.FunctionField
+import ContinuousKummerTheory.Curve.InertiaZHat
 import ContinuousKummerTheory.Curve.Kummer
 import ContinuousKummerTheory.Curve.Point
 import ContinuousKummerTheory.Curve.PointSection
