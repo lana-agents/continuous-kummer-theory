@@ -99,7 +99,7 @@ continuous-kummer-theory`). Hence:
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic(X_{k̄})^{G_k} = 0` as a hypothesis on the curve (`IsKummerFaithfulJac D`), `G_k` acting on weil-curves' `Pic` of `F k̄` | cj `Kummer/PicAction.lean` | 300–600 | **done** (decision: hypothesis, see §5) |
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`, via Kummer theory over `F k̄` (Galois model over `k̄`), `G_k`-invariance and level compatibility of the Kummer divisor classes, J1, descent along `Π_U ↠ G_k` | cj `Kummer/ConstantExtension.lean`, `Kummer/MiddleExact.lean` | 1.5–3k | **done** |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj `Kummer/Image.lean` | 400–800 | **done** |
-| J4 | Prop 1.6(ii): `t_D` and principal divisors (needs `J^d` and `π₁(J^d)`, or the [Cusp] Prop 2.2 route through `Π^{c-ab}`) | cj | 3–6k | blocked (no `J^d` scheme) |
+| J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done on `X_{k̄}`** (eleventh session, §14: `eta_eq_one_iff_curve`); descent "principal on `X_{k̄}` ⇒ on `X`" (Hilbert 90 for `k̄/k`) open (J4b) |
 | N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
 | N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | open (debt of N1) |
 | S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + iut | — | blocked |
@@ -579,3 +579,48 @@ Next steps:
 2. S1 still blocked on `H²` of profinite surface groups (pi1).
 Gotchas: full cj validation OOM-kills (7G) with 4 threads and even with `LEAN_NUM_THREADS=2` when
 many Kummer modules rebuild; pre-build the changed modules one at a time in the slot first.
+
+## 14. Hand-off (2026-10-19, end of the eleventh MR5 session)
+
+Statement checked: T3 l.1993–2000 (Prop 1.6(ii)) and [Cusp] txt l.2077–2104 (Prop 2.3(i), proof
+l.2084–2102: `H¹(k, Δ_X^{ab}) ≅ J(k)^∧ ⊇ J(k)`, `η_D ↦ [D]`, Kummer sequences of `J`).
+
+Merged: cj **455a14d** (three new files on top of JAC agent 26's Weil pairing; no `sorry`/axioms):
+* `Kummer/DeltaAbKummer.lean`: Kummer characters `kChar a : Δ̃ → k̄ˣ`, `s ↦ s(α)/α` (`a ∈ J(k̄)[n]`,
+  `αⁿ = f`, `n E = div f`), independent of choices (`kVal_eq`), additive in `a`, level-compatible
+  (`kChar_ofMul`), `H`-equivariant (`kVal_conj`); `bcToDeltaTilde : H_{k̄} ≅ Δ̃` and
+  `val_picTorsionEquivPiChars` (χ_a is the Kummer character of `Π_{X_{k̄}}` from
+  `picTorsionEquivPiChars`); χ_a kills inertia and `\overline{[Δ_X, Δ_X]}` ⇒ **`kCharAb a : Δ_X^{ab} → k̄ˣ`**
+  (= `torsionChar` factored through `Δ_X^{ab}`); `kerAb n = ⋂_{a∈J[n]} ker χ_a` (closed).
+  Shortcut instance `algebra_kbar_F_baseChange` (the `Algebra k̄ (F k̄)` search took ~350 ms each).
+* `Kummer/DeltaAbDuality.lean`: `kCharAb_smul` (`χ_{h a}(g δ) = h(χ_a(δ))`), `exists_kCharAb_eq`
+  (characters of `Δ_X^{ab}` of exponent `N` trivial on an open subgroup are χ_a), **separation**
+  `eq_one_of_forall_kCharAb` / `iInf_kerAb_eq_bot`, `kCharAb_injective`, **`kDual_surjective`**
+  (`Δ_X^{ab} ↠ Hom(J[n], k̄ˣ)`, via the generic `CommGroup.surjective_of_separating`). With
+  `weilDual_bijective_baseChange` this is `Δ_X^{ab}/kerAb n ≅ J[n]`, `G_k`-equivariantly.
+* `Kummer/PrincipalEta.lean`: `RatPoint.comap_ne_top`, `placeOf x` (place of `F k̄` under a rational
+  point), **`omegaPlace x`** (OmegaPlace with residue field `k̄` via `kbarEquiv`),
+  `placeMap_autF_placeOf`, `autF_eq_of_hToGk_eq`, `picAct_picAct_inv`; **`kCharAb_diffFun`**
+  (Kummer–Weil at rational points: `χ_a([t_x − t_y](g)) = e_n(a, h z − z)`, `n z = [x − y]`);
+  `ratDiv f` (divisor on `F k̄`), `etaCocycle`, `exists_eta_kummer` (η_D mod n = Kummer cocycle of
+  `[D] = n z`); **`eta_eq_one_iff`** (Galois model; hypotheses `IsKummerFaithfulJac D`,
+  divisibility of `Pic⁰(F k̄)`, perfect Weil pairing, finite `J[N]`) and
+  **`eta_eq_one_iff_curve`**: for `X` with a `k`-point over a Kummer-faithful `k` (char 0), a degree-0
+  divisor supported on `k`-rational points has `η_D = 0` iff `[D] = 0` in `Pic(X_{k̄})` — all
+  hypotheses discharged (`isKummerFaithfulJac_of_isKummerFaithful`, `exists_nsmul_eq_jacPsi`,
+  `weilDual_bijective_baseChange`, `finite_picTorsion_baseChange`).
+
+Next steps:
+1. **J4b (descent)**: "principal on `X_{k̄}`" ⇒ "principal on `X`" (the paper's "D principal"):
+   for `[D] = div g`, `g ∈ F k̄`, every `h ∈ H` fixes `D` (`placeMap_autF_placeOf` + `D_A ↠ G_k`,
+   `autF_eq_of_hToGk_eq`), so `h(g)/g ∈ k̄ˣ` (`exists_eq_algebraMap_of_div_eq_zero`) is a continuous
+   cocycle of `G_k`; Hilbert 90 for `k̄/k` (CKT `isMulCoboundary₁_of_eventually_eq_one`) gives
+   `β ∈ k̄ˣ` with `g/β ∈ (F k̄)^H = F`; then compare `div_F` with `div_{F k̄}` (unramified constant
+   extension, `ord` equality, cf. `Kummer/WeilGenericPoint` `ordAt_bc`). ~300–500 lines.
+2. JacobianPi1's module docstring still says "Not proved here: [Cusp] Prop. 2.3(i)"; update it (with
+   a pointer to `Kummer/PrincipalEta.lean`) when the file is next touched (it triggers a rebuild of
+   all Kummer modules).
+3. S1 (Prop 1.4(ii)) still blocked on `H²` of profinite surface groups (pi1).
+Gotchas: `set_option maxHeartbeats 400000` was needed for three declarations (semilinear actions
+unfolded in defeq checks); state helper lemmas generically (over `κ K` or a generic Galois model
+`E`) to keep elaboration cheap; the concrete `F (baseChange D)` context is slow.
