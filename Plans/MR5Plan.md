@@ -99,10 +99,10 @@ continuous-kummer-theory`). Hence:
 | J1 | "Kummer-faithful for the Jacobian" of `X`: `⋂_N N·Pic(X_{k̄})^{G_k} = 0` as a hypothesis on the curve (`IsKummerFaithfulJac D`), `G_k` acting on weil-curves' `Pic` of `F k̄` | cj `Kummer/PicAction.lean` | 300–600 | **done** (decision: hypothesis, see §5) |
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`, via Kummer theory over `F k̄` (Galois model over `k̄`), `G_k`-invariance and level compatibility of the Kummer divisor classes, J1, descent along `Π_U ↠ G_k` | cj `Kummer/ConstantExtension.lean`, `Kummer/MiddleExact.lean` | 1.5–3k | **done** |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj `Kummer/Image.lean` | 400–800 | **done** |
-| J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done on `X_{k̄}`** (eleventh session, §14: `eta_eq_one_iff_curve`); descent "principal on `X_{k̄}` ⇒ on `X`" (Hilbert 90 for `k̄/k`) open (J4b) |
+| J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done** (eleventh session on `X_{k̄}`, §14; twelfth session J4b descent to `X`, §15: `eta_eq_one_iff_principal_curve`, `tD_conj_identity_iff_principal_curve`) |
 | N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
 | N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | open (debt of N1) |
-| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + iut | — | blocked |
+| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | unblocked (pi1 12719c9 `h2Equiv`); step S1a done (§15: `I_x ↪ Δ^{c-cn}` for `Π̂_{g,1}`), S1b–S1f open |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
 Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: number fields,
@@ -624,3 +624,61 @@ Next steps:
 Gotchas: `set_option maxHeartbeats 400000` was needed for three declarations (semilinear actions
 unfolded in defeq checks); state helper lemmas generically (over `κ K` or a generic Galois model
 `E`) to keep elaboration cheap; the concrete `F (baseChange D)` context is slow.
+
+## 15. Hand-off (2026-10-19, end of the twelfth MR5 session)
+
+Housekeeping: all files of `~/mr5d-pkgs/{formal-schemes,local-class-field-theory,oka,pi1,pi1-ckt,
+weil-curves,belyi}` copied in place (hard links to `~/mr8-pkgs` broken, 0 multiply-linked files
+left); the foreign stash `f6ef2e7` in `~/mr5d-pkgs/belyi` (base `f0d1a5c`, same four files as
+belyi `5f3a88e`, differing only in two proof bodies) dropped. `~/mr5d-pkgs/pi1` moved to
+`12719c9` (cj's pin since MR8's `a34fdd7`; additions only, no downstream rebuild).
+
+Merged (cj main, validated, no `sorry`/axioms beyond `propext`/`choice`/`Quot.sound`):
+* **f736c1b** `Kummer/PrincipalDescent.lean` (J4b, T3 l.1993–2000, [Cusp] l.2077–2104):
+  `placeOfF x` (the place of `F` of a rational point), `ratDivF f` (the divisor of `X`);
+  `ord_placeOf_ιF`: `F k̄ / F` is unramified at rational points (a uniformiser `π` with
+  `ord_{x_{k̄}} π = e ≥ 2` contradicts the tame character `exists_inertia_tameChar`: `σ ∈ I_A ∩ H`
+  fixes `k̄`, hence `F k̄`, and multiplies the unit `π^{1/e}/ρ` by `ζ_e`, `eq_of_mem_inertia`);
+  `eq_placeOf_of_liesOver` (`x_{k̄}` is the only place above `x`: `Cusp.exists_algEquiv_comap_eq`
+  plus `D_A ↠ G_k`); `div_ιF_eq_ratDiv_iff`; **`exists_mem_F_of_div_eq_ratDiv`** (Hilbert 90:
+  `σ ↦ h_σ(g)/g` is a cocycle of `G_k` trivial on the image of the open stabiliser of `g`, which
+  is open since `hToGk` is a closed map; `isMulCoboundary₁_of_eventually_eq_one`);
+  `mk_ratDiv_eq_zero_iff` (`[D] = 0` in `Pic(X_{k̄})` ⟺ `D` principal on `X`);
+  **`eta_eq_one_iff_principal`**, **`eta_eq_one_iff_principal_curve`**,
+  `eta_eq_one_iff_exists_conj` and **`tD_conj_identity_iff_principal_curve`**: Prop 1.6(ii) as
+  in the paper (`t_D` is `Δ_X`-conjugate to the identity section, i.e. the difference cocycle
+  `σ ↦ ∏ (t_{xᵢ}(σ) t_{x₀}(σ)⁻¹)^{nᵢ}` is `σ ↦ q σ(q)⁻¹`, iff `D ∈ principal k F`).
+  Gotcha: `rfl` between `Subtype.val`s of `F D` and `F (baseChange D)` times out in the kernel
+  (it compares the two membership predicates first); use `coe_ιF` (`Subtype.coe_mk`).
+* **3942054** `Kummer/CuspCentral.lean` (S1a, T3 l.1771–1795): `cuspKernel g` (closed normal
+  subgroup of `Π̂_{g,1}` generated by the cusp `c`), `ccnKernel g = \overline{[cuspKernel, Π̂]}`,
+  `CcnQuot g` (maximal cuspidally central quotient), `mk_mul_comm_of_mem`; **`ccnInertia_injective`**
+  (`g ≥ 1`: `ℤ̂ → CcnQuot`, `k ↦ cᵏ`, injective — `I_x ↪ Δ^{c-cn}_{U_x}`), via the pi1 Heisenberg
+  quotients, which send `c` to the central element `heisT⁻¹` (`ccnKernel_le_ker`).
+
+S1 assessment (pi1 `12719c9`: `H2lc`, `SurfaceGroup.h2Equiv : H2lc (Π̂_{g,0}) M ≃* M` for finite
+trivial `M` via the relator value `relVal`, `h2EquivOfContinuousMulEquiv`, `relVal_map`). Steps:
+* S1b (group theory, ~300 lines): `Π̂_{g,1} ⧸ cuspKernel ≃ₜ* Π̂_{g,0}` (fill map; completion of
+  `Π_{g,1}/⟨⟨c⟩⟩ = Π_{g,0}`) and image of `cuspKernel` in `CcnQuot` = image of `I` (conjugates of
+  `c` agree mod `ccnKernel`): the exact sequence `1 → I_x → Δ^{c-cn} → Δ_X → 1`.
+* S1c (~300 lines): for `M = I/n`, the pushed-out central extension `Δ^{c-cn}/nI` of `Π̂_{g,0}` has
+  a locally constant cocycle `f` (section of a finite-level quotient) with `relVal f = c⁻¹ mod n`
+  (`commProd_eq_incl_relVal` with lifts of `aᵢ, bᵢ`; the relation `∏[aᵢ,bᵢ] c = 1`), so its class
+  under `h2Equiv` is the image of `c⁻¹`: the `E₂`-differential `d₂(1) ∈ H²(Δ_X, I) = Hom(M_X, I)`
+  is the iso `M_X → I` determined by the relator values; Ẑ-coefficients as the limit over `n`
+  (`relVal_map`). The bridge `ContH2 Δ M ≃* H2lc Δ M` (LCFT carriers, identity on cochains for
+  discrete `M`) is only needed if a consumer uses LCFT's `ContH2`.
+* S1d: transport to the Galois model: `Δ_{U_x} ≅ Π̂_{g,1}`, `Δ_X ≅ Π̂_{g,0}` compatibly with
+  `Δ_{U_x} ↠ Δ_X` and with `c ↦` a generator of `I_x` (cj has the étale/Galois comparisons
+  `etalePi1EquivPiX'`, `etaleFundamentalGroup_equiv_profiniteSurfaceGroup_zero`; the `r = 1`
+  version with the cusp generator at `x` is not yet stated — check JAC/MR8 files first).
+* S1e: "relative to the natural identifications of `I_x`, `M_X` with `Ẑ(1)`" (l.1792): `I_x ≅ Ẑ(1)`
+  is CKT `inertiaZHatEquiv`; `M_X ≅ Ẑ(1)` via the degree/Kummer boundary `Pic → H²(Δ_X, μ_n)`
+  ([Cusp] §2 l.1795–1806, [Mzk19] Prop 1.2(i)); the compatibility (the fundamental class is
+  sent to `c`) is the geometric content of [Mzk19] Prop 1.6(iii) (first Chern class of a point).
+  Literature to fetch: [Mzk19] = "The Absolute Anabelian Geometry of Canonical Curves" is not in
+  `~/iut-scratch/papers/txt/` (check before citing).
+
+Next steps: S1b → S1c (pure group theory on `Π̂_{g,1}`, all inputs available), then S1d, S1e. N2
+(`NFModel.UnitsDescend`) is the same kind of descent as J4b (along `k̄/k̄_NF`, Hilbert 90 is not
+available there in general since `k̄/k̄_NF` can be transcendental — a specialisation argument is needed instead).
