@@ -102,7 +102,7 @@ continuous-kummer-theory`). Hence:
 | J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done** (eleventh session on `X_{k̄}`, §14; twelfth session J4b descent to `X`, §15: `eta_eq_one_iff_principal_curve`, `tD_conj_identity_iff_principal_curve`) |
 | N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
 | N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | open (debt of N1) |
-| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | unblocked (pi1 12719c9 `h2Equiv`); step S1a done (§15: `I_x ↪ Δ^{c-cn}` for `Π̂_{g,1}`), S1b–S1f open |
+| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | S1a–S1d done (§15, §16: group model and transport to `π₁ᵉᵗ` of a curve over `k = k̄`); S1e (natural identifications with `Ẑ(1)`) open, needs a lead decision (§16) |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
 Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: number fields,
@@ -682,3 +682,63 @@ trivial `M` via the relator value `relVal`, `h2EquivOfContinuousMulEquiv`, `relV
 Next steps: S1b → S1c (pure group theory on `Π̂_{g,1}`, all inputs available), then S1d, S1e. N2
 (`NFModel.UnitsDescend`) is the same kind of descent as J4b (along `k̄/k̄_NF`, Hilbert 90 is not
 available there in general since `k̄/k̄_NF` can be transcendental — a specialisation argument is needed instead).
+
+## 16. Hand-off (2026-10-19, end of the thirteenth MR5 session)
+
+Merged (cj main, validated, no `sorry`/axioms):
+* **cb9e0aa** `Kummer/CuspFill.lean` (S1b): `fillHom g : Π_{g,1} →* Π_{g,0}` (`c ↦ 1`),
+  `ker_fillHom` (`= ⟨⟨c⟩⟩`), `fillLift`; `fillHat g = completionMap (fillHom g)`, continuous and
+  surjective; **`ker_fillHat : (fillHat g).ker = cuspKernel g`** (via open normal subgroups:
+  `z ∉ cuspKernel` is separated by the finite quotient `Π̂ ⧸ (cuspKernel ⊔ U)`, which factors
+  through `fillHom`); **`cuspQuotEquiv g : Π̂_{g,1} ⧸ cuspKernel g ≃ₜ* Π̂_{g,0}`**
+  (`cuspQuotEquiv_mk : cuspQuotEquiv g x = fillHat g x`) — this is the declaration MR8 asked for;
+  `ccnFill g : CcnQuot g →* Π̂_{g,0}`, `ccnInertia g : ℤ̂ →* CcnQuot g`,
+  **`map_cuspKernel_eq_range_ccnInertia`**, `ker_ccnFill`, **`ccn_exact`** (injective / range =
+  kernel / surjective for `g + 1`).
+* **ffcc0f2** `Kummer/CuspExtClass.lean` (S1c): pure group theory `secCocycle`, `secTwist`
+  (morphism of extensions `E →* M ×_f G` from a set-theoretic section and a conjugation-invariant
+  `ψ` on `ker p`), `exists_sec` (sections equivariant for a normal `V` up to `V ∩ ker p`),
+  `secCocycle_mul_right`, `isLocallyConstant_secCocycle`; `IsCcnPushout χ f Ψ` (`Ψ : CcnQuot →*
+  Twist f` over `Π̂_{g,0}`, `= χ` on `I`); **`exists_isCcnPushout`** (locally constant `f`, for
+  finite `M` and `χ : ℤ̂ →* M` with open fibres: an open normal `W` with `ψ` trivial on
+  `W ∩ cuspKernel` is found by compactness, `fillHat(W)` is open as a closed finite-index
+  subgroup); **`relVal_of_isCcnPushout`** (`relVal f = χ(c)⁻¹`); `ccnClass χ`,
+  **`h2Equiv_ccnClass`** (`= χ(c)⁻¹`), `mk_eq_ccnClass` (independent of choices),
+  `h2Equiv_ccnClass_comp` (change of coefficients: the `Ẑ`-statement as the limit),
+  `zmodChar n`, **`h2Equiv_ccnClass_zmod`** (`= -1`, a generator: the induced
+  `M_X/n → I_x/n` is an isomorphism). No continuous sections needed.
+* **fea3537** `Kummer/CuspCentralCurve.lean` (S1d): **`exists_cuspCentral_equiv`**: for `X` over
+  `k = k̄`, char `0`, `U = X ∖ {x}`, `W₀` a place over `x`: `Θ : π₁ᵉᵗ(U) ≃ₜ* Π̂_{g,1}`,
+  `Θ₀ : π₁ᵉᵗ(X) ≃ₜ* Π̂_{g,0}` with `Θ(I_x) = ⟨c⟩‾`, `Θ₀ ∘ π₁(U ⊆ X) = fillHat ∘ Θ`,
+  `Θ(Ker) = cuspKernel`, `Θ(\overline{[Ker, Δ_U]}) = ccnKernel` (from PI1TOP's
+  `exists_continuousMulEquiv_cuspInertia_curve_of_isAlgClosed` composed with a conjugation, and
+  `ker_fundamentalGroupMap_homOfLE_eq_normalClosure`); `continuousMulEquivOfKerEq`,
+  `exact_of_mulEquiv`; **`cuspCentral_exact_curve`** (genus `≥ 1`: `I_x ∩ N' = 1`,
+  `I_x ≤ Ker ≤ I_x N'`, `π₁(U) ↠ π₁(X)`) — the exact sequence of Prop. 1.4(ii) for curves.
+
+Literature correction: [Mzk19] in AbsTopIII (bibliography l.10770) is *Absolute anabelian
+cuspidalizations of proper hyperbolic curves*, J. Math. Kyoto Univ. 47 (2007) — already in
+`~/iut-scratch/papers/txt/Absolute Anabelian Cuspidalizations.txt` (§15 named the wrong paper).
+There: `M_X := Hom(H²(Δ_X, Ẑ†), Ẑ†)` (l.302–305); Prop 1.2(ii) (l.363–371): the unique
+`M_X ≅ Ẑ†(1)` sending `1 ∈ Ẑ† ≅ H²(Δ_X, M_X)` to the first Chern class of a degree-1 line bundle;
+Def 1.5(i) (l.455–462): cuspidally central; Prop 1.6 (l.513–580): (i) `η^diag` = Chern class of
+`O(ι(X))`, (ii) `1 → M_X → Π_{L^×} → Π_{Z'} → 1` has class `η^diag`, (iii) `Π_{U_{Z'}} ↠ Π_{L^×}`
+(proof via [Mzk7] §4, [Mzk8] Lemma 4.2).
+
+**S1e (open, decision needed).** What remains of Prop 1.4(ii) is "relative to the natural
+identifications of `I_x`, `M_X` with `Ẑ(1)`". We have `M_X/n ≅ ℤ/n` via the relator value
+(`h2Equiv`, i.e. the topological orientation transported along `Θ₀`) and the d₂-class `= c⁻¹`.
+Missing: (a) `I_x ≅ Ẑ(1)` on the étale side (CKT `inertiaZHatEquiv` on `I_W ∩ H` plus injectivity
+of `I_W ∩ H ↠ cuspInertia U W` — Hopfian `ℤ̂`, ~250 lines, within reach); (b) the natural
+`M_X ≅ Ẑ(1)` of [Mzk19] Prop 1.2(ii), which needs a first Chern class `Pic(X_{k̄}) →
+H²(Δ_X, μ_n)` (étale `H²` of a `K(π,1)` curve, or a group-theoretic substitute, e.g. pin it down by
+cup product `H¹ × H¹ → H²` against the Weil pairing on `Pic[n] ≅ H¹(Δ_X, μ_n)`, cj
+`WeilPairingGalois`) and the comparison that `c ↦` the tame-character generator matches
+`c₁(O(x))` ([Mzk19] Prop 1.6(iii), [Mzk8] Lemma 4.2). Options: (1) treat (b) as a separate
+multi-session sub-track (Chern class via the Kummer boundary + Weil pairing); (2) define the
+Ẑ(1)-structure on `M_X` via the d₂-iso itself (as Mochizuki's "purely group-theoretic algorithm"
+does) and record only (a). Optional: a bridge to LCFT's `FiveTerm.tgCentral` (the literal
+`E₂`-differential) needs `tgCentral_eq_of_section` for a non-continuous section with locally
+constant cocycle (our `exists_isCcnPushout` route) or continuous sections of profinite quotients.
+
+Next steps: lead decision on S1e; then (a); N2 (`NFModel.UnitsDescend`) remains open.
