@@ -538,3 +538,44 @@ Lead decisions applied: JAC-1c option (A) (pending JAC20), JAC-1b on the MR5 sid
 
 Next steps: (1) once JAC20's `J_k` exists, state Def 1.5 for semi-abelian k-schemes and discharge `hJ`;
 (2) J4 equivalence after JAC-4a/4b; (3) S1 still blocked on H² of profinite surface groups (pi1).
+
+## 13. Hand-off (2026-10-19, end of the tenth MR5 session)
+
+Merged: cj **5d6f566** (J1 + J4 place independence) and **0af5e70** (J4 reduction). No `sorry`/axioms.
+JAC-4a/4b (JAC agent 25) had not landed on cj main at the end of the session.
+
+* **J1, debt removed** — `Kummer/KummerFaithful.lean`: [AbsTopIII] Def 1.5 (T3 l.1807–1836) for
+  group schemes over `Spec k_H` (`GrpObj` in `Over (Spec k_H)`, points `𝟙_ ⟶ A` with Mathlib's
+  `Hom.group`): `IsTorus T` (`T_{k̄} ≅ 𝔾_m^r`, as a natural group isomorphism
+  `Hom_{k_H}(S, T) ≃* (Γ(S,𝒪_S)ˣ)^r` on `k̄`-schemes `S`, since Mathlib has no `𝔾_m`),
+  `SemiAbelianExtension A` (`0 → T → A → B → 0`: `T` torus, `B` abelian variety, `T = A ×_B 1`,
+  `p` flat + surjective + lfp), `IsSemiAbelianVariety` (commutative + such an extension),
+  **`IsKummerFaithful k`**, `IsTorallyKummerFaithfulSch k` (all finite `k_H/k` in the universe of
+  `k`, as CKT's `IsTorallyKummerFaithful`). `IsAbelianVariety.isSemiAbelianVariety` (trivial torus),
+  `jacKPointsMulEquiv` (`J_k(K) ≃* J(K)`: the group law of the group scheme `J_k` is that of
+  `Pic⁰`, via `yonedaGrpObjIsoOfRepresentableBy`), `jacPoints_eq_zero_of_isKummerFaithful`, and
+  **`isKummerFaithfulJac_of_isKummerFaithful`**: `IsKummerFaithfulJac (curveGaloisData k hτ)` for
+  Kummer-faithful `k` and a rational point σ. The old theorem with `hJ` stays as the intermediate
+  step (`isKummerFaithfulJac_curveGaloisData`); its docstrings no longer record a debt.
+* **J4 leftover** — `Kummer/TSectionPlace.lean`: `tSection_hToGk` (`t_x(g) = [τ]` for `τ ∈ D_A`
+  over `g`), `exists_hToGk_eq`, **`exists_tSection_conj`** (places over the same point of `F`:
+  `t_{x'} = q t_x q⁻¹`, `q ∈ Δ_X^{ab}`; via `Cusp.exists_algEquiv_comap_eq`),
+  `diffClass_tSection_eq_one`.
+* **J4, parts not needing JAC-4a/4b** — `Kummer/JacobianH1Reduction.lean`:
+  `ContH1.mk_eq_one_of_forall_mem` (compactness), `eq_one_of_forall_exists_pow_eq` (abelian
+  quotients of profinite groups), `eq_one_of_forall_exists_pow_eq_deltaAb`
+  (`⋂_N (Δ_X^{ab})^N = 1`), **`mk_eq_one_iff_forall_pow`** (a class in `H¹(G_k, Δ_X^{ab})` vanishes
+  iff it vanishes modulo every `(Δ_X^{ab})^N`), `kummer_mem_nsmul_iff` (Kummer injectivity
+  `M^G/N ↪ H¹(G, M[N])` elementwise). [Cusp] Prop 2.3(i) proof: txt l.2084–2102.
+
+Next steps:
+1. When JAC-4a (`[N]` surjective on `J(k̄)`) and JAC-4b (Weil pairing) land: build
+   `Δ_X^{ab}/N ≅ J[N]` (`G_k`-equivariant; from `torsionChar` + Weil pairing) and show
+   `η_D mod N ↦` the Kummer cocycle `σ ↦ σz − z` of `[D] = N z`. Then [Cusp] Prop 2.3(i) follows:
+   `η_D = 0` ⟺ (`mk_eq_one_iff_forall_pow`) all `η_D mod N = 0` ⟺ (`kummer_mem_nsmul_iff` +
+   divisibility) `[D] ∈ ⋂_N N·J(k)` ⟺ (J1, `jacPoints_eq_zero_of_isKummerFaithful`) `[D] = 0`.
+   Note: `torsionChar` lives on `Δ = Gal(Ω/F k̄)`; it factors through `Δ_X^{ab}` (unramified
+   characters) — to be checked when connecting.
+2. S1 still blocked on `H²` of profinite surface groups (pi1).
+Gotchas: full cj validation OOM-kills (7G) with 4 threads and even with `LEAN_NUM_THREADS=2` when
+many Kummer modules rebuild; pre-build the changed modules one at a time in the slot first.
