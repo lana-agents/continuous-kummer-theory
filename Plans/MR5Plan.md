@@ -742,3 +742,51 @@ does) and record only (a). Optional: a bridge to LCFT's `FiveTerm.tgCentral` (th
 constant cocycle (our `exists_isCcnPushout` route) or continuous sections of profinite quotients.
 
 Next steps: lead decision on S1e; then (a); N2 (`NFModel.UnitsDescend`) remains open.
+
+## 17. S1e plan (2026-10-22, fourteenth MR5 session; lead decision: option (1), the honest version)
+
+Lead decision (christian-aa, 2026-10-22): S1e(b) is done honestly — the natural `M_X ≅ Ẑ(1)` of
+[Mzk19] Prop 1.2(ii) via a first Chern class, plus the comparison "the cusp generator matches
+`c₁(𝒪(x))`"; the `Ẑ(1)`-structure on `M_X` is **not** defined through the `d₂`-iso itself.
+
+Literature (checked 2026-10-22): [Mzk19] = `Absolute Anabelian Cuspidalizations.txt` l.302–305
+(`M_X`), Prop 1.2(ii) l.363–371 (the unique `M_X ≅ Ẑ(1)` sending `1 ∈ H²(Δ_X, M_X)` to the first
+Chern class of a degree-1 line bundle on `X_k̄`); [Mzk8] = `Galois Sections.txt` Lemma 4.2
+l.778–811 (the `𝔾_m`-torsor `L^×` of `L = 𝒪(x)`: extension of `Π_X` by `Ẑ(1)` with class `c₁(L)`,
+`I_x ≅ Ker(Π_{L^×} → Π_X)`); [Mzk7] = `Topics Surrounding the Anabelian Geometry of Hyperbolic
+Curves.txt` Def 4.1 l.1488–1510 (`c₁(L)` = Kummer boundary `H¹(X, 𝔾_m) → H²(X, μ_n)`).
+
+**Definition of `c₁` used.** The Kummer boundary computed on the profinite universal cover `X̃`
+(group cohomology of `Δ_X` with coefficients in `Ω^{ker(H → Δ_X)}`): for `f` on `X̃` with
+`div f ≡ D (mod n)` (in Kummer form: inertia acts on `f^{1/n}` as on `u^{1/n}` for `u` with
+`ord u = D`) and `γ f = f g_γⁿ`, `c₁(D) mod n` is the class of `g_γ γ(g_δ)/g_{γδ} ∈ μ_n`. This is
+[Mzk7] Def 4.1 (for `K(π,1)` curves `H²_et(X, μ_n) = H²(Δ_X, μ_n)` and the Kummer sequence on the
+étale site restricts to the one on `X̃`); it is canonical (no choice of unit), so it needs no
+further normalisation. The cup product `H¹ × H¹ → H²` against the Weil pairing (mentioned in the
+brief as a way to pin `c₁` down) is therefore **not** needed for Prop 1.2(ii) / Prop 1.4(ii); it is
+kept as optional step b7 (decision for the lead whether it is still wanted).
+
+Steps (cj `CurvesJacobian/Kummer/`):
+* **b1** (done, cj 504ca56, from the WIP of the thirteenth session): `ChernClass.lean` (generic
+  Kummer-boundary cocycle `chernClass` in `H2lc`), `CuspChern.lean`: `IsChernRep` (rep. of
+  `𝒪(x)` mod `n`), `chernClassX`, `chernClassX_eq`, `exists_isChernRep` (genus `≥ 1`),
+  `IsCuspPushout.mk_eq_chernClassX`, **`cuspCentral_class_eq_chernClass`**: every pushout of
+  `1 → I_x → Δ^{c-cn}_{U_x} → Δ_X → 1` along `I_x ≅ Ẑ(1) ↠ μ_n` has class `c₁(𝒪(x)) mod n`.
+* **b2** compatibility in `n`: `c₁ mod nm ↦ c₁ mod n` under `μ_{nm} ↠ μ_n` (a rep. mod `nm` is a
+  rep. mod `n`, cocycle `a ↦ a^m`); the `Ẑ(1)`-level statement as the compatible system. ~150 lines.
+* **b3** `c₁` of divisors (`H = H_L`, so `F = K(X)`): `IsChernRepDiv E f` for `E ∈ Div(F)`,
+  uniqueness up to `n`-th powers on `X̃`, existence (products of point reps), additivity,
+  `c₁(div h) = 0`, `c₁(n E) = 0`, `c₁([x]) = chernClassX`; **`c₁ : Pic(F) →+ H²(Δ_X, μ_n)`**.
+  ~600–900 lines.
+* **b4** `c₁(Pic⁰) = 0` from divisibility of `Pic⁰(F)` (`k = k̄`; JAC: `jacBridge_surjective`,
+  `exists_nsmul_eq_jacPoints_of_charZero`, transported along `F = L ≅ K(X) ≅ K(X_k)`); hence
+  `c₁(E) = deg E · c₁(pt)`, `c₁(𝒪(x))` independent of `x`. If the transport is not finished in
+  this session, divisibility enters the generic theorem as an explicit argument (debt). ~300–500.
+* **b5** [Mzk19] Prop 1.2(ii) levelwise: `c₁` of a degree-1 class generates `H²(Δ_X, μ_n)` (from
+  b1 and `h2Equiv_ccnClass`), the natural iso `M_X/n := Hom(H²(Δ_X, ℤ/n), ℤ/n) ≅ μ_n`, compatible
+  in `n`. ~300.
+* **b6** Prop 1.4(ii) final form: for every `x`, the class of the cusp pushout along
+  `I_x ≅ Ẑ(1) ↠ μ_n` is the natural class (b5), i.e. the extension corresponds to the natural
+  `M_X ≅ Ẑ(1) ≅ I_x`. ~100.
+* b7 (optional, lead decision): cup product `χ_a ∪ χ_b` vs Weil pairing `e_n(a, b)` times `c₁(pt)`
+  (needs the topological/algebraic intersection-pairing comparison; large).
