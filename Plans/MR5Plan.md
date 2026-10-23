@@ -102,7 +102,7 @@ continuous-kummer-theory`). Hence:
 | J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done** (eleventh session on `X_{k̄}`, §14; twelfth session J4b descent to `X`, §15: `eta_eq_one_iff_principal_curve`, `tD_conj_identity_iff_principal_curve`) |
 | N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | **done** (N2 removed the debt, cj 3205809; curve-level wrapper of 1.8(i) 'if' cj 36b66db `NFCurve.lean`); previously: done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
 | N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | **done** (cj 3205809, `NFDescent.lean` `NFModel.unitsDescend`; the table entry was stale until §18) |
-| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | S1a–S1d done (§15, §16: group model and transport to `π₁ᵉᵗ` of a curve over `k = k̄`); S1e done mod n for every n (§17, §18: `ChernNatural.IsCuspPushout.mk_eq_natIso`) |
+| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | S1a–S1d done (§15, §16: group model and transport to `π₁ᵉᵗ` of a curve over `k = k̄`); S1e done mod n for every n (§17, §18: `ChernNatural.IsCuspPushout.mk_eq_natIso`); S1f (Π_X-equivariance, `H¹(Π_U, M_X)`) done (§20, cj e2fdba5) |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
 Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: number fields,
@@ -889,3 +889,96 @@ Next steps: S1f (Π_X-equivariance of `natIso`; needs the conjugation action of 
 1–2k lines); curve-form wrappers for Prop 1.8(i) "only if" and (ii); the debt
 "`IsKummerFaithful` for p-adic / number fields" (decision: accept as hypothesis, or a p-adic Lie
 sub-track for Jacobians).
+
+## 20. Sixteenth MR5 session (2026-10-23): S1f done; Task B plan (Kummer-faithfulness of `J` over `p`-adic fields)
+
+Lead decisions (christian-aa, 2026-10-23): (1) `IsKummerFaithful k` for number fields and
+`p`-adic fields is **not** acceptable as a permanent hypothesis (no-shells policy); it is a recorded
+debt, to be discharged by Task B below. (2) S1f first (MR9 needs it).
+
+### 20.1 S1f (done, cj e2fdba5)
+
+`Kummer/ChernEquivariant.lean` (generic): `muMap`, `chernClass_map` (`c(α f) = α_* (θ̄⁻¹)^* c(f)`
+for a semilinear automorphism `(α, θ, θ̄)` of the Galois model), `TopClass.precompMX`
+(`φ ↦ φ ∘ θ̄^*` on `M_X/n`), `h2Map_precompMX_of_isTaut`, `IsChernRepDiv.map`, `c1Div_divMap`,
+`c1One_map`, **`natIso_precompMX`** (uniqueness of `natIso`). `Kummer/SyncEquivariant.lean`
+(curves): `conjK`, `thetaH`, `descendAut`, **`thetaBar h : Δ_X ≃ₜ* Δ_X`** (conjugation by
+`h ∈ H = Gal(Ω/K(X))` on `Δ_X = π₁ᵉᵗ(X_{k̄})`), **`natIsoBar_precompMX`** (S1f mod `n`),
+`MX hτ K` (= `MXHat Δ_X K` with the actions), **`natIsoHatK : M_X ≃ₜ* Ẑ(1)`**,
+**`natIsoHatK_smul`**, `natIsoHatK_pi_smul` (S1f for `H` and `Π_U = Pi D₀`; `⟨⟨S⟩⟩` acts
+trivially, `kernel_smul_mx`), **`h1MXEquiv : H¹(Π_U, Ẑ(1)) ≃* H¹(Π_U, M_X)`**,
+**`kummerMapMX`** (`κ_U` with `M_X`-coefficients), `kummerMapMX_injective`. Genus `≥ 1` enters
+as `[Fact (0 < g(X))]` (for `g = 0`, `M_X = 0`). `Kummer/NFCurve.lean`: curve forms of
+Prop. 1.8(i) "only if" and (ii) both directions, hypothesis only `IsTorallyKummerFaithful k`
+(unconditional for number fields and finite extensions of `ℚ_p`).
+
+Consumer form for MR9: `h1MXEquiv hτ (F (curveGaloisData k hτ))` turns every statement about
+`ContH1 (Pi D₀) (ZHatOne (F D₀) Ω)` (Prop. 1.6, 1.8 in CKT/cj) into `H¹(Π_U, M_X)`; the action of
+`Π_U` on `M_X` is the honest conjugation action (`MX.smul_def`, `thetaBar_rhoBar`).
+
+### 20.2 Task B: `⋂_N N·J(K) = 0` for `K/ℚ_p` finite (and number fields)
+
+**Literature (checked 2026-10-23).** [AbsTopIII] Rem. 1.5.4(i), T3 l.1909–1919: for `k_H` a finite
+extension of `ℚ_p`, "`A(k_H)` is an extension of a finitely generated `ℤ`-module by a compact
+abelian `p`-adic Lie group, hence contains an open subgroup that is isomorphic to a finite product
+of copies of `ℤ_p`". Milne, *Arithmetic Duality Theorems* (2nd ed.), Ch. I §3, Lemma 3.3 (printed
+p. 41; downloaded `jmilne.org/math/Books/ADTnot.pdf`, not committed): "`A(K)` contains an open
+subgroup of finite index isomorphic to `R^{dim A}`" (`R = O_K`), proof "from the theory of the
+logarithm (see Mattuck 1955 or Tate 1967b, p168–169)". Tate, *p-divisible groups* pp. 168–169
+(`lit/dl/padic-hodge/disc/tate-pdiv-ocr.txt` l.447–497): logarithm isomorphism on small
+polydiscs of a formal group. Mattuck 1955 and Serre LALG are not available locally.
+
+**What is used downstream.** Only `hJ : ∀ z ∈ jacPoints X σ hσ k, (∀ N > 0, ∃ y ∈ jacPoints, N • y = z)
+→ z = 0` (the hypothesis of `isKummerFaithfulJac_curveGaloisData`, `Kummer/JacobianBridge.lean`)
+and `IsTorallyKummerFaithful k` (already unconditional for NF / `p`-adic). Full
+`IsKummerFaithful k` (all semi-abelian varieties) is **not** needed and is out of scope.
+
+**Existing pieces.** padic-hodge (`c440cf8`, same toolchain and Mathlib `v4.32.0` as cj; extra dep
+padic-log-volume): `FGL R d` (`d`-dimensional formal group laws, points `F(m_C)`), `logF`,
+`logF_bijOn`, `FGL.eq_zero_of_forall_pow_nsmul_mem` (`⋂ pⁿ F(m_L) = 0`, `InvariantsK.lean:79`) —
+but no formal group attached to a group scheme. cj: `IsAbelianVariety`, `jacK`, `jacPoints`,
+`picRes_injective` (any field tower), `exists_abelClass_eq_of_isField` (Abel map surjective on
+`K`-points for `d ≥ g`), `curveToP1`. Mathlib: `Smooth.exists_isStandardSmooth` (submersive
+presentations), inverse function theorem `HasStrictFDerivAt.toOpenPartialHomeomorph` over any
+complete nontrivially normed field, `IsKrasner.of_complete`. Nothing gives a topology on `X(K)`.
+
+**Dependency decision.** padic-hodge as a cj dependency is pin-compatible (same Mathlib), but the
+formal-group route needs the formal group law of `J` with integral coefficients plus convergence to
+the algebraic group law, strictly more than the chart route below; padic-hodge is used only as a
+model for the contraction lemma (copy, ~100 lines). **No new pin.**
+
+Steps (cj `CurvesJacobian/Kummer/PAdicJac/`; sizes in lines):
+
+| # | step | size |
+|---|---|---|
+| B0 | number field → `p`-adic. **Core done** (cj 601db27, `Kummer/JacobianDivExt.lean`): `JacDivFree X σ hσ K` (`⋂_N N·J(K) = 0`), `JacDivFree.of_ext` (any field extension `L/k`, via `picRes_injective`), `isKummerFaithfulJac_curveGaloisData_of_ext`. Open: a finite extension `L/ℚ_p` (in `Type u`) receiving a number field `k` (`IsAlgClosed.lift` into `ℚ̄_p`, `ULift`) | 100–200 left |
+| B1 | affine chart at `e ∈ J` from `Smooth.exists_isStandardSmooth`; `K`-points of the chart = zeros in `K^n` of the relations | 500–900 |
+| B2 | coordinates near `e` from the inverse/implicit function theorem (`K^n → K^g` local homeomorphism) | 400–800 |
+| B3 | group law and inverse in coordinates near `(e, e)`: strictly differentiable, derivative `(u, v) ↦ u + v` read off from `m(x, e) = x`, `m(e, y) = y` | 800–1500 |
+| B4 | `U_r = {|t| ≤ r}` a subgroup for small `r`, `|t([p]x)| ≤ ρ|t(x)|`, `⋂ pⁿ U_r = 0` (padic-hodge `FGL.eq_zero_of_forall_pow_nsmul` pattern) | 200–400 |
+| B5 | `[J(K) : U_r] < ∞`: (a) topology on `X(K)`, continuity of morphisms, compactness of `X(K)` for proper `X` (3–6k), or (b) via `exists_abelClass_eq_of_isField`: finitely many extensions of `K` of degree `≤ g` (Krasner; 0.5–1.5k), compactness of `C(K')` via `curveToP1`, local continuity of `C^g → J` (2–4k) | 2–6k |
+| B6 | assemble: `x ∈ ⋂ N·J(K)` ⇒ `x = (M pⁿ) y` with `M = [J(K) : U_r]` ⇒ `x ∈ ⋂ pⁿ U_r = 0`; `hJ` for `p`-adic `K` and number fields; replace `IsKummerFaithful k` by these in `KummerCurve`, `PrincipalEta`, `PrincipalDescent`, `NFCurve` (`_numberField`, `_localField` forms) | 300 |
+
+Total 4.5–9k lines; B5 dominates. Interim (no new shell): the curve theorems keep
+`IsKummerFaithful k` as an explicit, named hypothesis, recorded here as **debt D-KF** (discharged
+by B0–B6 for number fields and `p`-adic fields). Decision for the lead: B5 option (a) (general
+topology on `X(K)`, reusable for MR-tracks needing `p`-adic points) vs (b) (Jacobian-specific,
+smaller).
+
+### 20.3 Audit update and hand-off (2026-10-23, sixteenth MR5 session)
+
+Audit table (§19) changes: Prop 1.4(ii) row — **S1f done** (`natIsoHatK_smul`,
+`natIsoHatK_pi_smul`, `h1MXEquiv`); Prop 1.6(iii) row — coefficients `M_X` available through
+`h1MXEquiv` (`kummerMapMX`); Prop 1.8 row — curve forms of all four directions exist ("if" of (i)
+with `IsKummerFaithful k`, the other three with `IsTorallyKummerFaithful k` only); Rem 1.5.4(i)
+row — plan 20.2, B0 core done; the remaining debt **D-KF** is `JacDivFree X σ hσ L` for a finite
+extension `L/ℚ_p`.
+
+Merged (cj main, validated, no `sorry`/new axioms): **e2fdba5** (S1f, NFCurve wrappers),
+**601db27** (B0 core).
+
+Next steps: (1) B0 rest (number field into a finite extension of `ℚ_p`, universe transport);
+(2) restate the curve theorems (`KummerCurve.ker_res_curve`, `PU_eq_curve`,
+`PrincipalEta.eta_eq_one_iff_curve`, `PrincipalDescent.*_curve`, `NFCurve`) with `JacDivFree`
+instead of `IsKummerFaithful k`; (3) B1–B6 (4.5–9k lines; lead decision on B5 (a) vs (b));
+(4) MR9: consume `h1MXEquiv`/`kummerMapMX` (pin bump of cj in iut).
