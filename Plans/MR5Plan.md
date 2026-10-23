@@ -100,9 +100,9 @@ continuous-kummer-theory`). Hence:
 | J2 | Prop 1.6(iii) middle exactness: `η` trivial on all `I_x` ⇒ `η ∈ (k^×)^∧`, via Kummer theory over `F k̄` (Galois model over `k̄`), `G_k`-invariance and level compatibility of the Kummer divisor classes, J1, descent along `Π_U ↠ G_k` | cj `Kummer/ConstantExtension.lean`, `Kummer/MiddleExact.lean` | 1.5–3k | **done** |
 | J3 | Prop 1.6(iii) image: `κ_U(Γ(U,O^×))·(k^×)^∧` = inverse image of cuspidal principal divisors; defines `P_U` | cj `Kummer/Image.lean` | 400–800 | **done** |
 | J4 | Prop 1.6(ii): `t_D` and principal divisors (group-side `Π_{J¹}`, [Cusp] Prop 2.3(i) route) | cj | 3–6k | **done** (eleventh session on `X_{k̄}`, §14; twelfth session J4b descent to `X`, §15: `eta_eq_one_iff_principal_curve`, `tD_conj_identity_iff_principal_curve`) |
-| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
-| N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | open (debt of N1) |
-| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | S1a–S1d done (§15, §16: group model and transport to `π₁ᵉᵗ` of a curve over `k = k̄`); S1e (natural identifications with `Ẑ(1)`) open, needs a lead decision (§16) |
+| N1 | Def 1.7 / Prop 1.8: NF-curves via `k̄_NF ⊆ k̄`; (i), (ii) from J3, R2b and surjectivity of nonconstant functions on `k̄_NF`-points | cj | 600–1200 | **done** (N2 removed the debt, cj 3205809; curve-level wrapper of 1.8(i) 'if' cj 36b66db `NFCurve.lean`); previously: done up to one debt (sixth session, §8): Ẑ-level `η|_x = s_x^*η` at closed points over finite `k_x`, 1.8(i) both directions (non-NF), 1.8(ii) both directions at NF-points, 1.8(i) NF "only if"; 1.8(i) NF "if" assumes `NFModel.UnitsDescend` (descent of units to `k̄_NF` up to constants, N2) |
+| N2 | `NFModel.UnitsDescend`: a function on `X_{k̄}` with divisor supported on NF-points is NF up to a constant (descent of principal divisors along `k̄ / k̄_NF`) | cj | 1.5–3k | **done** (cj 3205809, `NFDescent.lean` `NFModel.unitsDescend`; the table entry was stale until §18) |
+| S1 | Prop 1.4(ii) synchronization `M_X ≅ I_x` (needs `H²(Δ_X, Ẑ) ≅ Ẑ`, `r = 0` surface groups in pi1; group part = iut C1) | pi1 + cj | 2–4k | S1a–S1d done (§15, §16: group model and transport to `π₁ᵉᵗ` of a curve over `k = k̄`); S1e done mod n for every n (§17, §18: `ChernNatural.IsCuspPushout.mk_eq_natIso`) |
 | T1 | Kummer theory on tempered coverings (MR14): dense image `Π^tp → π₁ᵉᵗ` (`~/iut-scratch/multiradial/MR5-tempered.md`, P1–P3) | tfg | 2–3.5k | parked (MR13 track) |
 
 Done-when of the ROADMAP: `kummer_injective` (K1 gives it for torally KF `k`: number fields,
@@ -790,3 +790,47 @@ Steps (cj `CurvesJacobian/Kummer/`):
   `M_X ≅ Ẑ(1) ≅ I_x`. ~100.
 * b7 (optional, lead decision): cup product `χ_a ∪ χ_b` vs Weil pairing `e_n(a, b)` times `c₁(pt)`
   (needs the topological/algebraic intersection-pairing comparison; large).
+
+## 18. Hand-off (2026-10-23, end of the fourteenth MR5 session)
+
+Merged (cj main, validated, no `sorry`/axioms beyond `propext`/`choice`/`Quot.sound`):
+* **504ca56** b1: `Kummer/ChernClass.lean`, `Kummer/CuspChern.lean` (WIP of the thirteenth session):
+  `c₁(𝒪(x)) mod n` as Kummer boundary on `X̃`, `cuspCentral_class_eq_chernClass`.
+* **36b66db** N1/N2: `Kummer/NFCurve.lean`, Prop 1.8(i) "if" for `curveGaloisData` with
+  `IsKummerFaithfulJac`, `k` alg. closed in `F`, `H_L = H` discharged (`IsTorallyKummerFaithful k`
+  stays a hypothesis: `IsKummerFaithful k → IsTorallyKummerFaithful k` needs `𝔾_m` as a group
+  scheme). N2 itself was already done in 3205809; the §4 table is corrected.
+* **3fedc28** b2/b4: `Kummer/H2Map.lean` (`h2Map`, `h2MapEquiv`, `h2EquivAny` = relator-value
+  `H²(G, M) ≅ M` in any universe, natural in `M`: `h2EquivAny_h2Map`); `Kummer/PicDivisible.lean`
+  (`exists_nsmul_eq_of_deg_eq_zero`: `Pic⁰(F)` divisible for the Galois model over `k = k̄`, via
+  JAC's `exists_nsmul_eq_picZero_of_charZero` with `κ = k` and `K(X) ≃ₐ[k] K(X_k) `);
+  `Kummer/ChernCompat.lean` (`IsChernRep.of_mul`, `chernClassX_of_mul`, `chiN_transition`).
+* **affd435** b3/b5: `Kummer/ChernDivisor.lean` (`IsChernRepDiv`, `chernClassDiv`, existence,
+  additivity, `c1Div : Div(F) →+ H²(Δ_X, μ_n)`, `c1Div_div`, `c1Div_nsmul`, **`c1Pic`**,
+  `c1Div_single_eq_chernClassX`); `Kummer/TopClass.lean` (generic `G ≃ₜ* Π̂_{g,0}`: `MXmod G n =
+  Hom(H²(G, ℤ/n), ℤ/n)` = `M_X/n`, `IsTaut`, `exists_unique_isTaut` = [Mzk19] Prop 1.2(i) mod n,
+  `exists_unique_mulEquiv` = Prop 1.2(ii) mod n for any generator).
+* **251ce1f** b6: `Kummer/ChernNatural.lean`: `c1Div_single_eq` (point independence),
+  `c1Div_eq_deg_smul_c1One`, `c1One` (c₁ of degree 1), `c1One_generates`, `natIso`
+  (`M_X/n ≃* μ_n`, unique with `natIso_*(taut) = c1One`: [Mzk19] Prop 1.2(ii) mod n),
+  **`IsCuspPushout.mk_eq_natIso`** ([AbsTopIII] Prop 1.4(ii) mod n: every pushout of
+  `1 → I_x → Δ^{c-cn}_{U_x} → Δ_X → 1` along `I_x ≅ Ẑ(1) ↠ μ_n` has class `natIso_*(taut)`),
+  `c1One_of_mul`. Setting: `k = k̄`, char 0, genus `≥ 1` (`hgen`), generic Galois model `(D, eL)`.
+
+* **4e73017** `Kummer/NatIsoCompat.lean`: `TopClass.mxTransition` (the reduction
+  `M_X/nm → M_X/n`, characterised orientation-free by `T(φ)(red_* v) = red(φ v)`, unique),
+  `h2Map_mxTransition_taut`, **`natIso_transition`**: the natural isomorphisms form a compatible
+  system, i.e. the `Ẑ(1)`-level `M_X ≅ Ẑ(1)` as an inverse system.
+
+Housekeeping: cj's belyi pin moved to 7206d78 (MR7); lake moved the private pin clone
+`~/mr5d-pkgs/belyi` (no hard links) to that rev during the rebuild. The full cj rebuild was
+OOM-killed once at 7G with default threads; `LEAN_NUM_THREADS=1` went through.
+
+Open / next steps:
+1. S1 is complete mod `n` for every `n` and compatible in `n`. Done-when of S1 is met.
+2. Optional b7 (lead decision): cup product vs Weil pairing — not needed for Prop 1.2(ii)/1.4(ii)
+   since `c₁` is defined canonically as a Kummer boundary.
+3. Instantiation of the S1 results for `X_{k̄}` of a curve `X/k` (Galois model
+   `baseChange (curveGaloisData k hτ)`) if a consumer (MR9) needs that form; currently all S1
+   statements are for a generic Galois model over `k = k̄`.
+4. T1 remains parked.
